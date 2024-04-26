@@ -1,0 +1,105 @@
+<script>
+	export let name;
+	export let img;
+	export let tooltip;
+	import { settings } from "../../store";
+	export let enabled = false;
+	export let type = "module";
+	export let settingsOpen;
+	export let isOpen;
+	export let smooth;
+	export let displayName = tooltip;
+	import Overlaysettings from "../../settings/overlaysettings.svelte";
+	import { socket } from "../../store";
+
+	function emit() {
+		$socket?.emit(
+			type === "module" ? "toggleModule" : "setting.set",
+			name,
+			enabled
+		);
+	}
+	//   $: console.log(areSettingsOpen);
+</script>
+
+<div class="container">
+	<label>
+		<input type="checkbox" bind:checked={enabled} on:click={emit} />
+		<div
+			class="checkbox-div"
+			on:mousedown={(e) => {
+				if (e.which == 3) {
+					e.preventDefault();
+					settingsOpen.open();
+					console.log("hehe");
+				}
+			}}
+			on:contextmenu={(e) => {
+				e.preventDefault();
+			}}
+		>
+			<img src={img} alt="" class:pixel={!smooth} />
+		</div>
+	</label>
+	<Overlaysettings bind:this={settingsOpen} {isOpen} {name} {img} {displayName}>
+		<slot />
+	</Overlaysettings>
+	{#if displayName}
+		<p class="tooltip">{displayName}</p>
+	{/if}
+</div>
+
+<style>
+	.checkbox-div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50%;
+		aspect-ratio: 1;
+		height: 50px;
+
+		background-color: var(--accent);
+		transition: all 400ms;
+		z-index: 2;
+		position: relative;
+	}
+
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+
+	p {
+		position: absolute;
+		margin: 0;
+		margin-top: 5px;
+		margin-bottom: -5px;
+		transform: translate(0, 28px);
+		z-index: 100;
+		font-size: 10px;
+		opacity: 0;
+		transition: all 400ms;
+	}
+
+	.container:hover p {
+		opacity: 1;
+		/* transform: translate(0, 19px); */
+	}
+
+	img {
+		height: 28px;
+		/* image-rendering: pixelated; */
+	}
+
+	input {
+		position: absolute;
+		display: none;
+	}
+
+	input:checked + div {
+		background-color: var(--accent-color);
+		box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.252);
+	}
+</style>

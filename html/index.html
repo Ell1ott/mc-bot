@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../html/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="player" class="unit">
+      <div id="player-controls" class="pad flex gap">
+        <div id="circle">
+          <!-- <input type="radio" class="nopad" id="lookAtEntityButton"> -->
+          <label class="switch" id="lookAtEntityButton">
+            <input type="checkbox" id="lookAtEntityToggle" onchange="socket.emit('lookAtEntity', checked)">
+              <img
+                src="../html/creeper.png"
+                alt="creeper"
+                id="creeper-img"
+                class="fillall img-button slider"
+
+              />
+            </label>
+          </input>
+          <!-- <div id="top-head"></div> -->
+          <img src="../html/head-top.png" id="top-head" alt="”idk”" />
+        </div>
+        <div id="movement-control">
+          <span></span>
+          <button
+            id="forward"
+            class="movement-button"
+            onclick="setControlState('forward', false)"
+            onmousedown="setControlState('forward', true)"
+            onmouseup="setControlState('forward', false)"
+            onmouseleave="setControlState('forward', false)"
+          >
+            <img src="../html/play.png" alt="arrow" class="img-icon rot-270" />
+          </button>
+          <span></span>
+          <button
+            id="left"
+            class="movement-button"
+            onclick="setControlState('left', false)"
+            onmousedown="setControlState('left', true)"
+            onmouseup="setControlState('left', false)"
+            onmouseleave="setControlState('left', false)"
+          >
+            <img src="../html/play.png" alt="arrow" class="img-icon rot-180" />
+          </button>
+          <button
+            id="jump"
+            class="movement-button"
+            onclick="setControlState('jump', false)"
+            onmousedown="setControlState('jump', true)"
+            onmouseup="setControlState('jump', false)"
+            onmouseleave="setControlState('jump', false)"
+          >
+            <img src="../html/jump.png" alt="jump" class="img-icon rot-270" />
+          </button>
+          <button
+            id="right"
+            class="movement-button"
+            onclick="setControlState('right', false)"
+            onmousedown="setControlState('right', true)"
+            onmouseup="setControlState('right', false)"
+            onmouseleave="setControlState('right', false)"
+          >
+            <img src="../html/play.png" alt="arrow" class="img-icon rot-" />
+          </button>
+          <span></span>
+          <button
+            id="back"
+            class="movement-button"
+            onclick="setControlState('back', false)"
+            onmousedown="setControlState('back', true)"
+            onmouseup="setControlState('back', false)"
+            onmouseleave="setControlState('back', false)"
+          >
+            <img src="../html/play.png" alt="arrow" class="img-icon rot-90" />
+          </button>
+        </div>
+      </div>
+      <div id="player-info" class="pad">
+        <img
+          src="https://minotar.net/avatar/e2sy/100.png"
+          alt="player-head"
+          id="player-head"
+        />
+        <!-- <div id="health-div" class="flex fullW bar-div">
+          <img src="../html/MC_Heart.webp" alt="health" class="img-icon" />
+        </div> -->
+        <div id="player-health-bar" class="stat-bar">
+          <div id="player-health" class="inner-stat-bar"></div>
+        </div>
+        <div id="player-food-bar" class="stat-bar">
+          <div id="player-food" class="inner-stat-bar"></div>
+        </div>
+      </div>
+    </div>
+    <div class="unit pad" id="quick-modules">
+      <div>
+        <label class="switch quick-module" >
+          <input type="checkbox" onchange="socket.emit('toggleModule', 'autoeat', checked)">
+            <img
+              src="../html/food/golden_carrot.png"
+              alt="fishing_rod"
+            />
+          </input>
+          <p>Auto eat</p>
+        </label>
+      </div>
+      <label class="switch quick-module" >
+        <input type="checkbox">
+          <img
+            src="../html/fishing_rod.png"
+            alt="fishing_rod"
+          />
+        </input>
+        <p>Auto fish</p>
+      </label>
+      <label class="switch quick-module" >
+        <input type="checkbox" onchange="socket.emit('toggleModule', 'autojump', checked)">
+          <img
+            src="../html/jump_boost.png"
+            alt="jump"
+          />
+        </input>
+        <p>Auto Jump</p>
+      </label>
+
+
+        <div class="overlay hidden">
+          <h1>Auto fish</h1>
+          <div class="splitter"></div>
+          <div class="options">
+            <div class="idk"></div>
+            <div class="option-slider">
+              <p>delay</p>
+              <input type="range" min="1" max="100" value="50">
+            </div>
+            <div class="option-slider">
+              <p>speed</p>
+              <input type="range" min="1" max="100" value="50">
+            </div>
+            <div class="option-slider">
+              <p>amount</p>
+              <input type="range" min="1" max="100" value="50">
+            </div>
+            <!-- <input type="range" min="1" max="100" value="50" class="option-slider">'' -->
+          </div>
+        </div>
+    </div>
+
+    <div class="unit pad" id="fishing-unit"></div>
+    <!-- <iframe
+      src="http://localhost:3000/"
+      frameborder="0"
+      id="inventory"
+    ></iframe> -->
+
+
+
+  </body>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- <script src="/socket.io/socket.io.js"></script> -->
+  <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
+  <script src="jquery.transform.js"></script>
+
+  <script>
+
+  
+
+
+    function rotCircel() {
+      const circle = document.getElementById("circle");
+      const radius = (50 + 90) / 2; // adjust the radius as desired
+      const numItems = 8; // adjust the number of items as desired
+
+      for (let i = 0; i < numItems; i++) {
+        const item = document.createElement("input");
+        item.classList.add("circle-item");
+        item.type = "radio";
+        item.name = "rot";
+        item.classList.add("circle-item");
+        item.value = i * 45;
+
+        const angle = -(i / numItems) * 2 * Math.PI - Math.PI / 2;
+        const x = radius * Math.cos(angle);
+        const y = radius * Math.sin(angle);
+        item.style.top = 50 + y + "%";
+        item.style.left = 50 + x + "%";
+        item.style.width = i % 2 == 0 ? 17 + "px" : 12 + "px";
+        item.style.height = i % 2 == 0 ? 17 + "px" : 12 + "px";
+        circle.appendChild(item);
+      }
+    }
+    rotCircel();
+    const socket = io("ws://localhost:8080");
+    function setControlState(control, state) {
+      socket.emit("setControlState", control, state);
+    }
+    setControlState("jump", false);
+    socket.on("log", (msg) => {
+      console.log(msg);
+    });
+    socket.on("username", (username) => {
+      document.getElementById("player-head").src =
+        "https://minotar.net/avatar/" + username + "/100.png";
+    });
+    healthElem = document.getElementById("player-health");
+    socket.on("health", (health) => {
+      healthElem.style.width = health * 5 + "%";
+    });
+    foodElem = document.getElementById("player-food");
+    socket.on("food", (food) => {
+      foodElem.style.width = food * 5 + "%";
+    });
+
+    tophead = document.getElementById("top-head");
+    lookatentitytoggle = document.getElementById("lookAtEntityToggle");
+    socket.on("YawRot", (rot) => {
+      tophead.style.transform =
+        "translate(-50%, -50%) rotate(" + (-rot * 180) / Math.PI + " deg)";
+    });
+    $(document).ready(function () {
+      $('input[name="rot"]').change(function () {
+        lookatentitytoggle.checked = false;
+        socket.emit('lookAtEntity', false)
+        
+        var selectedValue = $('input[name="rot"]:checked').val();
+        console.log("rotating to " + selectedValue);
+        socket.emit("rot", selectedValue);
+        tophead.style.transform =
+          "translate(-50%, -50%) rotate(" + -selectedValue + "deg)";
+      });
+
+      $('.quick-module').bind('contextmenu', function(e) {
+              e.preventDefault();
+      });
+    });
+  </script>
+  <style></style>
+</html>
