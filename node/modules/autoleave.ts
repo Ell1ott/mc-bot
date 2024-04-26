@@ -1,39 +1,24 @@
 import { BotInstance } from "../bot";
+import { Module } from "./module";
 
-const mineflayer = require("mineflayer");
-// let bot = mineflayer.createBot();
-const { setTimeout: wait } = require("timers/promises");
-const { getSetting } = require("../settingHelper");
-
-class AutoLeave {
-	botInstance: BotInstance; // The bot instance
-	settings;
-
-	constructor(botInstance: BotInstance) {
-		this.botInstance = botInstance;
-		this.settings = botInstance.settings;
-	}
+class AutoLeave extends Module {
 	playerJoined(player) {
 		if (!this.settings.playerjoin.enabled) return;
 		if (this.settings.playerjoin.val.includes(player.username)) {
 			bot.quit();
-			this.botInstance.info("left beacuse " + player.username + " joined");
+			this.info("left beacuse " + player.username + " joined");
 		}
 	}
 
 	healthChange() {
 		if (this.settings.health.enabled && bot.health < this.settings.health.val) {
 			bot.quit();
-			this.botInstance.info(
-				"left beacuse health got below " + this.settings.health.val
-			);
+			this.info("left beacuse health got below " + this.settings.health.val);
 			return;
 		}
 		if (this.settings.food.enabled && bot.food < this.settings.food.val) {
 			bot.quit();
-			this.botInstance.info(
-				"left beacuse food got below " + this.settings.food.val
-			);
+			this.info("left beacuse food got below " + this.settings.food.val);
 
 			return;
 		}
@@ -55,7 +40,7 @@ class AutoLeave {
 				bot.quit();
 				bot.removeListener("entityMoved", this.entityMoved);
 
-				this.botInstance.info("left beacuse " + e.username + " got too close");
+				this.info("left beacuse " + e.username + " got too close");
 			}
 			return;
 		} else if (
@@ -65,7 +50,7 @@ class AutoLeave {
 			bot.quit();
 			bot.removeListener("entityMoved", this.entityMoved);
 
-			this.botInstance.info("left beacuse " + e.username + " got too close");
+			this.info("left beacuse " + e.username + " got too close");
 			return;
 		}
 	}
