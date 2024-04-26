@@ -65,7 +65,7 @@
 <!-- <h1>Welcome to SvelteKit</h1> -->
 <!-- <img src={idk} alt="idk" /> -->
 
-<div class="units theme {currenttheme}" style="">
+<div class="units theme {currenttheme} gap-3" style="">
 	<!-- control header -->
 	<div id="header">
 		<Unit class="flex">
@@ -76,13 +76,13 @@
 			<Playerinfo />
 		</Unit>
 	</div>
-	<div class="flex flex1 gap">
-		<div class="consoles flex flex1">
-			<Unit flex1>
+	<div class="flex flex-1 gap-3">
+		<div class="consoles flex flex-1">
+			<Unit class="flex-1">
 				<Chat />
 			</Unit>
 		</div>
-		<div class="modules">
+		<div class="modules flex flex-col gap-3">
 			<Unit display="inline-flex">
 				<UnitContent>
 					<QuickModules />

@@ -1,20 +1,10 @@
 <script lang="ts">
 	export let name = false;
 	export let icon;
-	export let flex1;
-
-	import Quickmodule from "./modules/quickModules/quickmodule.svelte";
-	import Splitter from "./splitter.svelte";
 </script>
 
-<div class={"unit " + $$props.class} class:flex1>
-	<!-- {#if name}
-
-    
-  {/if} -->
+<div class={"unit " + ($$props.class || "")}>
 	<slot />
-
-	<!-- <div class="test" /> -->
 </div>
 
 <style>
@@ -27,6 +17,5 @@
 		overflow: hidden;
 		min-height: 50px;
 		min-width: 50px;
-		margin-bottom: 15px;
 	}
 </style>

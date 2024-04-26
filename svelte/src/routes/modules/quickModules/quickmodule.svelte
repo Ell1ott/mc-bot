@@ -22,7 +22,7 @@
 	//   $: console.log(areSettingsOpen);
 </script>
 
-<div class="container">
+<div class="cont flex flex-col items-center justify-center">
 	<label>
 		<input type="checkbox" bind:checked={enabled} on:click={emit} />
 		<div
@@ -49,7 +49,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="scss">
 	.checkbox-div {
 		display: flex;
 		justify-content: center;
@@ -59,7 +59,7 @@
 		height: 50px;
 
 		background-color: var(--accent);
-		transition: all 400ms;
+		transition: all 100ms;
 		z-index: 2;
 		position: relative;
 	}
@@ -80,12 +80,13 @@
 		z-index: 100;
 		font-size: 10px;
 		opacity: 0;
-		transition: all 400ms;
+		transition: all 200ms;
 	}
 
-	.container:hover p {
+	.cont:hover p {
 		opacity: 1;
-		/* transform: translate(0, 19px); */
+
+		transition: all 250ms 200ms;
 	}
 
 	img {
