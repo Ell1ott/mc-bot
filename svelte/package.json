@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
+    "lucide-svelte": "^0.376.0",
     "svelte-collapsible": "^0.2.1"
   }
 }
