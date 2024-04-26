@@ -20,6 +20,7 @@
     "postcss-load-config": "^5.0.2",
     "prettier": "^2.8.6",
     "prettier-plugin-svelte": "^2.9.0",
+    "sass": "^1.75.0",
     "svelte": "^3.54.0",
     "svelte-range-slider-pips": "^2.1.1",
     "tailwindcss": "^3.4.3",
@@ -27,7 +28,7 @@
   },
   "type": "module",
   "dependencies": {
-    "lucide-svelte": "^0.376.0",
+    "lucide-svelte": "0.350.0",
     "svelte-collapsible": "^0.2.1"
   }
 }

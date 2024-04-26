@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from "svelte";
+	import { MousePointer2 } from "lucide-svelte";
 	import creeper from "$lib/creeper.png";
 	import headtop from "$lib/head-top.png";
 	import { emit } from "../socketHandler.js";
@@ -14,7 +15,7 @@
 	const bigButton = 30;
 	// const thickness = 20;
 
-	const radius = (50 + 90) / 2; // adjust the radius as desired
+	const radius = (50 + 100) / 2; // adjust the radius as desired
 	const numItems = 8; // adjust the number of items as desired
 	//   const angle = -(i / numItems) * 2 * Math.PI - Math.PI / 2;
 	let circel;
@@ -33,24 +34,29 @@
 </label>
 <div id="circle" bind:this={circel}>
 	{#each Array(8) as _, index (index)}
-		<input
-			type="radio"
-			name="rot"
-			class="circle-item"
-			value={index * 45}
-			style="top: {50 +
-				radius *
-					Math.cos(-(index / numItems) * 2 * Math.PI - Math.PI)}%; left: {50 +
-				radius *
-					Math.sin(
-						-(index / numItems) * 2 * Math.PI - Math.PI
-					)}%; width: {index % 2 == 0 ? bigButton : smallButton}px"
-			on:click={() => {
-				rotate(index * 45);
-				rotdeg = index * 45;
-				console.log(rotdeg);
-			}}
-		/>
+		<label
+			class="circle-item origin-top-left"
+			style="
+				top: {50 + radius * Math.cos(-(index / numItems) * 2 * Math.PI - Math.PI)}%;
+				left: {50 + radius * Math.sin(-(index / numItems) * 2 * Math.PI - Math.PI)}%;
+				width: {index % 2 == 0 ? bigButton : smallButton}px;
+				rotate: {index * 45 + 45}deg;
+				"
+		>
+			<MousePointer2 class="w-full" />
+			<input
+				checked={index == 0}
+				type="radio"
+				name="rot"
+				class="hidden"
+				value={index * 45}
+				on:click={() => {
+					rotate(index * 45);
+					rotdeg = index * 45;
+					console.log(rotdeg);
+				}}
+			/>
+		</label>
 	{/each}
 	<!-- <input type="radio" class="nopad" id="lookAtEntityButton" /> -->
 	<!-- <div id="top-head"></div> -->
@@ -62,7 +68,7 @@
 	/>
 </div>
 
-<style>
+<style lang="scss">
 	#lookAtEntityButton {
 		width: 20px;
 		height: 20px;
@@ -123,7 +129,6 @@
 	.circle-item {
 		/* width: 20px;
     height: 50px; */
-		background-color: blue;
 		/* border-radius: 50%; */
 		top: 50%;
 		left: 50%;
@@ -134,6 +139,16 @@
 		aspect-ratio: 1;
 
 		border: none;
+
+		&:has(input:checked) {
+			:global(svg) {
+				fill: rgb(52, 122, 252);
+			}
+		}
+
+		:global(svg) {
+			stroke: rgb(52, 122, 252);
+		}
 	}
 
 	#top-head {
