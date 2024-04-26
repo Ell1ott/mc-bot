@@ -143,11 +143,13 @@
 		&:has(input:checked) {
 			:global(svg) {
 				fill: rgb(52, 122, 252);
+				stroke: rgb(52, 122, 252);
 			}
 		}
 
 		:global(svg) {
-			stroke: rgb(52, 122, 252);
+			stroke: rgb(139, 139, 139);
+			fill: rgb(139, 139, 139);
 		}
 	}
 
