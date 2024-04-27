@@ -66,11 +66,11 @@ class Fishing extends Module {
 						this.info("took fishing rod from inventory");
 						await wait(200);
 					} else {
-						this.alert("no fishing rod in inventory");
+						this.alert("No fishing rod in inventory");
 						return;
 					}
 				} else {
-					this.alert("no fishing rod in hotbar");
+					this.alert("No fishing rod in hotbar");
 					return;
 				}
 			}

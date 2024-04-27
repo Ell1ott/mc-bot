@@ -39,7 +39,7 @@ import { EventEmitter2 } from "eventemitter2";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
-	io = new EventEmitter2();
+	io: EventEmitter2;
 	settings = {};
 	modules: Record<string, Module> = {};
 	client = new EventEmitter();
@@ -61,6 +61,7 @@ class BotInstance {
 	constructor(settingsPath) {
 		this.bot = null;
 		this.settings = loadSettings(settingsPath);
+		this.io = new EventEmitter2();
 
 		itemCounterItems.forEach((item) => {
 			this.itemCounters[item] = 0;
@@ -373,8 +374,8 @@ class BotInstance {
 		console.log(msg);
 	}
 	alert(msg) {
-		this.io?.emit("alert", msg);
 		console.warn(msg);
+		this.io.emit("alert", msg);
 	}
 	info(msg) {
 		this.io?.emit("info", msg);
@@ -384,8 +385,13 @@ class BotInstance {
 	updPlayerInfo() {
 		if (!this.bot?.entity || !this.io) return;
 
-		if (this.previouspos != this.bot.entity.position) {
+		if (
+			this.previouspos?.x !== this.bot.entity.position.x ||
+			this.previouspos?.y !== this.bot.entity.position.y ||
+			this.previouspos?.z !== this.bot.entity.position.z
+		) {
 			this.io.emit("pos", this.bot.entity?.position);
+			this.previouspos = this.bot.entity.position;
 		}
 	}
 }

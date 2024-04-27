@@ -9,6 +9,7 @@
 		chats = [...chats, ...chatHistory];
 	});
 	$socket?.on("alert", (message) => {
+		console.log(message);
 		chats = [...chats, { type: "alert", msg: message }];
 	});
 	$socket?.on("message", (message) => {
@@ -108,7 +109,7 @@
 
 	.alert {
 		padding: 5px;
-		background-color: rgb(169, 0, 0);
+		background-color: rgb(169, 0, 0, 0.5);
 		border-radius: 5px;
 		margin: 3px;
 	}

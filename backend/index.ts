@@ -32,4 +32,9 @@ io.on("connection", (socket) => {
 	socket.onAny((event, ...args) => {
 		testBot.client.emit(event, ...args);
 	});
+
+	testBot.io.onAny((event, ...args) => {
+		console.log("emitting", event);
+		socket.emit(event, ...args);
+	});
 });
