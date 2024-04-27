@@ -25,7 +25,7 @@
 	// import golden_carrot from "";
 
 	// import { socket } from "./stores.js";
-	const client = new io.connect("http://localhost:6800", {
+	const client = new io.connect("http://localhost:6801", {
 		reconnection: true,
 		reconnectionDelay: 200,
 		reconnectionDelayMax: 5000,

@@ -1,9 +1,8 @@
-const inventoryViewer = require("mineflayer-web-inventory");
 const autoeat = require("mineflayer-auto-eat").plugin;
+
 const pvp = require("mineflayer-pvp").plugin;
-const { pathfinder, Movements, goals } = require("mineflayer-pathfinder");
+const { pathfinder } = require("mineflayer-pathfinder");
 const { getCooldown } = require("mineflayer-pvp");
-const fs = require("fs");
 import { loadSettings, updateSetting, settings } from "./settingstest";
 
 const gui = require("mineflayer-gui");
@@ -11,27 +10,19 @@ const mineflayerViewer = require("prismarine-viewer").mineflayer;
 
 var Convert = require("ansi-to-html");
 var convert = new Convert({ escapeXML: true });
-const { flipflopWithRandomDelay, loopWithRandomDelay } = require("./looper.js");
+const { flipflopWithRandomDelay } = require("./looper.js");
 
 const { getSetting } = require("./settingHelper.js");
+import mineflayer, { BotEvents, Furnace } from "mineflayer";
 
-const { modules } = require("./modules.js");
-
-import mineflayer from "mineflayer";
-
-// const fishing = require("./modules/fishing.js");
-// const autoattack = require("./modules/autoattack.js");
-// const automine = require("./modules/automine.js");
-// fishing.asign(bot, log, alert);
-// autoattack.asign(bot, log, alert);
-// automine.asign(bot, log, alert);
-
-// load all custom utilities
-// bot.loadPlugin(require("./utils/blockutils.js").plugin);
-// bot.loadPlugin(require("./utils/entityutils.js").plugin);
+import { EventEmitter } from "events";
+import { Module } from "./modules/module";
+import { Fishing } from "./modules/fishing";
+import { getAllPosibleRecipes, itemNamefromid, lookAtEntity } from "./botUtils";
+import { Socket } from "socket.io";
 // inventoryViewer(bot);
 
-let itemCounterItems = [
+const itemCounterItems = [
 	"cod",
 	"salmon",
 	"tropical_fish",
@@ -45,90 +36,36 @@ let itemCounterItems = [
 	"prismarine_shard",
 ];
 
-let enchantedBooks = [] as any[];
-
-let runningloops = { antiafk: [] as any[] };
-let itemCounters = {};
-
-itemCounterItems.forEach((item) => {
-	itemCounters[item] = 0;
-});
-
-// require("./utils/blockutils.js")(bot);
-function canCraft(recipe, crafting_table) {
-	const input = recipe.inShape || recipe.ingredients;
-	let needsCraftingTable = input.length > 2 || input[0].length > 2;
-
-	if (!crafting_table && needsCraftingTable) return false;
-	let itemsNeeded: Record<string, number> = {};
-	input.flat().forEach((id) => {
-		if (id == null) return;
-		itemsNeeded[id] = itemsNeeded[id] + 1 || 1;
-	});
-
-	const ids = Object.keys(itemsNeeded);
-	const counts = Object.values(itemsNeeded);
-	// log(itemsNeeded);
-	// log(ids.map((x) => (!x ? null : bot.registry.items[x].name)));
-	// log(counts);
-	for (let i = 0; i < ids.length; i++) {
-		if (this.bot.inventory.count(ids[i], null) < counts[i]) return false;
-	}
-	return true;
-}
-
-function canCraftItem(id, crafting_table) {
-	const recipes = this.bot.registry.recipes[id];
-
-	return canCraftRecipes(recipes, crafting_table);
-}
-function canCraftRecipes(recipes, crafting_table) {
-	for (let i = 0; i < recipes.length; i++) {
-		const recipe = recipes[i];
-
-		if (canCraft(recipe, crafting_table)) return true;
-	}
-	return false;
-}
-
-function itemIdsToNames(ids, bot) {
-	return ids.map((x) => (!x ? null : bot.registry.items[x].name));
-}
-
-function itemNamefromid(id, bot: mineflayer.Bot) {
-	return bot.registry.items[id]?.name;
-}
-
-function getAllPosibleRecipes(bot: mineflayer.Bot) {
-	const recipeItems = bot.registry.recipes;
-
-	return Object.keys(recipeItems).filter((item) => canCraftItem(item, true));
-}
-
-import { EventEmitter } from "events";
-import { Module } from "./modules/module";
-import { Fishing } from "./modules/fishing";
-import { lookAtEntity } from "./botUtils";
-
 class BotInstance {
 	bot: mineflayer.Bot | null;
 	io: any;
+	settings = {};
+	modules: Record<string, Module> = {};
+	client = new EventEmitter();
+
+	clientBotBinds: Record<
+		string,
+		{ event: keyof BotEvents; func: BotEvents[keyof BotEvents] }[]
+	> = {};
+
+	itemCounters = {};
 	previouspos: any = null;
 	updPlayerLoop = null;
-	settings = {};
-
-	modules: Record<string, Module> = {};
-
-	client = new EventEmitter();
+	runningloops = { antiafk: [] as any[] };
+	enchantedBooks = [] as any[];
 
 	constructor(settingsPath) {
 		this.bot = null;
 		this.settings = loadSettings(settingsPath);
+
+		itemCounterItems.forEach((item) => {
+			this.itemCounters[item] = 0;
+		});
 	}
 
 	joinLocalhost(
-		port,
-		username = "bot",
+		port: number,
+		username = "Bot",
 		version = "1.20.4",
 		auth: "offline" | "mojang" | "microsoft" | undefined = "offline"
 	) {
@@ -159,7 +96,6 @@ class BotInstance {
 		if (!this.bot) return;
 
 		this.bot.loadPlugin(autoeat);
-		(this.bot as any).autoEat.disable();
 		this.bot.loadPlugin(pvp);
 		this.bot.loadPlugin(pathfinder);
 		this.bot.loadPlugin(gui.plugin);
@@ -174,7 +110,7 @@ class BotInstance {
 		console.log(new Fishing(this).name);
 	}
 
-	onCreate() {
+	start() {
 		if (!this.bot) return;
 		this.loadPlugins();
 		this.loadModules();
@@ -192,9 +128,14 @@ class BotInstance {
 			this.log("error: " + err);
 		});
 
+		this.bot.on("message", (message) => {
+			this.log("chat: " + message.toAnsi());
+		});
+
 		this.bot.once("spawn", () => {
 			if (!this.bot) return;
-			(this.bot as any).autoeat.options.priority = "saturation";
+			(this.bot as any).autoEat.disable();
+			(this.bot as any).autoEat.options.priority = "saturation";
 			(this.bot as any).autoEat.options.startAt = 19;
 			(this.bot as any).autoEat.options.bannedFood.push(
 				"golden_apple",
@@ -204,7 +145,7 @@ class BotInstance {
 
 			this.io?.emit("craftableRecipes", getAllPosibleRecipes(this.bot));
 
-			mineflayerViewer(this.bot, { port: 2000 });
+			mineflayerViewer(this.bot, { port: 2001 });
 		});
 
 		this.bot.on("playerCollect", (collector, collected: any) => {
@@ -231,10 +172,10 @@ class BotInstance {
 					};
 				});
 
-				enchantedBooks.push(enchanted_book);
+				this.enchantedBooks.push(enchanted_book);
 
-				this.log(enchantedBooks);
-				this.io?.emit("enchantedbooks", enchantedBooks);
+				this.log(this.enchantedBooks);
+				this.io?.emit("enchantedbooks", this.enchantedBooks);
 			}
 
 			// this.log(collected.metadata[8]);
@@ -246,11 +187,14 @@ class BotInstance {
 					collected.metadata[8]?.itemId,
 					this.bot
 				);
-				if (itemName in itemCounters) {
-					itemCounters[itemName] += collected.metadata[8]?.itemCount;
-					this.io?.emit("updateItemCount." + itemName, itemCounters[itemName]);
+				if (itemName in this.itemCounters) {
+					this.itemCounters[itemName] += collected.metadata[8]?.itemCount;
+					this.io?.emit(
+						"updateItemCount." + itemName,
+						this.itemCounters[itemName]
+					);
 					this.log(
-						"bot has collected " + itemCounters[itemName] + " " + itemName
+						"bot has collected " + this.itemCounters[itemName] + " " + itemName
 					);
 				}
 			}
@@ -261,28 +205,44 @@ class BotInstance {
 		if (this.bot) lookAtEntity(this.bot);
 	}
 
-	clientConnect(socket) {
+	clientBind<E extends keyof BotEvents>(
+		socket: Socket,
+		event: E,
+		func: BotEvents[E]
+	) {
 		if (!this.bot) return;
-		this.bot.on("entityMoved", (entity) => {
+		if (this.clientBotBinds[socket.id])
+			this.clientBotBinds[socket.id].push({ event, func });
+		else this.clientBotBinds[socket.id] = [];
+
+		this.bot.on(event, func);
+		this.clientBotBinds[socket.id] = this.clientBotBinds[socket.id] || [];
+		this.clientBotBinds[socket.id].push({ event, func });
+	}
+
+	clientConnect(socket: Socket) {
+		if (!this.bot) return;
+
+		socket.emit("username", this.bot.username);
+		socket.emit("settings", settings);
+		Object.entries(this.itemCounters).forEach(([itemName, count]) => {
+			socket.emit("updateItemCount." + itemName, count);
+		});
+
+		socket.id;
+
+		console.log("a user is connected to io socket");
+
+		this.clientBind(socket, "entityMoved", (entity) => {
 			if (entity == this.bot?.entity) {
 				socket.emit("YawRot", this.bot?.entity.yaw);
 			}
 		});
 
-		this.bot.on("message", (message) => {
-			// console.log(message.toAnsi());
-			// log(convert.toHtml(message.toAnsi()));
+		this.clientBind(socket, "message", (message) => {
 			socket.emit("message", convert.toHtml(message.toAnsi()));
-			// io.emit("message", message.toString());
 		});
-
-		socket.emit("username", this.bot.username);
-		socket.emit("settings", settings);
-		Object.entries(itemCounters).forEach(([itemName, count]) => {
-			socket.emit("updateItemCount." + itemName, count);
-		});
-		console.log("a user is connected to io socket");
-		// itemCounters.forEach((k, v) => )
+		// this.itemCounters.forEach((k, v) => )
 
 		this.client.on("setting.set", updateSetting);
 		this.client.on("rot", (message) => {
@@ -316,9 +276,9 @@ class BotInstance {
 			on = !on; // for some reason its flipped
 			console.log(module + ".enabled", on);
 
-			if (module in modules) {
-				if (on) modules[module].start();
-				else modules[module].stop();
+			if (module in this.modules) {
+				if (on) this.modules[module].start();
+				else this.modules[module].stop();
 			}
 
 			updateSetting(module + ".enabled", on);
@@ -340,7 +300,7 @@ class BotInstance {
 							"snok ",
 							settings.antiafk.sneaking.timebetweensneaks.val
 						);
-						runningloops.antiafk = [];
+						this.runningloops.antiafk = [];
 						if (getSetting(settings.antiafk.sneaking)) {
 							const stopSneak = flipflopWithRandomDelay(
 								() => {
@@ -352,13 +312,13 @@ class BotInstance {
 								settings.antiafk.sneaking.sneakinglength.val,
 								settings.antiafk.sneaking.timebetweensneaks.val
 							);
-							runningloops.antiafk.push(stopSneak);
+							this.runningloops.antiafk.push(stopSneak);
 						}
 
 						console.log(settings.antiafk.sneaking.sneakinglength.val);
 					} else {
 						// stopSneak();
-						runningloops.antiafk.forEach((func) => {
+						this.runningloops.antiafk.forEach((func) => {
 							func();
 						});
 						this.bot?.setControlState("sneak", false);
@@ -372,10 +332,11 @@ class BotInstance {
 		});
 	}
 
-	clientDisconnect() {
+	clientDisconnect(socket: Socket) {
 		if (!this.bot) return;
-		this.bot.removeAllListeners("entityMoved");
-		this.bot.removeAllListeners("message");
+		this.clientBotBinds[socket.id].forEach((bind) => {
+			this.bot?.off(bind.event, bind.func);
+		});
 	}
 
 	log(msg) {
@@ -402,6 +363,4 @@ class BotInstance {
 	}
 }
 
-const myBot = new BotInstance("settings.json");
-
-export { BotInstance, myBot };
+export { BotInstance };

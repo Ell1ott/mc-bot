@@ -9,7 +9,7 @@ function lookAtEntity(bot: mineflayer.Bot) {
 }
 
 // require("./utils/blockutils.js")(bot);
-function canCraft(recipe, crafting_table) {
+function canCraft(recipe, crafting_table: boolean) {
 	const input = recipe.inShape || recipe.ingredients;
 	let needsCraftingTable = input.length > 2 || input[0].length > 2;
 
@@ -45,7 +45,7 @@ function canCraftRecipes(recipes, crafting_table) {
 	return false;
 }
 
-function itemIdsToNames(ids, bot) {
+function itemIdsToNames(ids, bot: mineflayer.Bot) {
 	return ids.map((x) => (!x ? null : bot.registry.items[x].name));
 }
 
