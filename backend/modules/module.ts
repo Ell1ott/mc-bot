@@ -8,6 +8,7 @@ class Module {
 			matcher: any,
 			useServerRotation: boolean
 		) => any;
+		pathfinder: any;
 	};
 	settingName: string;
 

@@ -39,6 +39,7 @@ import { EventEmitter2 } from "eventemitter2";
 import { AutoAttack } from "./modules/autoattack";
 import { AutoLeave } from "./modules/autoleave";
 import { AntiAfk } from "./modules/antiafk";
+import { TreeChopper } from "./modules/treechopper";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
@@ -120,6 +121,7 @@ class BotInstance {
 			autoattack: new AutoAttack(this, "autoattack"),
 			autoleave: new AutoLeave(this, "autoleave"),
 			antiafk: new AntiAfk(this, "antiafk"),
+			treechopper: new TreeChopper(this, "treechopper"),
 		};
 	}
 

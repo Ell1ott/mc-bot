@@ -1,5 +1,6 @@
 import { Block } from "prismarine-block";
 import { Module } from "./module";
+import { Vec3 } from "vec3";
 
 const mineflayer = require("mineflayer");
 // let this.bot = mineflayer.createBot();
@@ -8,7 +9,6 @@ const { getSetting } = require("../settingHelper");
 const { error } = require("console");
 const Movements = require("mineflayer-pathfinder").Movements;
 const { GoalBlock } = require("mineflayer-pathfinder").goals;
-const Vec3 = require("vec3").Vec3;
 
 class TreeChopper extends Module {
 	saplingBlock;
@@ -60,7 +60,7 @@ class TreeChopper extends Module {
 		TreeChopper.clamp(num, place - size, place + size);
 	static bbsize = 0.48;
 
-	blockInFront(block) {
+	blockInFront(block): Block | null {
 		const headPos = this.bot.entity.position.offset(
 			0,
 			this.bot.entity.height,
@@ -82,38 +82,37 @@ class TreeChopper extends Module {
 		);
 		this.log(blockAtCursor);
 
-		this.log(this.bot.blockAt(block.position) + "");
 		return blockAtCursor;
 	}
 	async breakBlock(block: Block | null) {
 		if (!block) return;
-
-		// We override the blockAtCursor function so it does have 3 args
 		let blockAtCursor = this.bot.blockAtCursor(5, null, true);
+
+		// While we havenet broken the correct block.
 		while (this.bot.blockAt(block.position)?.name != "air") {
 			console.log(this.bot.blockAt(block.position)?.name);
 
+			console.log("block at cursor " + blockAtCursor?.name);
+			console.log("block in front " + this.blockInFront(block)?.name);
+			console.log("block at cursor " + blockAtCursor?.position);
+			console.log("block in front " + this.blockInFront(block)?.position);
+			if (!this.blockInFront(block)) return;
 			while (
-				!blockAtCursor?.position.equals(this.blockInFront(block).position)
+				!blockAtCursor ||
+				!blockAtCursor.position.equals(this.blockInFront(block).position)
 			) {
-				// console.log(console.log(this.bot.canSeeBlock(block)));
-				// this.log(blockInFront(block));
-				// const b = blockInFront(block);
-				this.lookAtBlock(
-					// new Vec3(
-					//   clampAround(headpos().x, bpos.x, bbsize),
-					//   clampAround(headpos().y, bpos.y, bbsize),
-					//   clampAround(headpos().z, bpos.z, bbsize)
-					// )
-					block.position
-				);
+				this.lookAtBlock(block.position);
 
 				await this.bot.waitForTicks(1);
 				blockAtCursor = this.bot.blockAtCursor(5, null, true);
 			}
-			await this.bot.dig(blockAtCursor, "ignore", "raycast");
+			blockAtCursor = this.bot.blockAtCursor(5, null, true);
+			await this.bot.dig(blockAtCursor, "ignore", "raycast").catch(() => {
+				console.log("failed to dig blcok");
+			});
+			console.log("has dug block");
 
-			if (blockAtCursor.position.equals(block.position)) return;
+			// if (blockAtCursor.position.equals(block.position)) return;
 		}
 		// await this.bot.waitForTicks(5);
 	}
@@ -126,123 +125,145 @@ class TreeChopper extends Module {
 			matching: this.isLog,
 			maxDistance: 5,
 		});
-		if (wood) {
+
+		let tree = this.bot.findBlocks({
+			matching: (block) => this.isLog(block),
+			useExtraInfo: (block) => block.position.y == this.bot.entity.position.y,
+			count: 4,
+			maxDistance: 10,
+		});
+
+		let xCenter = tree.reduce((acc, block) => acc + block.x, 0) / tree.length;
+		xCenter = xCenter + 0.5;
+		let zCenter = tree.reduce((acc, block) => acc + block.z, 0) / tree.length;
+		zCenter = zCenter + 0.5;
+
+		this.log("xCenter: " + xCenter);
+		this.log("zCenter: " + zCenter);
+
+		if (!wood) {
+			this.alert("No tree found");
+			return;
+		}
+
+		await this.breakBlock(wood);
+		wood = this.blockAbove(wood);
+		await this.breakBlock(wood);
+		await wait(100);
+		this.bot.setControlState("forward", true);
+		while (
+			this.bot.entity.position.xzDistanceTo(this.blockCenter(wood)) > 0.5
+		) {
+			await this.bot.waitForTicks(1);
+		}
+
+		this.bot.setControlState("forward", false);
+		let woodabove = this.blockAbove(wood);
+		wood = this.bot.blockAtCursor(5);
+		await wait(200);
+		await this.lookUpward();
+		await this.bot.dig(woodabove, "ignore", "raycast").catch(() => {
+			console.log("aborted digging");
+		});
+		for (let i = 0; i < 50; i++) {
 			await this.breakBlock(wood);
 			wood = this.blockAbove(wood);
 			await this.breakBlock(wood);
-			await wait(100);
+			wood = this.blockAbove(wood);
+			await this.breakBlock(wood);
+
+			if (!this.isLog(wood)) {
+				this.info("Got to the top of tree");
+				break;
+			}
 			this.bot.setControlState("forward", true);
+			this.bot.setControlState("jump", true);
 			while (
-				this.bot.entity.position.xzDistanceTo(this.blockCenter(wood)) > 0.5
+				this.bot.entity.position.xzDistanceTo(this.blockCenter(wood)) > 0.3
 			) {
 				await this.bot.waitForTicks(1);
+				this.lookAtBlock(wood.position);
 			}
-
+			this.bot.setControlState("jump", false);
 			this.bot.setControlState("forward", false);
-			let woodabove = this.blockAbove(wood);
-			wood = this.bot.blockAtCursor(5);
-			await wait(200);
-			await this.lookUpward();
-			await this.bot.dig(woodabove, "ignore", "raycast");
-			for (let i = 0; i < 50; i++) {
-				await this.breakBlock(wood);
-				wood = this.blockAbove(wood);
-				await this.breakBlock(wood);
-				wood = this.blockAbove(wood);
-				await this.breakBlock(wood);
-
+			if (woodabove.position.x === wood.position.x) {
+				woodabove = wood;
+				wood = this.bot.blockAt(wood.position.offset(1, -1, 0));
 				if (!this.isLog(wood)) {
-					this.info("got to the top of tree");
-					break;
+					wood = this.bot.blockAt(wood.position.offset(-2, 0, 0));
 				}
-				this.bot.setControlState("forward", true);
-				this.bot.setControlState("jump", true);
-				await this.bot.waitForTicks(1);
-				this.bot.setControlState("jump", false);
-				while (
-					this.bot.entity.position.xzDistanceTo(this.blockCenter(wood)) > 0.3
-				) {
-					await this.bot.waitForTicks(1);
-				}
-				this.bot.setControlState("forward", false);
-				if (woodabove.position.x === wood.position.x) {
-					woodabove = wood;
-					wood = this.bot.blockAt(wood.position.offset(1, -1, 0));
-					if (!this.isLog(wood)) {
-						wood = this.bot.blockAt(wood.position.offset(-2, 0, 0));
-					}
-				} else {
-					woodabove = wood;
-					wood = this.bot.blockAt(wood.position.offset(0, -1, 1));
-					if (!this.isLog(wood)) {
-						wood = this.bot.blockAt(wood.position.offset(0, 0, -2));
-					}
+			} else {
+				woodabove = wood;
+				wood = this.bot.blockAt(wood.position.offset(0, -1, 1));
+				if (!this.isLog(wood)) {
+					wood = this.bot.blockAt(wood.position.offset(0, 0, -2));
 				}
 			}
+		}
 
-			const lastwood = this.bot.findBlocks({
-				matching: (block) => this.isLog(block),
-				useExtraInfo: (block) => block.position.y >= this.bot.entity.position.y,
-				count: 20,
-				maxDistance: 8,
-			});
+		const lastwood = this.bot.findBlocks({
+			matching: (block) => this.isLog(block),
+			useExtraInfo: (block) => block.position.y >= this.bot.entity.position.y,
+			count: 100,
+			maxDistance: 10,
+		});
 
-			for (const blockpos of lastwood) {
-				wood = this.bot.blockAt(blockpos);
-				await this.breakBlock(wood);
-			}
+		for (const blockpos of lastwood) {
+			wood = this.bot.blockAt(blockpos);
+			await this.breakBlock(wood);
+		}
 
-			await wait(300);
+		await wait(300);
 
-			console.log(this.saplingBlock);
+		console.log(this.saplingBlock);
 
-			this.bot.setControlState("sneak", true);
-			await this.bot.lookAt(
-				new Vec3(
-					this.saplingBlock.position.x - 1,
-					this.bot.entity.position.y,
-					this.saplingBlock.position.z - 1
-				)
-			);
+		this.bot.setControlState("sneak", true);
+		await this.bot.lookAt(
+			new Vec3(xCenter, this.bot.entity.position.y, zCenter)
+		);
 
-			this.bot.setControlState("forward", true);
-			await wait(500);
-			this.bot.setControlState("forward", false);
+		this.bot.setControlState("forward", true);
+		await wait(500);
+		this.bot.setControlState("forward", false);
+		this.bot.setControlState("sneak", false);
 
-			let y = this.bot.entity.position.y - 1;
+		let y = this.bot.entity.position.y - 1;
+		wood = this.bot.findBlock({
+			matching: this.isLog,
+			maxDistance: 8,
+			useExtraInfo: (block) => block.position.y == y,
+		});
+
+		while (wood) {
+			console.log(y);
+			await this.breakBlock(wood);
+			y -= 1;
 			wood = this.bot.findBlock({
 				matching: this.isLog,
 				maxDistance: 8,
 				useExtraInfo: (block) => block.position.y == y,
 			});
-
-			while (wood) {
-				console.log(y);
-				await this.breakBlock(wood);
-				y -= 1;
-				wood = this.bot.findBlock({
-					matching: this.isLog,
-					maxDistance: 8,
-					useExtraInfo: (block) => block.position.y == y,
-				});
-				console.log(wood);
+			console.log(wood);
+			await this.bot.waitForTicks(1);
+			while (this.bot.entity.position.y % 1 > 0.01) {
+				await this.bot.waitForTicks(1);
 			}
+		}
+		wood = this.bot.findBlock({
+			matching: this.isLog,
+			maxDistance: 8,
+		});
+		while (wood) {
+			await this.breakBlock(wood);
 			wood = this.bot.findBlock({
 				matching: this.isLog,
 				maxDistance: 8,
 			});
-			while (wood) {
-				await this.breakBlock(wood);
-				wood = this.bot.findBlock({
-					matching: this.isLog,
-					maxDistance: 8,
-				});
-			}
-			this.bot.setControlState("sneak", false);
-			await wait(300);
-
-			await this.walkToPos(this.saplingBlock.position.offset(1.5, 1, 1.5));
 		}
+		this.bot.setControlState("sneak", false);
+		await wait(300);
+
+		await this.walkToPos(this.saplingBlock.position.offset(1.5, 1, 1.5));
 	}
 
 	async walkToPos(pos, continuesLooking = true, precision = 0.5) {
@@ -276,8 +297,14 @@ class TreeChopper extends Module {
 		});
 
 		// this.log(ladder);
+		this.bot.pathfinder.setMovements(defaultMove);
+
+		const facing = ladder.getProperties().facing;
+		if (!facing || facing === true) return;
 
 		function onMoveClimb() {
+			if (!facing || facing === true) return;
+
 			console.log(this.bot.canSeeBlock(ladder));
 			if (this.bot.canSeeBlock(ladder)) {
 				this.bot.setControlState("left", true);
@@ -285,7 +312,7 @@ class TreeChopper extends Module {
 				this.bot.setControlState("left", false);
 			}
 
-			lookAtBlock(ladder.position.minus(faces[ladder._properties.facing]));
+			this.lookAtBlock(ladder.position.minus(this.faces[facing]));
 
 			if (this.bot.entity.position.y >= desiredY) {
 				this.bot.setControlState("forward", false);
@@ -296,16 +323,11 @@ class TreeChopper extends Module {
 
 		// this.bot.setControlState("forward", true);
 
-		this.bot.pathfinder.setMovements(defaultMove);
-		const p = ladder.position
-			.plus(this.faces[ladder._properties.facing])
-			.plus(this.faces[ladder._properties.facing]);
+		const p = ladder.position.plus(this.faces[facing]).plus(this.faces[facing]);
 		this.bot.pathfinder.goto(new GoalBlock(p.x, p.y, p.z)).then(async () => {
 			console.log("want to ladder");
 			// this.bot.setControlState("sprint", true);
-			await this.lookAtBlock(
-				ladder.position.minus(this.faces[ladder._properties.facing])
-			);
+			await this.lookAtBlock(ladder.position.minus(this.faces[facing]));
 			this.bot.setControlState("forward", true);
 		});
 	}
@@ -314,7 +336,7 @@ class TreeChopper extends Module {
 	}
 
 	async lookAtBlock(blockpos) {
-		await this.bot.lookAt(blockpos.offset(0.5, 0.5, 0.5));
+		await this.bot.lookAt(blockpos.offset(0.5, 0.5, 0.5), true);
 	}
 	async growTree() {
 		this.bot.equip(this.bonemeal, "hand");
@@ -348,7 +370,7 @@ class TreeChopper extends Module {
 								x: 0,
 								y: 1,
 								z: 0,
-							}
+							} as Vec3
 						);
 					}
 				}
@@ -395,8 +417,4 @@ class TreeChopper extends Module {
 	}
 }
 
-module.exports = {
-	asign,
-	start,
-	stop,
-};
+export { TreeChopper };
