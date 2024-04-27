@@ -62,7 +62,7 @@ class Fishing extends Module {
 						.find((item) => item.name == "fishing_rod");
 					if (fishing_rod) {
 						await wait(200);
-						this.bot.equip(fishing_rod);
+						this.bot.equip(fishing_rod, null);
 						this.info("took fishing rod from inventory");
 						await wait(200);
 					} else {

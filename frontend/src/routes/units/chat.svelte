@@ -109,7 +109,7 @@
 
 	.alert {
 		padding: 5px;
-		background-color: rgb(169, 0, 0, 0.5);
+		background-color: #ff4b0096;
 		border-radius: 5px;
 		margin: 3px;
 	}
