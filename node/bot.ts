@@ -397,12 +397,12 @@ class BotInstance {
 
 	updPlayerInfo() {
 		if (!this.bot?.entity || !this.io) return;
-		this.io.emit("health", bot.health);
-		this.io.emit("food", bot.food);
-		if (this.previouspos != bot.entity.position) {
-			this.io.emit("pos", bot.entity?.position);
+		this.io.emit("health", this.bot.health);
+		this.io.emit("food", this.bot.food);
+		if (this.previouspos != this.bot.entity.position) {
+			this.io.emit("pos", this.bot.entity?.position);
 		}
-		this.io.emit("xp.level", bot.experience.level);
+		this.io.emit("xp.level", this.bot.experience.level);
 	}
 }
 
