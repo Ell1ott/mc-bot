@@ -375,6 +375,7 @@ class BotInstance {
 	}
 	alert(msg) {
 		console.warn(msg);
+		this.chatHistory.push({ type: "alert", msg: msg });
 		this.io.emit("alert", msg);
 	}
 	info(msg) {

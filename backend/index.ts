@@ -34,7 +34,6 @@ io.on("connection", (socket) => {
 	});
 
 	testBot.io.onAny((event, ...args) => {
-		console.log("emitting", event);
 		socket.emit(event, ...args);
 	});
 });
