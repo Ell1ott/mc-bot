@@ -37,6 +37,7 @@ const itemCounterItems = [
 ];
 import { EventEmitter2 } from "eventemitter2";
 import { AutoAttack } from "./modules/autoattack";
+import { AutoLeave } from "./modules/autoleave";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
@@ -116,6 +117,7 @@ class BotInstance {
 		this.modules = {
 			fishing: new Fishing(this, "fishing"),
 			autoattack: new AutoAttack(this, "autoattack"),
+			autoleave: new AutoLeave(this, "autoleave"),
 		};
 	}
 
