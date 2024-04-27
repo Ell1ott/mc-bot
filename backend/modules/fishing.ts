@@ -6,20 +6,19 @@ const { randomBytes } = require("crypto");
 import { Module } from "./module";
 
 class Fishing extends Module {
-	name = "fishing";
-
 	containers = [] as any[];
 
 	startingRot;
 
 	isRunning;
 	start() {
+		console.log(this.settings);
 		this.startingRot = {
 			yaw: this.bot.entity.yaw,
 			pitch: this.bot.entity.pitch,
 		};
 		this.containers = this.findContainers(
-			this.settings.fishing.storeaway.storageblocks.val
+			this.settings.storeaway.storageblocks.val
 		);
 		this.startFishing();
 		this.isRunning = true;
@@ -91,7 +90,7 @@ class Fishing extends Module {
 
 		try {
 			this.swing();
-			await this.bot.fish(400, this.settings.fishing.swing).then(() => {
+			await this.bot.fish(400, this.settings.swing).then(() => {
 				setTimeout(() => {
 					this.startFishing();
 				}, 1000);
@@ -154,10 +153,10 @@ class Fishing extends Module {
 				}
 				await chest.deposit(slot.type, null, slot.count);
 				console.log(
-					getSetting(this.settings.fishing.storeaway.storeitemdelay, true, true)
+					getSetting(this.settings.storeaway.storeitemdelay, true, true)
 				);
 				await wait(
-					getSetting(this.settings.fishing.storeaway.storeitemdelay, true, true)
+					getSetting(this.settings.storeaway.storeitemdelay, true, true)
 				);
 
 				spaceLeft = this.containerSpace(chest) - chest.containerItems().length;
@@ -187,7 +186,7 @@ class Fishing extends Module {
 	}
 
 	swing() {
-		if (this.settings.fishing.swing) {
+		if (this.settings.swing) {
 			this.bot.swingArm("right");
 		}
 	}

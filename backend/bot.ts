@@ -35,10 +35,11 @@ const itemCounterItems = [
 	"saddle",
 	"prismarine_shard",
 ];
+import { EventEmitter2 } from "eventemitter2";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
-	io: any;
+	io = new EventEmitter2();
 	settings = {};
 	modules: Record<string, Module> = {};
 	client = new EventEmitter();
@@ -54,6 +55,8 @@ class BotInstance {
 	updPlayerLoop = null;
 	runningloops = { antiafk: [] as any[] };
 	enchantedBooks = [] as any[];
+
+	loopsForClient: Record<string, NodeJS.Timeout[]> = {};
 
 	constructor(settingsPath) {
 		this.bot = null;
@@ -108,7 +111,7 @@ class BotInstance {
 
 		console.log("loading modules");
 
-		console.log(new Fishing(this).name);
+		this.modules = { fishing: new Fishing(this, "fishing") };
 	}
 
 	start() {
@@ -253,9 +256,13 @@ class BotInstance {
 				case "autoeat":
 					if (on) {
 						(this.bot as any)?.autoEat.enable();
-						try {
-							(this.bot as any)?.autoEat.eat();
-						} catch {}
+
+						(this.bot as any)?.autoEat
+							// Setting to true will use offhand slot
+							.eat(true)
+							.catch((error) => {
+								console.log("could not eat");
+							});
 					} else {
 						(this.bot as any)?.autoEat.disable();
 					}
@@ -293,7 +300,8 @@ class BotInstance {
 					break;
 
 				default:
-					console.log("the module: " + module + " does not exist");
+					if (!(module in this.modules))
+						console.log("the module: " + module + " does not exist");
 					break;
 			}
 		});
@@ -316,6 +324,7 @@ class BotInstance {
 
 	clientConnect(socket: Socket) {
 		if (!this.bot) return;
+		this.loopsForClient[socket.id] = [];
 
 		socket.emit("username", this.bot.username);
 		socket.emit("settings", settings);
@@ -326,8 +335,6 @@ class BotInstance {
 
 		socket.id;
 
-		console.log("a user is connected to io socket");
-
 		this.botBindForClient(socket, "entityMoved", (entity) => {
 			if (entity == this.bot?.entity) {
 				socket.emit("YawRot", this.bot?.entity.yaw);
@@ -337,6 +344,20 @@ class BotInstance {
 		this.botBindForClient(socket, "message", (message) => {
 			socket.emit("message", convert.toHtml(message.toAnsi()));
 		});
+
+		this.botBindForClient(socket, "health", () => {
+			socket.emit("health", this.bot?.health);
+			socket.emit("food", this.bot?.food);
+		});
+
+		this.botBindForClient(socket, "experience", () => {
+			socket.emit("xp.level", this.bot?.experience.level);
+		});
+
+		this.loopsForClient[socket.id].push(
+			setInterval(() => this.updPlayerInfo(), 1000)
+		);
+
 		// this.itemCounters.forEach((k, v) => )
 	}
 
@@ -362,12 +383,10 @@ class BotInstance {
 
 	updPlayerInfo() {
 		if (!this.bot?.entity || !this.io) return;
-		this.io.emit("health", this.bot.health);
-		this.io.emit("food", this.bot.food);
+
 		if (this.previouspos != this.bot.entity.position) {
 			this.io.emit("pos", this.bot.entity?.position);
 		}
-		this.io.emit("xp.level", this.bot.experience.level);
 	}
 }
 

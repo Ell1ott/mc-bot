@@ -9,7 +9,7 @@ function lookAtEntity(bot: mineflayer.Bot) {
 }
 
 // require("./utils/blockutils.js")(bot);
-function canCraft(recipe, crafting_table: boolean) {
+function canCraft(recipe, crafting_table: boolean, bot: mineflayer.Bot) {
 	const input = recipe.inShape || recipe.ingredients;
 	let needsCraftingTable = input.length > 2 || input[0].length > 2;
 
@@ -26,21 +26,21 @@ function canCraft(recipe, crafting_table: boolean) {
 	// log(ids.map((x) => (!x ? null : bot.registry.items[x].name)));
 	// log(counts);
 	for (let i = 0; i < ids.length; i++) {
-		if (this.bot.inventory.count(ids[i], null) < counts[i]) return false;
+		if (bot.inventory.count(ids[i], null) < counts[i]) return false;
 	}
 	return true;
 }
 
-function canCraftItem(id, crafting_table) {
-	const recipes = this.bot.registry.recipes[id];
+function canCraftItem(id, crafting_table, bot: mineflayer.Bot) {
+	const recipes = bot.registry.recipes[id];
 
-	return canCraftRecipes(recipes, crafting_table);
+	return canCraftRecipes(recipes, crafting_table, bot);
 }
-function canCraftRecipes(recipes, crafting_table) {
+function canCraftRecipes(recipes, crafting_table, bot: mineflayer.Bot) {
 	for (let i = 0; i < recipes.length; i++) {
 		const recipe = recipes[i];
 
-		if (canCraft(recipe, crafting_table)) return true;
+		if (canCraft(recipe, crafting_table, bot)) return true;
 	}
 	return false;
 }
@@ -56,7 +56,9 @@ function itemNamefromid(id, bot: mineflayer.Bot) {
 function getAllPosibleRecipes(bot: mineflayer.Bot) {
 	const recipeItems = bot.registry.recipes;
 
-	return Object.keys(recipeItems).filter((item) => canCraftItem(item, true));
+	return Object.keys(recipeItems).filter((item) =>
+		canCraftItem(item, true, bot)
+	);
 }
 
 export {
