@@ -1,4 +1,3 @@
-const http = require("http").createServer();
 const inventoryViewer = require("mineflayer-web-inventory");
 const autoeat = require("mineflayer-auto-eat").plugin;
 const pvp = require("mineflayer-pvp").plugin;
@@ -109,6 +108,7 @@ function getAllPosibleRecipes(bot: mineflayer.Bot) {
 import { EventEmitter } from "events";
 import { Module } from "./modules/module";
 import { Fishing } from "./modules/fishing";
+import { lookAtEntity } from "./botUtils";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
@@ -257,6 +257,10 @@ class BotInstance {
 		});
 	}
 
+	_lookAtEntity() {
+		if (this.bot) lookAtEntity(this.bot);
+	}
+
 	clientConnect(socket) {
 		if (!this.bot) return;
 		this.bot.on("entityMoved", (entity) => {
@@ -296,10 +300,10 @@ class BotInstance {
 
 		this.client.on("lookAtEntity", (bool) => {
 			if (bool) {
-				this.bot?.on("move", lookAtEntity);
+				this.bot?.on("move", this._lookAtEntity);
 				console.log("now looking at entity");
 			} else {
-				this.bot?.removeListener("move", lookAtEntity);
+				this.bot?.removeListener("move", this._lookAtEntity);
 			}
 		});
 
