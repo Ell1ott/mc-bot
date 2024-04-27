@@ -58,10 +58,6 @@
 	let currenttheme = "dark";
 </script>
 
-<link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Comfortaa"
-/>
 <!-- <h1>Welcome to SvelteKit</h1> -->
 <!-- <img src={idk} alt="idk" /> -->
 
@@ -119,7 +115,6 @@
 
 	:global(select) {
 		font-size: 16px;
-		font-family: "Comfortaa", sans-serif;
 		color: var(--font);
 	}
 
@@ -134,12 +129,10 @@
 	}
 
 	:global(p) {
-		font-family: "Comfortaa", sans-serif;
 		color: var(--font);
 	}
 
 	:global(input) {
-		font-family: "Comfortaa", sans-serif;
 		color: var(--font);
 	}
 
