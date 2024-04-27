@@ -12,7 +12,7 @@ io.on("message", (message) => {
 	console.log(message);
 });
 
-const testBot = new BotInstance("../svelte/src/lib/bot-settings.json");
+const testBot = new BotInstance("../frontend/src/lib/bot-settings.json");
 
 testBot.joinLocalhost(45486);
 
@@ -24,7 +24,12 @@ io.on("connection", (socket) => {
 	testBot.clientConnect(socket);
 
 	socket.conn.on("close", (reason) => {
+		socket.removeAllListeners();
 		testBot.clientDisconnect(socket);
 		console.log("a user disconnected");
+	});
+
+	socket.onAny((event, ...args) => {
+		testBot.client.emit(event, ...args);
 	});
 });

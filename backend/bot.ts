@@ -114,7 +114,7 @@ class BotInstance {
 		if (!this.bot) return;
 		this.loadPlugins();
 		this.loadModules();
-
+		this.initClientBinds();
 		this.bot.on("kicked", (reason) => {
 			this.log("kicked: " + reason);
 			this.alert("kicked from server");
@@ -205,45 +205,7 @@ class BotInstance {
 		if (this.bot) lookAtEntity(this.bot);
 	}
 
-	clientBind<E extends keyof BotEvents>(
-		socket: Socket,
-		event: E,
-		func: BotEvents[E]
-	) {
-		if (!this.bot) return;
-		if (this.clientBotBinds[socket.id])
-			this.clientBotBinds[socket.id].push({ event, func });
-		else this.clientBotBinds[socket.id] = [];
-
-		this.bot.on(event, func);
-		this.clientBotBinds[socket.id] = this.clientBotBinds[socket.id] || [];
-		this.clientBotBinds[socket.id].push({ event, func });
-	}
-
-	clientConnect(socket: Socket) {
-		if (!this.bot) return;
-
-		socket.emit("username", this.bot.username);
-		socket.emit("settings", settings);
-		Object.entries(this.itemCounters).forEach(([itemName, count]) => {
-			socket.emit("updateItemCount." + itemName, count);
-		});
-
-		socket.id;
-
-		console.log("a user is connected to io socket");
-
-		this.clientBind(socket, "entityMoved", (entity) => {
-			if (entity == this.bot?.entity) {
-				socket.emit("YawRot", this.bot?.entity.yaw);
-			}
-		});
-
-		this.clientBind(socket, "message", (message) => {
-			socket.emit("message", convert.toHtml(message.toAnsi()));
-		});
-		// this.itemCounters.forEach((k, v) => )
-
+	initClientBinds() {
 		this.client.on("setting.set", updateSetting);
 		this.client.on("rot", (message) => {
 			this.log("should now be rotating to " + message);
@@ -330,6 +292,46 @@ class BotInstance {
 					break;
 			}
 		});
+	}
+
+	botBindForClient<E extends keyof BotEvents>(
+		socket: Socket,
+		event: E,
+		func: BotEvents[E]
+	) {
+		if (!this.bot) return;
+		if (this.clientBotBinds[socket.id])
+			this.clientBotBinds[socket.id].push({ event, func });
+		else this.clientBotBinds[socket.id] = [];
+
+		this.bot.on(event, func);
+		this.clientBotBinds[socket.id] = this.clientBotBinds[socket.id] || [];
+		this.clientBotBinds[socket.id].push({ event, func });
+	}
+
+	clientConnect(socket: Socket) {
+		if (!this.bot) return;
+
+		socket.emit("username", this.bot.username);
+		socket.emit("settings", settings);
+		Object.entries(this.itemCounters).forEach(([itemName, count]) => {
+			socket.emit("updateItemCount." + itemName, count);
+		});
+
+		socket.id;
+
+		console.log("a user is connected to io socket");
+
+		this.botBindForClient(socket, "entityMoved", (entity) => {
+			if (entity == this.bot?.entity) {
+				socket.emit("YawRot", this.bot?.entity.yaw);
+			}
+		});
+
+		this.botBindForClient(socket, "message", (message) => {
+			socket.emit("message", convert.toHtml(message.toAnsi()));
+		});
+		// this.itemCounters.forEach((k, v) => )
 	}
 
 	clientDisconnect(socket: Socket) {

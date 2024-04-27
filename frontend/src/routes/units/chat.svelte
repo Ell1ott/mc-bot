@@ -2,30 +2,7 @@
 	import { onMount } from "svelte";
 	import { socket } from "../store";
 	import sendicon from "$lib/send-icon.svg";
-	let chats = [
-		// { type: "chat", username: "E2SY", msg: "heheh" },
-		// { type: "chat", username: "E2SY", msg: "heheh" },
-		// { type: "chat", username: "E2SY", msg: "heheh" },
-		// { type: "chat", username: "E2SY", msg: "heheh" },
-		// { type: "chat", username: "E2SY", msg: "heheh" },
-		// { type: "chat", username: "E2SY", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "chat", username: "hej", msg: "heheh" },
-		// { type: "message", msg: "heheh" },
-		// { type: "alert", username: "hej", msg: "Disconnected from server" },
-	];
+	let chats = [];
 
 	console.log("mounted chat");
 	$socket?.on("chat", (chat) => {
