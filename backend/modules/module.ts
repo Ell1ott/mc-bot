@@ -1,9 +1,14 @@
 import { BotInstance } from "../bot";
 import mineflayer from "mineflayer";
-
 class Module {
 	botInstance: BotInstance; // The bot instance
-	bot: mineflayer.Bot;
+	bot: mineflayer.Bot & {
+		blockAtCursor: (
+			maxDistance: number,
+			matcher: any,
+			useServerRotation: boolean
+		) => any;
+	};
 	settingName: string;
 
 	constructor(botInstance: BotInstance, settingName: string) {

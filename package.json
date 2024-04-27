@@ -25,5 +25,11 @@
     "prismarine-viewer": "^1.24.0",
     "readline-sync": "^1.4.10",
     "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }

@@ -1,3 +1,4 @@
+import { Block } from "prismarine-block";
 import { Module } from "./module";
 
 const mineflayer = require("mineflayer");
@@ -77,23 +78,26 @@ class TreeChopper extends Module {
 		const blockAtCursor = this.bot.world.raycast(
 			headPos,
 			dir.normalize(),
-			range,
-			match
+			range
 		);
-		c.log(blockAtCursor);
-		c.log(this.bot.blockAt(block.position));
+		this.log(blockAtCursor);
+
+		this.log(this.bot.blockAt(block.position) + "");
 		return blockAtCursor;
 	}
-	async breakBlock(block, breakblockinfront) {
+	async breakBlock(block: Block | null) {
+		if (!block) return;
+
+		// We override the blockAtCursor function so it does have 3 args
 		let blockAtCursor = this.bot.blockAtCursor(5, null, true);
-		while (this.bot.blockAt(block.position).name != "air") {
-			console.log(this.bot.blockAt(block.position).name);
+		while (this.bot.blockAt(block.position)?.name != "air") {
+			console.log(this.bot.blockAt(block.position)?.name);
 
 			while (
 				!blockAtCursor?.position.equals(this.blockInFront(block).position)
 			) {
 				// console.log(console.log(this.bot.canSeeBlock(block)));
-				// c.log(blockInFront(block));
+				// this.log(blockInFront(block));
 				// const b = blockInFront(block);
 				this.lookAtBlock(
 					// new Vec3(
@@ -148,7 +152,7 @@ class TreeChopper extends Module {
 				await this.breakBlock(wood);
 
 				if (!this.isLog(wood)) {
-					c.info("got to the top of tree");
+					this.info("got to the top of tree");
 					break;
 				}
 				this.bot.setControlState("forward", true);
@@ -271,7 +275,7 @@ class TreeChopper extends Module {
 			matching: this.bot.registry.blocksByName.ladder.id,
 		});
 
-		// c.log(ladder);
+		// this.log(ladder);
 
 		function onMoveClimb() {
 			console.log(this.bot.canSeeBlock(ladder));
@@ -350,7 +354,7 @@ class TreeChopper extends Module {
 				}
 			}
 		} else {
-			c.info("no more saplings :(");
+			this.info("no more saplings :(");
 		}
 	}
 
