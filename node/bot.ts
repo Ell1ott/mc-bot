@@ -115,6 +115,8 @@ function getAllPosibleRecipes(bot: mineflayer.Bot) {
 }
 
 import { EventEmitter } from "events";
+import { Module } from "./modules/module";
+import { Fishing } from "./modules/fishing";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
@@ -122,6 +124,8 @@ class BotInstance {
 	previouspos: any = null;
 	updPlayerLoop = null;
 	settings = {};
+
+	modules: Record<string, Module> = {};
 
 	client = new EventEmitter();
 
@@ -170,49 +174,60 @@ class BotInstance {
 		this.bot.loadPlugin(require("mineflayer-collectblock").plugin);
 	}
 
+	loadModules() {
+		if (!this.bot) return;
+
+		console.log("loading modules");
+
+		console.log(new Fishing(this).name);
+	}
+
 	onCreate() {
 		if (!this.bot) return;
 		this.loadPlugins();
+		this.loadModules();
 
-		bot.on("kick", (reason) => {
+		this.bot.on("kick", (reason) => {
 			this.log("kicked: " + reason);
 			this.alert("kicked from server");
 		});
-		bot.on("end", (reason) => {
+		this.bot.on("end", (reason) => {
 			this.log("ended: " + reason);
 			this.alert("disconnected from server");
 		});
 
-		bot.on("error", (err) => {
+		this.bot.on("error", (err) => {
 			this.log("error: " + err);
 		});
 
-		bot.once("spawn", () => {
+		this.bot.once("spawn", () => {
 			if (!this.bot) return;
-			(bot as any).autoeat.options.priority = "saturation";
-			(bot as any).autoEat.options.startAt = 19;
-			(bot as any).autoEat.options.bannedFood.push(
+			(this.bot as any).autoeat.options.priority = "saturation";
+			(this.bot as any).autoEat.options.startAt = 19;
+			(this.bot as any).autoEat.options.bannedFood.push(
 				"golden_apple",
 				"enchanted_golden_apple"
 			);
-			this.io?.emit("username", bot.username);
+			this.io?.emit("username", this.bot.username);
 
 			this.io?.emit("craftableRecipes", getAllPosibleRecipes(this.bot));
 
 			mineflayerViewer(this.bot, { port: 2000 });
 		});
 
-		bot.on("playerCollect", (collector, collected) => {
+		this.bot.on("playerCollect", (collector, collected: any) => {
+			if (!this.bot) return;
+
 			const meta: any = collected.metadata[8];
 			this.log(
 				collector.username +
 					" collocted " +
 					meta?.itemCount +
 					" " +
-					itemNamefromid(meta?.itemId, bot)
+					itemNamefromid(meta?.itemId, this.bot)
 			);
 
-			if (meta?.itemId === 1006 && collector.username === bot.username) {
+			if (meta?.itemId === 1006 && collector.username === this.bot.username) {
 				// if the item is a enchanted book
 
 				const enchantments = meta.nbtData.value.StoredEnchantments.value.value;
@@ -232,7 +247,7 @@ class BotInstance {
 
 			// this.log(collected.metadata[8]);
 
-			if (collector === bot.entity) {
+			if (collector === this.bot?.entity) {
 				if (!this.bot) return;
 
 				const itemName = itemNamefromid(
@@ -253,8 +268,8 @@ class BotInstance {
 	clientConnect(socket) {
 		if (!this.bot) return;
 		this.bot.on("entityMoved", (entity) => {
-			if (entity == bot.entity) {
-				socket.emit("YawRot", bot.entity.yaw);
+			if (entity == this.bot?.entity) {
+				socket.emit("YawRot", this.bot?.entity.yaw);
 			}
 		});
 
@@ -265,7 +280,7 @@ class BotInstance {
 			// io.emit("message", message.toString());
 		});
 
-		socket.emit("username", bot.username);
+		socket.emit("username", this.bot.username);
 		socket.emit("settings", settings);
 		Object.entries(itemCounters).forEach(([itemName, count]) => {
 			socket.emit("updateItemCount." + itemName, count);

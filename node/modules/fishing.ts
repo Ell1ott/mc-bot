@@ -3,10 +3,12 @@ const mineflayer = require("mineflayer");
 const { setTimeout: wait } = require("timers/promises");
 const { getSetting } = require("../settingHelper");
 const { randomBytes } = require("crypto");
-const { Module } = require("./module");
+import { Module } from "./module";
 
 class Fishing extends Module {
-	containers = [];
+	name = "fishing";
+
+	containers = [] as any[];
 
 	startingRot;
 
@@ -201,6 +203,4 @@ class Fishing extends Module {
 	}
 }
 
-module.exports = {
-	Fishing,
-};
+export { Fishing };

@@ -9,6 +9,8 @@ class Module {
 	alert: Function;
 	info: Function;
 
+	name = "Module";
+
 	constructor(botInstance: BotInstance) {
 		if (!botInstance.bot) return;
 		this.botInstance = botInstance;
