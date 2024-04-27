@@ -109,14 +109,11 @@
 	}
 
 	:global(body) {
-		font-family: "Comfortaa", sans-serif;
 		color: var(--font);
 		background-color: var(--bg-color);
 
 		padding: 13px;
-		/* height: 100%; */
-		/* margin: 0; */
-		/* height: 100vh; */
+
 		flex: 1;
 	}
 

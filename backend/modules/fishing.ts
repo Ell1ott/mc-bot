@@ -37,7 +37,7 @@ class Fishing extends Module {
 				this.startingRot.yaw + Math.random() * 0.5 - 0.25,
 				this.startingRot.pitch + Math.random() * 0.5 - 0.25
 			);
-			if (this.isRunning) this.this.legitLoop();
+			if (this.isRunning) this.legitLoop();
 		}
 	}
 
@@ -87,7 +87,7 @@ class Fishing extends Module {
 			await this.bot.look(pYaw, pPitch);
 		}
 		// this.bot.on("playerCollect", onCollect);
-
+		this.info("Startet fishing");
 		try {
 			this.swing();
 			await this.bot.fish(400, this.settings.swing).then(() => {

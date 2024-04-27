@@ -1,4 +1,5 @@
 <script>
+	import { TriangleAlert, Info } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { socket } from "../store";
 	import sendicon from "$lib/send-icon.svg";
@@ -56,7 +57,12 @@
 				</div>
 			{:else}
 				<!-- content here -->
-				<div class={chat.type}>
+				<div class={"flex items-center " + chat.type}>
+					{#if chat.type == "alert"}
+						<TriangleAlert size="16" />
+					{:else if chat.type == "info"}
+						<Info size="16" />
+					{/if}
 					<p>{@html chat.msg}</p>
 				</div>
 			{/if}
