@@ -30,15 +30,7 @@ import mineflayer from "mineflayer";
 // load all custom utilities
 // bot.loadPlugin(require("./utils/blockutils.js").plugin);
 // bot.loadPlugin(require("./utils/entityutils.js").plugin);
-inventoryViewer(bot);
-
-function lookAtEntity() {
-	let friend = bot.nearestEntity();
-
-	if (friend) {
-		bot.lookAt(friend.position.offset(0, friend.height, 0));
-	}
-}
+// inventoryViewer(bot);
 
 let itemCounterItems = [
 	"cod",
@@ -81,13 +73,13 @@ function canCraft(recipe, crafting_table) {
 	// log(ids.map((x) => (!x ? null : bot.registry.items[x].name)));
 	// log(counts);
 	for (let i = 0; i < ids.length; i++) {
-		if (bot.inventory.count(ids[i], null) < counts[i]) return false;
+		if (this.bot.inventory.count(ids[i], null) < counts[i]) return false;
 	}
 	return true;
 }
 
 function canCraftItem(id, crafting_table) {
-	const recipes = bot.registry.recipes[id];
+	const recipes = this.bot.registry.recipes[id];
 
 	return canCraftRecipes(recipes, crafting_table);
 }
@@ -187,7 +179,7 @@ class BotInstance {
 		this.loadPlugins();
 		this.loadModules();
 
-		this.bot.on("kick", (reason) => {
+		this.bot.on("kicked", (reason) => {
 			this.log("kicked: " + reason);
 			this.alert("kicked from server");
 		});
