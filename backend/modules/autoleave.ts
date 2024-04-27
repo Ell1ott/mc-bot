@@ -69,6 +69,4 @@ class AutoLeave extends Module {
 	}
 }
 
-module.exports = {
-	AutoLeave,
-};
+export { AutoLeave };

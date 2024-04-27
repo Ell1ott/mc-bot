@@ -36,6 +36,7 @@ const itemCounterItems = [
 	"prismarine_shard",
 ];
 import { EventEmitter2 } from "eventemitter2";
+import { AutoAttack } from "./modules/autoattack";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
@@ -112,7 +113,10 @@ class BotInstance {
 
 		console.log("loading modules");
 
-		this.modules = { fishing: new Fishing(this, "fishing") };
+		this.modules = {
+			fishing: new Fishing(this, "fishing"),
+			autoattack: new AutoAttack(this, "autoattack"),
+		};
 	}
 
 	start() {

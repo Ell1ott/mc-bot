@@ -1,8 +1,7 @@
-import { BotInstance } from "../bot";
 import { Module } from "./module";
 
 const mineflayer = require("mineflayer");
-// let bot = mineflayer.createBot();
+// let this.bot = mineflayer.createBot();
 const { setTimeout: wait } = require("timers/promises");
 const { getSetting } = require("../settingHelper");
 const { getCooldown } = require("mineflayer-pvp");
@@ -21,7 +20,7 @@ class AutoAttack extends Module {
 	// let attackLoop = null;
 
 	async attack() {
-		let target = bot.nearestEntity(
+		let target = this.bot.nearestEntity(
 			(e) => e.type === "mob" || e.type === "player"
 		);
 		if (!target) {
@@ -32,28 +31,28 @@ class AutoAttack extends Module {
 		let pos = target.position.offset(0, target.height, 0);
 
 		if (
-			pos.distanceTo(bot.entity.position.offset(0, bot.entity.height, 0)) > 3
+			pos.distanceTo(
+				this.bot.entity.position.offset(0, this.bot.entity.height, 0)
+			) > 3
 		) {
 			setTimeout(this.attack, 100);
 			return;
 		}
 		if (getSetting(this.settings.autoattack.rotation)) {
-			bot.lookAt(pos, false);
+			this.bot.lookAt(pos, false);
 		}
-		// bot.lastSentYaw;
-
-		bot.hello = "hej";
 
 		if (
-			bot.entityAtCursor(3.5, true) === target ||
-			!getSetting(this.settings.autoattack.onlywhenlooking)
+			this.bot.entityAtCursor(3.5, true) === target ||
+			!getSetting(this.settings.onlywhenlooking)
 		) {
-			bot.attack(target);
+			this.bot.attack(target);
 		}
-		// bot.attack(entity);
-		const heldItem = bot.inventory.slots[bot.getEquipmentDestSlot("hand")];
-		// await bot.waitForTicks(30);
-		await bot.waitForTicks(getCooldown(heldItem?.name));
+		// this.bot.attack(entity);
+		const heldItem =
+			this.bot.inventory.slots[this.bot.getEquipmentDestSlot("hand")];
+		// await this.bot.waitForTicks(30);
+		await this.bot.waitForTicks(getCooldown(heldItem?.name));
 		// console.log(heldItem?.name);
 
 		if (!this.attacking) return;
@@ -62,6 +61,4 @@ class AutoAttack extends Module {
 	}
 }
 
-module.exports = {
-	AutoAttack,
-};
+export { AutoAttack };
