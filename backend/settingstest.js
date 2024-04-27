@@ -8,11 +8,8 @@ function loadSettings(path) {
 
 	return dict;
 }
-
-let settings = loadSettings(settingsFilePath);
-
 let debounceTimeout;
-function updateSetting(settingPath, newVal) {
+function updateSetting(settings, settingPath, newVal) {
 	list = settingPath.split(".");
 	switch (list[list.length - 1]) {
 		case "0":
@@ -66,7 +63,6 @@ module.exports = {
 	loadSettings: loadSettings,
 	updateSetting: updateSetting,
 	saveSettings: saveSettings,
-	settings: settings,
 };
 
 // export default getSetting;

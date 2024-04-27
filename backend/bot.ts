@@ -3,7 +3,7 @@ const autoeat = require("mineflayer-auto-eat").plugin;
 const pvp = require("mineflayer-pvp").plugin;
 const { pathfinder } = require("mineflayer-pathfinder");
 const { getCooldown } = require("mineflayer-pvp");
-import { loadSettings, updateSetting, settings } from "./settingstest";
+import { loadSettings, updateSetting } from "./settingstest";
 
 const gui = require("mineflayer-gui");
 const mineflayerViewer = require("prismarine-viewer").mineflayer;
@@ -38,6 +38,7 @@ const itemCounterItems = [
 import { EventEmitter2 } from "eventemitter2";
 import { AutoAttack } from "./modules/autoattack";
 import { AutoLeave } from "./modules/autoleave";
+import { AntiAfk } from "./modules/antiafk";
 
 class BotInstance {
 	bot: mineflayer.Bot | null;
@@ -118,6 +119,7 @@ class BotInstance {
 			fishing: new Fishing(this, "fishing"),
 			autoattack: new AutoAttack(this, "autoattack"),
 			autoleave: new AutoLeave(this, "autoleave"),
+			antiafk: new AntiAfk(this, "antiafk"),
 		};
 	}
 
@@ -221,7 +223,9 @@ class BotInstance {
 	}
 
 	initClientBinds() {
-		this.client.on("setting.set", updateSetting);
+		this.client.on("setting.set", (path, newVal) => {
+			updateSetting(this.settings, path, newVal);
+		});
 		this.client.on("rot", (message) => {
 			this.log("should now be rotating to " + message);
 			this.bot?.look(
@@ -258,7 +262,7 @@ class BotInstance {
 				else this.modules[module].stop();
 			}
 
-			updateSetting(module + ".enabled", on);
+			updateSetting(this.settings, module + ".enabled", on);
 			switch (module) {
 				case "autoeat":
 					if (on) {
@@ -272,37 +276,6 @@ class BotInstance {
 							});
 					} else {
 						(this.bot as any)?.autoEat.disable();
-					}
-					break;
-
-				case "antiafk":
-					if (on) {
-						console.log(
-							"snok ",
-							settings.antiafk.sneaking.timebetweensneaks.val
-						);
-						this.runningloops.antiafk = [];
-						if (getSetting(settings.antiafk.sneaking)) {
-							const stopSneak = flipflopWithRandomDelay(
-								() => {
-									this.bot?.setControlState("sneak", true);
-								},
-								() => {
-									this.bot?.setControlState("sneak", false);
-								},
-								settings.antiafk.sneaking.sneakinglength.val,
-								settings.antiafk.sneaking.timebetweensneaks.val
-							);
-							this.runningloops.antiafk.push(stopSneak);
-						}
-
-						console.log(settings.antiafk.sneaking.sneakinglength.val);
-					} else {
-						// stopSneak();
-						this.runningloops.antiafk.forEach((func) => {
-							func();
-						});
-						this.bot?.setControlState("sneak", false);
 					}
 					break;
 
@@ -334,7 +307,7 @@ class BotInstance {
 		this.loopsForClient[socket.id] = [];
 
 		socket.emit("username", this.bot.username);
-		socket.emit("settings", settings);
+		socket.emit("settings", this.settings);
 		socket.emit("chatHistory", this.chatHistory);
 		Object.entries(this.itemCounters).forEach(([itemName, count]) => {
 			socket.emit("updateItemCount." + itemName, count);

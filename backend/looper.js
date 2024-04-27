@@ -32,76 +32,56 @@ let maxDelay = 5000;
 
 // flipflopWithRandomDelay(func1, func2, delayRange1, delayRange2);
 
-function flipflopWithRandomDelay(func1, func2, delayRange1, delayRange2) {
-  let timeoutId;
-  function loop() {
-    func();
-    timeoutId = setTimeout(
-      loop,
-      Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay
-    );
-  }
-  loop();
-
-  function stopLoop() {
-    clearTimeout(timeoutId);
-  }
-
-  return { stopLoop };
-}
-
 function loopWithRandomDelay(func, minDelay, maxDelay) {
-  let timeoutId;
+	let timeoutId;
 
-  function loop() {
-    func();
-    timeoutId = setTimeout(
-      loop,
-      Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay
-    );
-  }
+	function loop() {
+		func();
+		timeoutId = setTimeout(
+			loop,
+			Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay
+		);
+	}
 
-  loop();
+	loop();
 
-  function stopLoop() {
-    clearTimeout(timeoutId);
-  }
+	function stopLoop() {
+		clearTimeout(timeoutId);
+	}
 
-  return { stopLoop };
+	return { stopLoop };
 }
 function toMili(n) {
-  return n * 1000;
+	return n * 1000;
 }
 function flipflopWithRandomDelay(func1, func2, delayRange1, delayRange2) {
-  let timeoutId;
-  delayRange1 = delayRange1.map(toMili);
-  delayRange2 = delayRange2.map(toMili);
-  console.log("delay range1 ", delayRange1);
-  console.log("delay range2 ", delayRange2);
-  // console.log(delayRange2);
-  function loop(func1, func2, delayRange1, delayRange2) {
-    func1();
-    delay =
-      Math.floor(Math.random() * (delayRange1[1] - delayRange1[0] + 1)) +
-      delayRange1[0];
-    console.log(delay);
-    timeoutId = setTimeout(() => {
-      loop(func2, func1, delayRange2, delayRange1);
-    }, delay);
-  }
+	let timeoutId;
+	// console.log(delayRange2);
+	function loop(func1, func2, delayRange1, delayRange2) {
+		func1();
 
-  loop(func1, func2, delayRange1, delayRange2);
+		delay =
+			Math.random() * (delayRange1[1] * 1000 - delayRange1[0] * 1000 + 1) +
+			delayRange1[0] * 1000;
 
-  function stopLoop() {
-    clearTimeout(timeoutId);
-  }
+		console.log(delay);
+		timeoutId = setTimeout(() => {
+			loop(func2, func1, delayRange2, delayRange1);
+		}, delay);
+	}
 
-  return stopLoop;
+	loop(func1, func2, delayRange1, delayRange2);
+
+	function stopLoop() {
+		clearTimeout(timeoutId);
+	}
+
+	return { stopLoop: stopLoop };
 }
 
 module.exports = {
-  flipflopWithRandomDelay: flipflopWithRandomDelay,
-  loopWithRandomDelay: loopWithRandomDelay,
+	flipflopWithRandomDelay: flipflopWithRandomDelay,
+	loopWithRandomDelay: loopWithRandomDelay,
 };
 // example:
 // const stopLoop = flipflopWithRandomDelay(

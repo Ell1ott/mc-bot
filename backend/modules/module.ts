@@ -4,14 +4,22 @@ import mineflayer from "mineflayer";
 class Module {
 	botInstance: BotInstance; // The bot instance
 	bot: mineflayer.Bot;
-	settings;
-	globalSettings;
+	settingName: string;
+
 	constructor(botInstance: BotInstance, settingName: string) {
 		if (!botInstance.bot) return;
+		this.settingName = settingName;
 		this.botInstance = botInstance;
-		this.settings = botInstance.settings[settingName];
-		this.globalSettings = botInstance.settings;
+
 		this.bot = botInstance.bot;
+	}
+
+	get settings(): any {
+		return this.botInstance.settings[this.settingName];
+	}
+
+	get globalSettings(): any {
+		return this.botInstance.settings;
 	}
 
 	log(msg: string) {

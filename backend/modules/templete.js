@@ -1,25 +1,7 @@
 const mineflayer = require("mineflayer");
-// let bot = mineflayer.createBot();
-const { setTimeout: wait } = require("timers/promises");
-const { getSetting } = require("../settingHelper");
+const { Module } = require("./module");
 
-let c;
-let settings;
-/** @type {mineflayer.Bot} */
-let bot;
-
-function asign(_bot, _c, _settings) {
-  c = _c;
-  settings = _settings;
-  bot = _bot;
+class TempModule extends Module {
+	start() {}
+	stop() {}
 }
-
-function start() {}
-
-function stop() {}
-
-module.exports = {
-  asign,
-  start,
-  stop,
-};
