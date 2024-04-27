@@ -5,8 +5,8 @@
 	let chats = [];
 
 	console.log("mounted chat");
-	$socket?.on("chat", (chat) => {
-		chats = [...chats, { type: "chat", ...chat }];
+	$socket?.on("chatHistory", (chatHistory) => {
+		chats = [...chats, ...chatHistory];
 	});
 	$socket?.on("alert", (message) => {
 		chats = [...chats, { type: "alert", msg: message }];

@@ -15,7 +15,7 @@
 	const bigButton = 30;
 	// const thickness = 20;
 
-	const radius = (50 + 100) / 2; // adjust the radius as desired
+	const radius = (50 + 80) / 2; // adjust the radius as desired
 	const numItems = 8; // adjust the number of items as desired
 	//   const angle = -(i / numItems) * 2 * Math.PI - Math.PI / 2;
 	let circel;

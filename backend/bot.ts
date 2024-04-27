@@ -48,6 +48,7 @@ class BotInstance {
 		{ event: keyof BotEvents; func: BotEvents[keyof BotEvents] }[]
 	> = {};
 
+	chatHistory: { type: string; msg: string }[] = [];
 	itemCounters = {};
 	previouspos: any = null;
 	updPlayerLoop = null;
@@ -130,6 +131,10 @@ class BotInstance {
 
 		this.bot.on("message", (message) => {
 			this.log("chat: " + message.toAnsi());
+			this.chatHistory.push({
+				type: "message",
+				msg: convert.toHtml(message.toAnsi()),
+			});
 		});
 
 		this.bot.once("spawn", () => {
@@ -314,6 +319,7 @@ class BotInstance {
 
 		socket.emit("username", this.bot.username);
 		socket.emit("settings", settings);
+		socket.emit("chatHistory", this.chatHistory);
 		Object.entries(this.itemCounters).forEach(([itemName, count]) => {
 			socket.emit("updateItemCount." + itemName, count);
 		});
