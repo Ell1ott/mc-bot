@@ -40,7 +40,7 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 			(e) => e.type === "mob" || e.type === "player"
 		);
 		if (!target) {
-			setTimeout(this.attack, 100);
+			setTimeout(this.attack.bind(this), 100);
 			return;
 		}
 
@@ -51,11 +51,11 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 				this.bot.entity.position.offset(0, this.bot.entity.height, 0)
 			) > 3
 		) {
-			setTimeout(this.attack, 100);
+			setTimeout(this.attack.bind(this), 100);
 			return;
 		}
 		if (getSetting(this.settings.rotation)) {
-			this.bot.lookAt(pos, false);
+			this.bot.lookAt(pos, true);
 		}
 
 		if (
@@ -72,7 +72,7 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 		// console.log(heldItem?.name);
 
 		if (!this.attacking) return;
-		setTimeout(this.attack, 100);
+		setTimeout(this.attack.bind(this), 100);
 		// setTimeout(attack, 1000);
 	}
 }

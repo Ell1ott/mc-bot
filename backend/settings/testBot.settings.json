@@ -99,7 +99,7 @@
     "enabled": true,
     "health": {
       "val": [
-        5
+        "4"
       ],
       "enabled": true,
       "range": [
@@ -111,7 +111,7 @@
     },
     "food": {
       "val": [
-        5
+        "5"
       ],
       "enabled": false,
       "range": [
@@ -129,7 +129,7 @@
       "d": "when player joins:"
     },
     "player_too_close": {
-      "enabled": true,
+      "enabled": false,
       "players": {
         "val": [
           "playername"
@@ -139,7 +139,7 @@
       },
       "specifiedplayerdistance": {
         "val": [
-          20
+          "20"
         ],
         "enabled": true,
         "range": [
@@ -151,7 +151,7 @@
       },
       "otherplayerdistance": {
         "val": [
-          20
+          "20"
         ],
         "enabled": true,
         "range": [

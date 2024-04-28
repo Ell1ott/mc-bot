@@ -96,7 +96,7 @@
     }
   },
   "autoleave": {
-    "enabled": true,
+    "enabled": false,
     "health": {
       "val": [
         5
@@ -167,7 +167,7 @@
     "enabled": false
   },
   "autoattack": {
-    "enabled": false,
+    "enabled": true,
     "rotation": {
       "val": true,
       "t": "bool",
