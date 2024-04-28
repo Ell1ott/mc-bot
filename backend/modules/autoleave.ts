@@ -1,8 +1,54 @@
 import { Module } from "./module";
 
-class AutoLeave extends Module {
+const moduleSettings = {
+	...Module.deafultSettings,
+	health: {
+		val: [5],
+		enabled: true,
+		range: [0, 20],
+		t: "range",
+		d: "health threshold",
+	},
+	food: {
+		val: [5],
+		enabled: false,
+		range: [0, 20],
+		t: "range",
+		d: "food threshold",
+	},
+	playerjoin: {
+		val: ["herobrine"],
+		t: "list",
+		d: "when player joins:",
+	},
+	player_too_close: {
+		enabled: true,
+		players: {
+			val: ["playername"],
+			t: "list",
+			d: "players",
+		},
+		specifiedplayerdistance: {
+			val: [20],
+			enabled: true,
+			range: [0, 200],
+			t: "range",
+			d: "specified player distance",
+		},
+		otherplayerdistance: {
+			val: [20],
+			enabled: true,
+			range: [1, 200],
+			t: "range",
+			d: "other player distance",
+		},
+	},
+};
+
+class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
+	static deafultSettings = moduleSettings;
+
 	onPlayerJoined(player) {
-		if (!this.settings.playerjoin.enabled) return;
 		if (this.settings.playerjoin.val.includes(player.username)) {
 			this.bot.quit();
 			this.info("left beacuse " + player.username + " joined");
@@ -12,13 +58,16 @@ class AutoLeave extends Module {
 	onHealthChange() {
 		if (
 			this.settings.health.enabled &&
-			this.bot.health < this.settings.health.val
+			this.bot.health < this.settings.health.val[0]
 		) {
 			this.bot.quit();
 			this.info("left beacuse health got below " + this.settings.health.val);
 			return;
 		}
-		if (this.settings.food.enabled && this.bot.food < this.settings.food.val) {
+		if (
+			this.settings.food.enabled &&
+			this.bot.food < this.settings.food.val[0]
+		) {
 			this.bot.quit();
 			this.info("left beacuse food got below " + this.settings.food.val);
 

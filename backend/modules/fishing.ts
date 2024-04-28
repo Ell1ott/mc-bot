@@ -5,8 +5,55 @@ const { getSetting } = require("../settingHelper");
 const { randomBytes } = require("crypto");
 import { Module } from "./module";
 
-class Fishing extends Module {
+const moduleSettings = {
+	...Module.deafultSettings,
+
+	swing: {
+		val: true,
+		t: "bool",
+		d: "swing",
+	},
+	takefrominventory: {
+		val: true,
+		t: "bool",
+		d: "take fishing rod from inventory",
+	},
+	headrot: {
+		val: false,
+		t: "bool",
+		d: "head rotation",
+	},
+	storeaway: {
+		enabled: true,
+		keepboks: {
+			val: true,
+			t: "bool",
+			d: "keep books",
+		},
+		keepfood: {
+			val: false,
+			t: "bool",
+			d: "keep food",
+		},
+		storageblocks: {
+			val: ["barrel", "chest"],
+			t: "list",
+			d: "storage blocks:",
+		},
+		storeitemdelay: {
+			val: [0.05, 0.5],
+			range: [0.05, 5],
+			step: 0.05,
+			t: "range",
+			d: "store item delay",
+		},
+	},
+};
+
+class Fishing extends Module<typeof Fishing.deafultSettings> {
 	containers = [] as any[];
+
+	static deafultSettings = moduleSettings;
 
 	startingRot;
 

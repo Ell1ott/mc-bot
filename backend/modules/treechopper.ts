@@ -10,11 +10,17 @@ const { error } = require("console");
 const Movements = require("mineflayer-pathfinder").Movements;
 const { GoalBlock } = require("mineflayer-pathfinder").goals;
 
-class TreeChopper extends Module {
+const moduleSettings = {
+	...Module.deafultSettings,
+	cool: true,
+};
+
+class TreeChopper extends Module<typeof TreeChopper.deafultSettings> {
 	saplingBlock;
 
 	bonemeal;
 	static ModuleName = "treechopper";
+	static deafultSettings = moduleSettings;
 
 	findAxe() {
 		return this.bot.inventory.items().find((item) => item.name.endsWith("axe"));

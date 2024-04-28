@@ -6,7 +6,23 @@ const { setTimeout: wait } = require("timers/promises");
 const { getSetting } = require("../settingHelper");
 const { getCooldown } = require("mineflayer-pvp");
 
-class AutoAttack extends Module {
+const moduleSettings = {
+	...Module.deafultSettings,
+	rotation: {
+		val: true,
+		t: "bool",
+		d: "rotation",
+	},
+	onlywhenlooking: {
+		val: true,
+		t: "bool",
+		d: "only attack if looking",
+	},
+};
+
+class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
+	static deafultSettings = moduleSettings;
+
 	attacking = false;
 
 	start() {
@@ -38,7 +54,7 @@ class AutoAttack extends Module {
 			setTimeout(this.attack, 100);
 			return;
 		}
-		if (getSetting(this.settings.autoattack.rotation)) {
+		if (getSetting(this.settings.rotation)) {
 			this.bot.lookAt(pos, false);
 		}
 

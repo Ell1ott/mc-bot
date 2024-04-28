@@ -39,12 +39,14 @@ import { EventEmitter2 } from "eventemitter2";
 import { AutoAttack } from "./modules/autoattack";
 import { AutoLeave } from "./modules/autoleave";
 import { AntiAfk } from "./modules/antiafk";
-import { TreeChopper } from "./modules/treechopper";
+// import { TreeChopper } from "./modules/treechopper";
+const TreeChopper = require("./modules/treechopper");
+import type { ExtendedBot } from "./utils/extendedBot";
 
 class BotInstance {
-	bot: mineflayer.Bot | null;
+	bot: ExtendedBot | null;
 	io: EventEmitter2;
-	settings = {};
+	settings: Record<string, any> = {};
 	modules: Record<string, Module> = {};
 	client = new EventEmitter();
 

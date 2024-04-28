@@ -1,16 +1,13 @@
 import { BotInstance } from "../bot";
-import mineflayer from "mineflayer";
-class Module {
+import * as mineflayer from "mineflayer";
+import type { ExtendedBot } from "../utils/extendedBot";
+class Module<T = typeof Module.deafultSettings> {
 	botInstance: BotInstance; // The bot instance
-	bot: mineflayer.Bot & {
-		blockAtCursor: (
-			maxDistance: number,
-			matcher: any,
-			useServerRotation: boolean
-		) => any;
-		pathfinder: any;
-	};
+	bot: ExtendedBot;
+
 	settingName: string;
+	static moduleName = "Module";
+	static deafultSettings = { enabled: true };
 
 	constructor(botInstance: BotInstance, settingName: string) {
 		if (!botInstance.bot) return;
@@ -20,7 +17,7 @@ class Module {
 		this.bot = botInstance.bot;
 	}
 
-	get settings(): any {
+	get settings(): T {
 		return this.botInstance.settings[this.settingName];
 	}
 
