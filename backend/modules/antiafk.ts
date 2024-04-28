@@ -2,33 +2,7 @@ import { flipflopWithRandomDelay } from "../looper";
 import { Module } from "./module";
 const { setTimeout: wait } = require("timers/promises");
 
-const moduleSettings = {
-	...Module.deafultSettings,
-
-	sneaking: {
-		enabled: true,
-		timebetweensneaks: {
-			val: [2, 3.6],
-			range: [0.2, 10],
-			step: 0.1,
-			t: "range",
-			d: "time between sneaks",
-		},
-		sneakinglength: {
-			val: [1, 10],
-			range: [0.2, 10],
-			t: "range",
-			d: "sneaking length",
-			step: 0.1,
-		},
-	},
-	jumping: {
-		enabled: false,
-	},
-	rotation: {
-		enabled: true,
-	},
-};
+import { antiafk as moduleSettings } from "../settings/settings.json";
 
 class AntiAfk extends Module<typeof AntiAfk.deafultSettings> {
 	sneakLoop = { stopLoop: () => {} };

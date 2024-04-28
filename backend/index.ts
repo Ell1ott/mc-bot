@@ -1,4 +1,5 @@
 import { BotInstance } from "./bot";
+import { exportSettings } from "./settings/settingExport";
 
 const http = require("http").createServer();
 
@@ -12,7 +13,7 @@ io.on("message", (message) => {
 	console.log(message);
 });
 
-const testBot = new BotInstance("../frontend/src/lib/bot-settings.json");
+const testBot = new BotInstance(exportSettings("testBot"));
 
 testBot.joinLocalhost(45486);
 

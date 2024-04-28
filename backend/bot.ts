@@ -12,7 +12,7 @@ var Convert = require("ansi-to-html");
 var convert = new Convert({ escapeXML: true });
 const { flipflopWithRandomDelay } = require("./looper.js");
 
-const { getSetting } = require("./settingHelper.js");
+const { getSetting } = require("./settings/settingHelper.js");
 import mineflayer, { BotEvents, Furnace } from "mineflayer";
 
 import { EventEmitter } from "events";
@@ -40,8 +40,9 @@ import { AutoAttack } from "./modules/autoattack";
 import { AutoLeave } from "./modules/autoleave";
 import { AntiAfk } from "./modules/antiafk";
 // import { TreeChopper } from "./modules/treechopper";
-const TreeChopper = require("./modules/treechopper");
+
 import type { ExtendedBot } from "./utils/extendedBot";
+import { TreeChopper } from "./modules/treechopper";
 
 class BotInstance {
 	bot: ExtendedBot | null;
@@ -100,7 +101,7 @@ class BotInstance {
 			username: username,
 			auth: auth,
 			version: version,
-		});
+		}) as ExtendedBot;
 	}
 
 	loadPlugins() {

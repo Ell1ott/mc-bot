@@ -6,7 +6,7 @@
   "fishing": {
     "enabled": true,
     "swing": {
-      "val": true,
+      "val": false,
       "t": "bool",
       "d": "swing"
     },
@@ -53,6 +53,11 @@
         "t": "range",
         "d": "store item delay"
       }
+    },
+    "notswing": {
+      "val": true,
+      "t": "bool",
+      "d": "swing"
     }
   },
   "autoleave": {
