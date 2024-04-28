@@ -1,7 +1,6 @@
 {
   "treechopper": {
-    "enabled": true,
-    "cool": true
+    "enabled": false
   },
   "fishing": {
     "enabled": true,
@@ -52,6 +51,47 @@
         "step": 0.05,
         "t": "range",
         "d": "store item delay"
+      }
+    }
+  },
+  "automine": {
+    "enabled": false,
+    "mode": {
+      "val": "strip_mining",
+      "t": "mode",
+      "modes": {
+        "straight": {
+          "lookstraight": {
+            "val": false,
+            "t": "bool",
+            "d": "look straight"
+          },
+          "cancelWhenBlockInFront": {
+            "val": true,
+            "t": "bool",
+            "d": "cancel when block in change"
+          },
+          "blocktobreak": {
+            "val": "obsidian",
+            "options": [
+              "obsidian",
+              "stone"
+            ],
+            "t": "option",
+            "d": "block to break"
+          }
+        },
+        "strip_mining": {
+          "blocktobreak": {
+            "val": "obsidian",
+            "options": [
+              "obsidian",
+              "stone"
+            ],
+            "t": "option",
+            "d": "block to break"
+          }
+        }
       }
     }
   },
@@ -123,8 +163,11 @@
       }
     }
   },
+  "autoeat": {
+    "enabled": false
+  },
   "autoattack": {
-    "enabled": true,
+    "enabled": false,
     "rotation": {
       "val": true,
       "t": "bool",
@@ -137,7 +180,7 @@
     }
   },
   "antiafk": {
-    "enabled": true,
+    "enabled": false,
     "sneaking": {
       "enabled": true,
       "timebetweensneaks": {

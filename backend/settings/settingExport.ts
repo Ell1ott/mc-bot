@@ -4,12 +4,8 @@ import path from "path"; // Import the 'path' module
 
 function deepMerge(obj1, obj2) {
 	for (let key in obj2) {
-		if (obj2.hasOwnProperty(key)) {
-			if (
-				obj1.hasOwnProperty(key) &&
-				typeof obj1[key] === "object" &&
-				typeof obj2[key] === "object"
-			) {
+		if (obj2.hasOwnProperty(key) && obj1.hasOwnProperty(key)) {
+			if (typeof obj1[key] === "object" && typeof obj2[key] === "object") {
 				deepMerge(obj1[key], obj2[key]);
 			} else {
 				obj1[key] = obj2[key];
@@ -39,4 +35,10 @@ export function exportSettings(name) {
 	}
 
 	return filePath;
+}
+
+export function exportNewSettings(name, settings) {
+	const filePath = path.join(__dirname, name + ".settings.json");
+	const json = JSON.stringify(settings, null, 2);
+	fs.writeFileSync(filePath, json);
 }

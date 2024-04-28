@@ -1,5 +1,5 @@
 <script>
-	import { TriangleAlert, Info } from "lucide-svelte";
+	import { TriangleAlert, Info, RefreshCcw } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { socket } from "../store";
 	import sendicon from "$lib/send-icon.svg";
@@ -64,6 +64,15 @@
 						<Info size="16" />
 					{/if}
 					<p>{@html chat.msg}</p>
+					{#if chat.msg.includes("isconnected from server")}
+						<button
+							class="flex items-center gap-2 ml-auto px-2 py-1 m-0.5 text-sm bg-sky-900 rounded-md"
+							on:click={() => $socket.emit("rejoin")}
+						>
+							<RefreshCcw size="16" />
+							Rejoin</button
+						>
+					{/if}
 				</div>
 			{/if}
 		{/each}
@@ -124,6 +133,13 @@
 		background-color: var(--accent-color);
 		border-radius: 5px;
 		margin: 3px;
+	}
+
+	.info p::first-letter {
+		text-transform: uppercase;
+	}
+	.alert p::first-letter {
+		text-transform: uppercase;
 	}
 
 	.chat::-webkit-scrollbar {

@@ -13,7 +13,7 @@ var convert = new Convert({ escapeXML: true });
 const { flipflopWithRandomDelay } = require("./looper.js");
 
 const { getSetting } = require("./settings/settingHelper.js");
-import mineflayer, { BotEvents, Furnace } from "mineflayer";
+import mineflayer, { type BotEvents, Furnace } from "mineflayer";
 
 import { EventEmitter } from "events";
 import { Module } from "./modules/module";
@@ -76,19 +76,24 @@ class BotInstance {
 		});
 	}
 
+	rejoin: () => ExtendedBot;
+
 	joinLocalhost(
 		port: number,
 		username = "Bot",
 		version = "1.20.4",
 		auth: "offline" | "mojang" | "microsoft" | undefined = "offline"
 	) {
-		this.bot = mineflayer.createBot({
-			host: "localhost",
-			port: port,
-			username: username,
-			auth: auth,
-			version: version,
-		}) as ExtendedBot;
+		this.rejoin = () => {
+			return mineflayer.createBot({
+				host: "localhost",
+				port: port,
+				username: username,
+				auth: auth,
+				version: version,
+			}) as ExtendedBot;
+		};
+		this.bot = this.rejoin();
 	}
 
 	joinServer(
@@ -97,12 +102,15 @@ class BotInstance {
 		version = "1.20.4",
 		auth: "offline" | "mojang" | "microsoft" | undefined = "offline"
 	) {
-		this.bot = mineflayer.createBot({
-			host: ip,
-			username: username,
-			auth: auth,
-			version: version,
-		}) as ExtendedBot;
+		this.rejoin = () => {
+			return mineflayer.createBot({
+				host: ip,
+				username: username,
+				auth: auth,
+				version: version,
+			}) as ExtendedBot;
+		};
+		this.bot = this.rejoin();
 	}
 
 	loadPlugins() {
@@ -137,6 +145,7 @@ class BotInstance {
 		this.bot.on("end", (reason) => {
 			this.log("ended: " + reason);
 			this.alert("disconnected from server");
+			this.bot = null;
 		});
 
 		this.bot.on("error", (err) => {
@@ -163,8 +172,6 @@ class BotInstance {
 			this.io?.emit("username", this.bot.username);
 
 			this.io?.emit("craftableRecipes", getAllPosibleRecipes(this.bot));
-
-			mineflayerViewer(this.bot, { port: 2001 });
 		});
 
 		this.bot.on("playerCollect", (collector, collected: any) => {
@@ -265,27 +272,16 @@ class BotInstance {
 			}
 
 			updateSetting(this.settings, module + ".enabled", on);
-			switch (module) {
-				case "autoeat":
-					if (on) {
-						(this.bot as any)?.autoEat.enable();
 
-						(this.bot as any)?.autoEat
-							// Setting to true will use offhand slot
-							.eat(true)
-							.catch((error) => {
-								console.log("could not eat");
-							});
-					} else {
-						(this.bot as any)?.autoEat.disable();
-					}
-					break;
+			if (!(module in this.modules))
+				console.log("the module: " + module + " does not exist");
+		});
 
-				default:
-					if (!(module in this.modules))
-						console.log("the module: " + module + " does not exist");
-					break;
-			}
+		this.client.on("rejoin", () => {
+			if (this.bot) return;
+			this.bot = this.rejoin();
+			this.info("Rejoined server");
+			this.start();
 		});
 	}
 

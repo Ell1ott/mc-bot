@@ -50,7 +50,7 @@ class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
 
 	onPlayerJoined(player) {
 		if (this.settings.playerjoin.val.includes(player.username)) {
-			this.bot.quit();
+			this.quit();
 			this.info("left beacuse " + player.username + " joined");
 		}
 	}
@@ -60,22 +60,30 @@ class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
 			this.settings.health.enabled &&
 			this.bot.health < this.settings.health.val[0]
 		) {
-			this.bot.quit();
-			this.info("left beacuse health got below " + this.settings.health.val);
+			this.quit();
+			this.info("Left beacuse health got below " + this.settings.health.val);
 			return;
 		}
 		if (
 			this.settings.food.enabled &&
 			this.bot.food < this.settings.food.val[0]
 		) {
-			this.bot.quit();
-			this.info("left beacuse food got below " + this.settings.food.val);
+			this.quit();
+			this.info("Left beacuse food got below " + this.settings.food.val);
 
 			return;
 		}
 	}
 
+	left = false;
+	quit() {
+		this.stop();
+		this.bot.quit();
+		this.left = true;
+	}
+
 	onEntityMoved(e) {
+		if (this.left) return;
 		if (!this.settings.player_too_close.enabled) return;
 		// console.log();
 		if (e.type !== "player") return;
@@ -88,7 +96,7 @@ class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
 			if (!this.settings.player_too_close.specifiedplayerdistance.enabled)
 				return;
 			if (dis < this.settings.player_too_close.specifiedplayerdistance.val[0]) {
-				this.bot.quit();
+				this.quit();
 				this.bot.removeListener("entityMoved", this.onEntityMoved);
 
 				this.info("left beacuse " + e.username + " got too close");
@@ -98,7 +106,7 @@ class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
 			dis < this.settings.player_too_close.otherplayerdistance.val[0]
 		) {
 			if (!this.settings.player_too_close.otherplayerdistance.enabled) return;
-			this.bot.quit();
+			this.quit();
 			this.bot.removeListener("entityMoved", this.onEntityMoved);
 
 			this.info("left beacuse " + e.username + " got too close");
@@ -106,9 +114,10 @@ class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
 		}
 	}
 	start() {
-		this.bot.on("playerJoined", this.onPlayerJoined);
-		this.bot.on("health", this.onHealthChange);
-		this.bot.on("entityMoved", this.onEntityMoved);
+		console.log(this.settings);
+		this.bot.on("playerJoined", this.onPlayerJoined.bind(this));
+		this.bot.on("health", this.onHealthChange.bind(this));
+		this.bot.on("entityMoved", this.onEntityMoved.bind(this));
 	}
 
 	stop() {

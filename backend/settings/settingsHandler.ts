@@ -1,3 +1,5 @@
+import { exportNewSettings } from "./settingExport";
+
 const fs = require("fs");
 
 const settingsFilePath = "../frontend/src/lib/bot-settings.json";
@@ -10,7 +12,7 @@ function loadSettings(path) {
 }
 let debounceTimeout;
 function updateSetting(settings, settingPath, newVal) {
-	list = settingPath.split(".");
+	let list = settingPath.split(".");
 	switch (list[list.length - 1]) {
 		case "0":
 		case "1":
@@ -36,33 +38,14 @@ function updateSetting(settings, settingPath, newVal) {
 		}
 		return acc[cur];
 	}, settings);
-	// clearTimeout(debounceTimeout);
-	// debounceTimeout = setTimeout(() => {
-	//   // Save settings to a JSON file here
-	//   saveSettings();
-	// }, 500);
+
+	clearTimeout(debounceTimeout);
+	debounceTimeout = setTimeout(() => {
+		//   // Save settings to a JSON file here
+		exportNewSettings("testBot", settings);
+	}, 500);
 }
 
-// console.log(getSetting(settings.antiafk.sneaking.timebetweensneaks));
-function saveSettings() {
-	if (!settings) {
-		console.log("settings are not intialized, so skipping save");
-		return;
-	}
-	const jsonData = JSON.stringify(settings);
-
-	fs.writeFile(settingsFilePath, jsonData, function (err) {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log("Settings saved!");
-		}
-	});
-}
-module.exports = {
-	loadSettings: loadSettings,
-	updateSetting: updateSetting,
-	saveSettings: saveSettings,
-};
+export { loadSettings, updateSetting };
 
 // export default getSetting;

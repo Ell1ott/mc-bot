@@ -7,7 +7,6 @@ import { Module } from "./module";
 
 const moduleSettings = {
 	...Module.deafultSettings,
-	icon: "fishing_rod",
 	swing: {
 		val: true,
 		t: "bool",
@@ -71,6 +70,7 @@ class Fishing extends Module<typeof Fishing.deafultSettings> {
 		this.startFishing();
 		this.isRunning = true;
 		// this.legitLoop();
+		this.info("Startet fishing");
 	}
 
 	stop() {
@@ -135,7 +135,7 @@ class Fishing extends Module<typeof Fishing.deafultSettings> {
 			await this.bot.look(pYaw, pPitch);
 		}
 		// this.bot.on("playerCollect", onCollect);
-		this.info("Startet fishing");
+
 		try {
 			this.swing();
 			await this.bot.fish(400, this.settings.swing).then(() => {

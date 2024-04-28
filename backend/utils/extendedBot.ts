@@ -9,4 +9,5 @@ export type ExtendedBot = mineflayer.Bot & {
 		useServerRotation: boolean
 	) => any;
 	collectBlock: any;
+	autoEat: any;
 };

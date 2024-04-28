@@ -12,7 +12,6 @@ const { GoalBlock } = require("mineflayer-pathfinder").goals;
 
 const moduleSettings = {
 	...Module.deafultSettings,
-	cool: true,
 };
 
 class TreeChopper extends Module<typeof TreeChopper.deafultSettings> {

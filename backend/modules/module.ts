@@ -7,14 +7,16 @@ class Module<T = typeof Module.deafultSettings> {
 
 	settingName: string;
 	static moduleName = "Module";
-	static deafultSettings = { enabled: true };
+	static deafultSettings = { enabled: false };
 
 	constructor(botInstance: BotInstance, settingName: string) {
 		if (!botInstance.bot) return;
 		this.settingName = settingName;
 		this.botInstance = botInstance;
+		console.log("module setting name", this.settings);
 
 		this.bot = botInstance.bot;
+		this;
 	}
 
 	get settings(): T {
