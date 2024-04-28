@@ -3,7 +3,7 @@ const autoeat = require("mineflayer-auto-eat").plugin;
 const pvp = require("mineflayer-pvp").plugin;
 const { pathfinder } = require("mineflayer-pathfinder");
 const { getCooldown } = require("mineflayer-pvp");
-import { loadSettings, updateSetting } from "./settingstest";
+import { loadSettings, updateSetting } from "./settingsHandler";
 
 const gui = require("mineflayer-gui");
 const mineflayerViewer = require("prismarine-viewer").mineflayer;
