@@ -43,6 +43,7 @@ import { AntiAfk } from "./modules/antiafk";
 
 import type { ExtendedBot } from "./utils/extendedBot";
 import { TreeChopper } from "./modules/treechopper";
+import { modules } from "./modules";
 
 class BotInstance {
 	bot: ExtendedBot | null;
@@ -119,13 +120,9 @@ class BotInstance {
 
 		console.log("loading modules");
 
-		this.modules = {
-			fishing: new Fishing(this, "fishing"),
-			autoattack: new AutoAttack(this, "autoattack"),
-			autoleave: new AutoLeave(this, "autoleave"),
-			antiafk: new AntiAfk(this, "antiafk"),
-			treechopper: new TreeChopper(this, "treechopper"),
-		};
+		this.modules = Object.fromEntries(
+			Object.entries(modules).map(([k, v]) => [k, new v(this, k)])
+		);
 	}
 
 	start() {

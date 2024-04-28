@@ -7,7 +7,7 @@ import { Module } from "./module";
 
 const moduleSettings = {
 	...Module.deafultSettings,
-
+	icon: "fishing_rod",
 	swing: {
 		val: true,
 		t: "bool",
