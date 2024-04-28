@@ -3,7 +3,7 @@ import { Module } from "./module";
 const mineflayer = require("mineflayer");
 // let this.bot = mineflayer.createBot();
 const { setTimeout: wait } = require("timers/promises");
-const { getSetting } = require("../settingHelper");
+const { getSetting } = require("../settings/settingHelper");
 const { getCooldown } = require("mineflayer-pvp");
 
 const moduleSettings = {
@@ -77,4 +77,4 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 	}
 }
 
-export { AutoAttack };
+export { AutoAttack, AutoAttack as module };

@@ -118,4 +118,4 @@ class AutoLeave extends Module<typeof AutoLeave.deafultSettings> {
 	}
 }
 
-export { AutoLeave };
+export { AutoLeave, AutoLeave as module };

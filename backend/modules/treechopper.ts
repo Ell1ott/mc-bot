@@ -5,7 +5,7 @@ import { Vec3 } from "vec3";
 const mineflayer = require("mineflayer");
 // let this.bot = mineflayer.createBot();
 const { setTimeout: wait } = require("timers/promises");
-const { getSetting } = require("../settingHelper");
+const { getSetting } = require("../settings/settingHelper");
 const { error } = require("console");
 const Movements = require("mineflayer-pathfinder").Movements;
 const { GoalBlock } = require("mineflayer-pathfinder").goals;
@@ -16,11 +16,11 @@ const moduleSettings = {
 };
 
 class TreeChopper extends Module<typeof TreeChopper.deafultSettings> {
-	saplingBlock;
-
-	bonemeal;
 	static ModuleName = "treechopper";
 	static deafultSettings = moduleSettings;
+
+	saplingBlock;
+	bonemeal;
 
 	findAxe() {
 		return this.bot.inventory.items().find((item) => item.name.endsWith("axe"));
@@ -423,4 +423,4 @@ class TreeChopper extends Module<typeof TreeChopper.deafultSettings> {
 	}
 }
 
-export { TreeChopper };
+export { TreeChopper, TreeChopper as module };

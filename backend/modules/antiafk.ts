@@ -51,4 +51,4 @@ class AntiAfk extends Module<typeof AntiAfk.deafultSettings> {
 		this.sneakLoop.stopLoop();
 	}
 }
-export { AntiAfk };
+export { AntiAfk, AntiAfk as module };

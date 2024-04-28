@@ -1,7 +1,7 @@
 const mineflayer = require("mineflayer");
 // let bot = mineflayer.createBot();
 const { setTimeout: wait } = require("timers/promises");
-const { getSetting } = require("../settingHelper");
+const { getSetting } = require("../settings/settingHelper");
 
 let c;
 let settings;
@@ -10,18 +10,18 @@ let bot;
 
 let ids = {};
 function asign(_bot, _c, _settings) {
-  c = _c;
-  settings = _settings;
-  bot = _bot;
-  ids.wheat = bot.registry.itemsByName["wheat"].id;
+	c = _c;
+	settings = _settings;
+	bot = _bot;
+	ids.wheat = bot.registry.itemsByName["wheat"].id;
 }
 
 function start() {
-  block = bot.findBlock({
-    matching: ids.wheat,
-  });
+	block = bot.findBlock({
+		matching: ids.wheat,
+	});
 
-  c.log(block);
+	c.log(block);
 }
 
 function isGrown(block) {}
@@ -29,7 +29,7 @@ function isGrown(block) {}
 function stop() {}
 
 module.exports = {
-  asign,
-  start,
-  stop,
+	asign,
+	start,
+	stop,
 };

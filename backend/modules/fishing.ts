@@ -1,7 +1,7 @@
 const mineflayer = require("mineflayer");
 // let this.bot = mineflayer.createBot();
 const { setTimeout: wait } = require("timers/promises");
-const { getSetting } = require("../settingHelper");
+const { getSetting } = require("../settings/settingHelper");
 const { randomBytes } = require("crypto");
 import { Module } from "./module";
 
@@ -51,9 +51,10 @@ const moduleSettings = {
 };
 
 class Fishing extends Module<typeof Fishing.deafultSettings> {
-	containers = [] as any[];
-
+	static moduleName = "Fishing";
 	static deafultSettings = moduleSettings;
+
+	containers = [] as any[];
 
 	startingRot;
 
@@ -249,4 +250,4 @@ class Fishing extends Module<typeof Fishing.deafultSettings> {
 	}
 }
 
-export { Fishing };
+export { Fishing as module, Fishing };
