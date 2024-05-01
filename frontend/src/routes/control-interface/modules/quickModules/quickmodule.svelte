@@ -2,7 +2,6 @@
 	export let name;
 	export let img;
 	export let tooltip;
-	import { settings } from "../../store";
 	export let enabled = false;
 	export let type = "module";
 	export let settingsOpen;
@@ -10,7 +9,7 @@
 	export let smooth;
 	export let displayName = tooltip;
 	import Overlaysettings from "../../settings/overlaysettings.svelte";
-	import { socket } from "../../store";
+	import { socket } from "../../../store";
 
 	function emit() {
 		$socket?.emit(

@@ -3,7 +3,7 @@
 	import { MousePointer2 } from "lucide-svelte";
 	import creeper from "$lib/creeper.png";
 	import headtop from "$lib/head-top.png";
-	import { emit } from "../socketHandler.js";
+	import { emit } from "../../socketHandler.js";
 	// socket.emit;
 	let rotdeg = 0;
 	function rotate(deg) {

@@ -1,8 +1,6 @@
 <script>
-	import SCollapsible from "./../../settings/sCollapsible.svelte";
-	import SSlider from "../../settings/sSlider.svelte";
 	import Quickmodule from "./quickmodule.svelte";
-	import { settings } from "../../store";
+	import { settings } from "../../../store";
 	import Settings from "../../settings/settings.svelte";
 </script>
 

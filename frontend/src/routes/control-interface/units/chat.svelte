@@ -1,7 +1,7 @@
 <script>
 	import { TriangleAlert, Info, RefreshCcw } from "lucide-svelte";
 	import { onMount } from "svelte";
-	import { socket } from "../store";
+	import { socket } from "../../store";
 	import sendicon from "$lib/send-icon.svg";
 	let chats = [];
 

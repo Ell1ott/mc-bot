@@ -12,9 +12,9 @@
 	console.log("hello");
 	client.on("connect", () => {
 		console.log("connected");
-		socket.set(client);
 	});
 
+	socket.set(client);
 	$: console.log("socket: ", $socket);
 
 	$: $socket?.on("settings", (botSettings: any) => {

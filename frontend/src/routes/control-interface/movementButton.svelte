@@ -1,5 +1,5 @@
 <script>
-	import { setControlState } from "./socketHandler.js";
+	import { setControlState } from "../socketHandler.js";
 	export let dir;
 	export let rotation;
 	export let img;
