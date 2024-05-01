@@ -23,6 +23,10 @@ try {
 
 testBot.start();
 
+let currentBot: BotInstance = testBot;
+
+const bots = { testBot: testBot };
+
 io.on("connection", (socket) => {
 	console.log("a user connected");
 
@@ -34,11 +38,26 @@ io.on("connection", (socket) => {
 		console.log("a user disconnected");
 	});
 
-	socket.onAny((event, ...args) => {
-		testBot.client.emit(event, ...args);
+	socket.on("newBot", (name) => {
+		const newBot = new BotInstance(exportSettings(name));
+		bots[name] = newBot;
 	});
 
-	testBot.io.onAny((event, ...args) => {
-		socket.emit(event, ...args);
+	let anyListener = (event, ...args) => {
+		testBot.client.emit(event, ...args);
+	};
+	socket.on("selectBot", (name) => {
+		currentBot.io.offAny();
+		socket.offAny(anyListener);
+
+		currentBot = bots[name];
+
+		anyListener = (event, ...args) => {
+			currentBot.client.emit(event, ...args);
+		};
+		socket.onAny(anyListener);
+		currentBot.io.onAny((event, ...args) => {
+			socket.emit(event, ...args);
+		});
 	});
 });
