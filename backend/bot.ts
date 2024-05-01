@@ -51,6 +51,7 @@ class BotInstance {
 	settings: Record<string, any> = {};
 	modules: Record<string, Module> = {};
 	client = new EventEmitter();
+	username: string;
 
 	clientBotBinds: Record<
 		string,
@@ -94,6 +95,7 @@ class BotInstance {
 			}) as ExtendedBot;
 		};
 		this.bot = this.rejoin();
+		this.username = this.bot.username || "Bot";
 	}
 
 	joinServer(

@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
+	import { io } from "socket.io-client";
 	import "../app.pcss";
-	import { socket } from "./store";
+	import { settings, socket } from "./store";
 	// import { socket } from "./stores.js";
 	const client = new io.connect("http://localhost:6801", {
 		reconnection: true,
@@ -8,18 +9,20 @@
 		reconnectionDelayMax: 5000,
 		reconnectionAttempts: 30,
 	});
-	socket.set(client);
 	console.log("hello");
-	$socket?.on("connect", () => {
+	client.on("connect", () => {
 		console.log("connected");
+		socket.set(client);
 	});
 
-	$socket?.on("settings", (botSettings) => {
+	$: console.log("socket: ", $socket);
+
+	$: $socket?.on("settings", (botSettings: any) => {
 		settings.set(botSettings);
 		console.log("got settings from bot");
 	});
 
-	$socket?.on("log", (msg) => {
+	$: $socket?.on("log", (msg: string) => {
 		console.log(msg);
 	});
 

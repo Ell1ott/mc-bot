@@ -2,43 +2,19 @@
 	import Fishing from "./units/fishing.svelte";
 
 	import Unit from "./Unit.svelte";
-	import Splitter from "./splitter.svelte";
 	import RotCircel from "./units/rotcircel.svelte";
 	import Movementcontrol from "./movementcontrol.svelte";
-	import { writable } from "svelte/store";
 	import Playerinfo from "./playerinfo.svelte";
 	import UnitContent from "./Unit-content.svelte";
-	import { socket } from "./store";
-	import { settings } from "./store";
-	import { io } from "socket.io-client";
-	import { onMount } from "svelte";
-	import { time_ranges_to_array } from "svelte/internal";
-	import Quickmodule from "./modules/quickModules/quickmodule.svelte";
 
-	import fishing_rod from "$lib/fishing_rod.png";
-
-	import golden_carrot from "$lib/food/golden_carrot.png";
-	import diamond_sword from "$lib/diamond_sword.png";
 	import Chat from "./units/chat.svelte";
-	import ItemCounter from "./smallComponements/itemCounter.svelte";
 	import QuickModules from "./modules/quickModules/quickModules.svelte";
-	// import golden_carrot from "";
-
-	onMount(async () => {});
-
-	import * as settingsjson from "$lib/bot-settings.json";
-
-	// console.log(settingsjson.fishing);
-
-	settings.set(settingsjson.default);
-
-	let currenttheme = "dark";
 </script>
 
 <!-- <h1>Welcome to SvelteKit</h1> -->
 <!-- <img src={idk} alt="idk" /> -->
 
-<div class="units theme {currenttheme} gap-3" style="">
+<div class="units theme gap-3" style="">
 	<!-- control header -->
 	<div id="header">
 		<Unit class="flex">
@@ -68,51 +44,6 @@
 
 <!-- <Unit name="fishing" /> -->
 <style>
-	:global(body:has(.dark)) {
-		--bg-color: rgb(31 31 31);
-
-		--face-color: rgb(46, 46, 46);
-		--accent: rgb(65, 65, 65);
-		--accent-color: rgb(43, 87, 125);
-		--accent-color-secondary: rgb(27, 145, 123);
-		--reverse-accent: rgb(28, 28, 28);
-
-		--font: rgb(201, 201, 201);
-		--font-accent: white;
-	}
-
-	:global(body) {
-		color: var(--font);
-		background-color: var(--bg-color);
-
-		padding: 13px;
-
-		flex: 1;
-	}
-
-	:global(select) {
-		font-size: 16px;
-		color: var(--font);
-	}
-
-	:global(html) {
-		height: 100%;
-		display: flex;
-	}
-	:global(h2) {
-		margin-top: 5px;
-		margin-bottom: 5px;
-		font-weight: normal;
-	}
-
-	:global(p) {
-		color: var(--font);
-	}
-
-	:global(input) {
-		color: var(--font);
-	}
-
 	:glaob(.hfill) {
 		height: 100%;
 	}

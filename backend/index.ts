@@ -16,7 +16,7 @@ io.on("message", (message) => {
 const testBot = new BotInstance(exportSettings("testBot"));
 
 try {
-	testBot.joinLocalhost(45486, "new-profile", null, "microsoft");
+	testBot.joinLocalhost(45486, "new-profile", null, "offline");
 } catch (e) {
 	console.log(e);
 }
@@ -44,7 +44,15 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("getBots", () => {
-		socket.emit("bots", Object.keys(bots));
+		socket.emit(
+			"bots",
+			Object.entries(bots).map(([name, bot]) => ({
+				id: name,
+				name: bot.username,
+				health: bot.bot?.health,
+				food: bot.bot?.food,
+			}))
+		);
 	});
 
 	let anyListener = (event, ...args) => {

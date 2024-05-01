@@ -12,3 +12,48 @@ body {
 		Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
 		"Segoe UI Symbol";
 }
+
+body:has(.dark) {
+	--bg-color: rgb(31 31 31);
+
+	--face-color: rgb(46, 46, 46);
+	--accent: rgb(65, 65, 65);
+	--accent-color: rgb(43, 87, 125);
+	--accent-color-secondary: rgb(27, 145, 123);
+	--reverse-accent: rgb(28, 28, 28);
+
+	--font: rgb(201, 201, 201);
+	--font-accent: white;
+}
+
+body {
+	color: var(--font);
+	background-color: var(--bg-color);
+
+	padding: 13px;
+
+	flex: 1;
+}
+
+select {
+	font-size: 16px;
+	color: var(--font);
+}
+
+html {
+	height: 100%;
+	display: flex;
+}
+h2 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-weight: normal;
+}
+
+p {
+	color: var(--font);
+}
+
+input {
+	color: var(--font);
+}

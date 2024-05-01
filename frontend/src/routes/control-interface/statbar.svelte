@@ -2,14 +2,16 @@
 	export let img;
 	export let bgimg;
 	// export let height;
-	export let color;
-	export let bgcolor;
-	export let statName;
-	export let deafult;
+	export let color = "transparent";
+	export let bgcolor = "transparent";
+	export let statName = null;
 	export let aspect = 10;
-	let stat = deafult;
-	import { on } from "./socketHandler";
-	on(statName, (newstat) => (stat = newstat));
+	export let stat = 0;
+
+	import { on } from "../socketHandler";
+	if (statName) {
+		on(statName, (newstat) => (stat = newstat));
+	}
 </script>
 
 <div
