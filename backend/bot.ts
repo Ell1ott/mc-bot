@@ -64,7 +64,7 @@ class BotInstance {
 	runningloops = { antiafk: [] as any[] };
 	enchantedBooks = [] as any[];
 
-	loopsForClient: Record<string, NodeJS.Timeout[]> = {};
+	loopsForClient: Record<string, Timer[]> = {};
 
 	constructor(settingsPath) {
 		this.bot = null;

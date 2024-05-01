@@ -1,6 +1,5 @@
 import { moduleSettings } from "../modules";
 import fs from "fs";
-import path from "path"; // Import the 'path' module
 
 function deepMerge(obj1, obj2) {
 	for (let key in obj2) {
@@ -14,6 +13,7 @@ function deepMerge(obj1, obj2) {
 	}
 }
 
+import path from "path"; // Import the 'path' module
 export function exportSettings(name) {
 	const filePath = path.join(__dirname, name + ".settings.json");
 	let oldSettings = {};

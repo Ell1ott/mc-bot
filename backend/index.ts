@@ -15,7 +15,11 @@ io.on("message", (message) => {
 
 const testBot = new BotInstance(exportSettings("testBot"));
 
-testBot.joinLocalhost(45486);
+try {
+	testBot.joinLocalhost(45486, "new-profile", null, "microsoft");
+} catch (e) {
+	console.log(e);
+}
 
 testBot.start();
 
