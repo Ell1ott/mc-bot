@@ -43,6 +43,10 @@ io.on("connection", (socket) => {
 		bots[name] = newBot;
 	});
 
+	socket.on("getBots", () => {
+		socket.emit("bots", Object.keys(bots));
+	});
+
 	let anyListener = (event, ...args) => {
 		testBot.client.emit(event, ...args);
 	};
