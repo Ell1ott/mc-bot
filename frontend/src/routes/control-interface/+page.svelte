@@ -24,29 +24,6 @@
 	import QuickModules from "./modules/quickModules/quickModules.svelte";
 	// import golden_carrot from "";
 
-	// import { socket } from "./stores.js";
-	const client = new io.connect("http://localhost:6801", {
-		reconnection: true,
-		reconnectionDelay: 200,
-		reconnectionDelayMax: 5000,
-		reconnectionAttempts: 30,
-	});
-	socket.set(client);
-	console.log("hello");
-	$socket?.on("connect", () => {
-		console.log("connected");
-	});
-	$socket?.on("settings", (botSettings) => {
-		settings.set(botSettings);
-		console.log("got settings from bot");
-		// console.log(Object.entries($settings));
-	});
-
-	// $socket?.emit("rot", 45);
-
-	$socket?.on("log", (msg) => {
-		console.log(msg);
-	});
 	onMount(async () => {});
 
 	import * as settingsjson from "$lib/bot-settings.json";
