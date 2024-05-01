@@ -16,7 +16,7 @@ io.on("message", (message) => {
 const testBot = new BotInstance(exportSettings("testBot"));
 
 try {
-	testBot.joinLocalhost(45486, "new-profile", null, "offline");
+	testBot.joinLocalhost(45486, "Bob", null, "offline");
 } catch (e) {
 	console.log(e);
 }
@@ -71,5 +71,6 @@ io.on("connection", (socket) => {
 		currentBot.io.onAny((event, ...args) => {
 			socket.emit(event, ...args);
 		});
+		currentBot.clientConnect(socket);
 	});
 });

@@ -307,6 +307,12 @@ class BotInstance {
 		this.loopsForClient[socket.id] = [];
 
 		socket.emit("username", this.bot.username);
+
+		socket.emit("pos", this.bot.entity?.position);
+		socket.emit("health", this.bot.health);
+		socket.emit("food", this.bot.food);
+		socket.emit("xp.level", this.bot.experience.level);
+
 		socket.emit("settings", this.settings);
 		socket.emit("chatHistory", this.chatHistory);
 		Object.entries(this.itemCounters).forEach(([itemName, count]) => {
