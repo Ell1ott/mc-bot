@@ -64,7 +64,7 @@
 		{/if}
 	</div>
 	<button
-		class="flex items-center gap-1 text-lg p-2 px-3 bg-gray-700 hover:bg-gray-600 rounded-md self-start"
+		class="flex items-center gap-1 text-lg p-2 px-3 bg-gray-700 hover:bg-gray-600 rounded-md"
 	>
 		<Plus />
 		New Bot
