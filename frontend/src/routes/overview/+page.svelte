@@ -1,27 +1,27 @@
 <script lang="ts">
-	import Statbar from "./../control-interface/statbar.svelte";
-	import PlayerHead from "./../../lib/components/playerHead.svelte";
-	import { Plus } from "lucide-svelte";
-	import { currentBot, socket } from "./../store.js";
+	import Statbar from './../control-interface/statbar.svelte';
+	import PlayerHead from './../../lib/components/playerHead.svelte';
+	import { Plus } from 'lucide-svelte';
+	import { currentBot, socket } from './../store.js';
 
-	import heart from "$lib/heart/red-heart.png";
-	import bgheart from "$lib/heart/black-heart.png";
+	import heart from '$lib/heart/red-heart.png';
+	import bgheart from '$lib/heart/black-heart.png';
 
-	import food from "$lib/food/food.png";
-	import bgfood from "$lib/food/Untitled.png";
+	import food from '$lib/food/food.png';
+	import bgfood from '$lib/food/Untitled.png';
 
 	let bots: any = null;
 
 	currentBot.set(null);
-	$: $socket?.emit("deselectBot");
+	$: $socket?.emit('deselectBot');
 
-	$: $socket?.emit("getBots");
+	$: $socket?.emit('getBots');
 
 	$: console.log($socket);
 
-	$: $socket?.on("bots", (_bots: any) => {
+	$: $socket?.on('bots', (_bots: any) => {
 		console.log(_bots);
-		console.log("got bots");
+		console.log('got bots');
 		bots = _bots;
 	});
 
@@ -42,9 +42,7 @@
 						<PlayerHead name={bot.name} />
 					</div>
 					<div class="flex">
-						<div
-							class="flex flex-col max-h-[6rem] items-start min-w-[10rem] gap-1"
-						>
+						<div class="flex flex-col max-h-[6rem] items-start min-w-[10rem] gap-1">
 							<h1 class="font-bold text-3xl">{bot.name}</h1>
 							{#if bot.health}
 								<Statbar img={heart} bgimg={bgheart} stat={bot.health} />
@@ -63,10 +61,5 @@
 			{/each}
 		{/if}
 	</div>
-	<button
-		class="flex items-center gap-1 text-lg p-2 px-3 bg-gray-700 hover:bg-gray-600 rounded-md"
-	>
-		<Plus />
-		New Bot
-	</button>
+	<Button>Button</Button>
 </div>
