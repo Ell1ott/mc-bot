@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Newbot from './newbot.svelte';
 	import Statbar from './../control-interface/statbar.svelte';
 	import PlayerHead from './../../lib/components/playerHead.svelte';
 	import { Plus } from 'lucide-svelte';
@@ -83,8 +84,5 @@
 			{/each}
 		{/if}
 	</div>
-	<Button class="gap-2" variant="secondary">
-		<Plus size="20" />
-		New Bot
-	</Button>
+	<Newbot></Newbot>
 </div>
