@@ -28,8 +28,10 @@
   },
   "type": "module",
   "dependencies": {
+    "bits-ui": "^0.21.7",
     "clsx": "^2.1.1",
     "lucide-svelte": "^0.378.0",
+    "shadcn-svelte": "^0.10.4",
     "tailwind-merge": "^2.3.0",
     "tailwind-variants": "^0.2.1"
   }
