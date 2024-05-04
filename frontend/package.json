@@ -33,6 +33,8 @@
     "formsnap": "^1.0.0",
     "lucide-svelte": "^0.378.0",
     "shadcn-svelte": "^0.10.4",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "sveltekit-superforms": "^2.13.0",
     "tailwind-merge": "^2.3.0",
     "tailwind-variants": "^0.2.1",

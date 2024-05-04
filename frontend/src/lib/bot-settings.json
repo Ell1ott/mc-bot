@@ -55,7 +55,7 @@
     }
   },
   "automine": {
-    "enabled": false,
+    "enabled": true,
     "mode": {
       "val": "strip_mining",
       "t": "mode",
