@@ -24,7 +24,8 @@
     "mineflayer-web-inventory": "^1.8.4",
     "prismarine-viewer": "^1.24.0",
     "readline-sync": "^1.4.10",
-    "socket.io": "^4.6.1"
+    "socket.io": "^4.6.1",
+    "svelte-range-slider-pips": "^2.3.1"
   },
   "devDependencies": {
     "@types/bun": "latest"

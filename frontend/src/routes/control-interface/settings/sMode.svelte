@@ -1,11 +1,9 @@
 <script>
-	import SOption from './sOption.svelte';
-	import SCollapsible from './sCollapsible.svelte';
-	import CustomCollapsibleCard from './CustomCollapsibleCard.svelte';
+  import SOption from "./sOption.svelte";
+  import SCollapsible from "./sCollapsible.svelte";
 
-	// import { CollapsibleCard } from "svelte-collapsible";
-	import Switch from './switch.svelte';
-	import Settings from './settings.svelte';
+  // import { CollapsibleCard } from "svelte-collapsible";
+  import Settings from "./settings.svelte";
 
 	export let name;
 	export let displayName;
