@@ -10,8 +10,6 @@
 	import Chat from './units/chat.svelte';
 	import QuickModules from './modules/quickModules/quickModules.svelte';
 	import { socket } from '../store';
-
-	$: $socket.emit('selectBot', 'testBot');
 </script>
 
 <!-- <h1>Welcome to SvelteKit</h1> -->
