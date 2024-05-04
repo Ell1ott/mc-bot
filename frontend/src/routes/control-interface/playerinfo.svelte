@@ -23,7 +23,7 @@
 
 	import food from "$lib/food/food.png";
 	import bgfood from "$lib/food/Untitled.png";
-	import PlayerHead from "../../lib/components/PlayerHead.svelte";
+	import PlayerHead from "$lib/components/playerHead.svelte";
 
 	function formatNumber(num) {
 		return num.toLocaleString(undefined, {
