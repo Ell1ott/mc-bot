@@ -2,7 +2,6 @@
 	import Switch from "./switch.svelte";
 	import Slider from "@bulatdashiev/svelte-slider";
 	import RangeSlider from "svelte-range-slider-pips";
-	import { validate_each_argument } from "svelte/internal";
 	export let value = [10, 20];
 	export let displayName;
 	export let name;

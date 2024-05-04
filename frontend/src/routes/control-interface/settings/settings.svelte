@@ -2,7 +2,6 @@
   import SMode from "./sMode.svelte";
   import SOption from "./sOption.svelte";
   import SSwitch from "./sSwitch.svelte";
-  import { validate_each_argument, validate_slots } from "svelte/internal";
   import SCollapsible from "./sCollapsible.svelte";
   import SSlider from "./sSlider.svelte";
   import SList from "./sList.svelte";
