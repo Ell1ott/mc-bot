@@ -1,6 +1,4 @@
 <script>
-	import { validate_each_argument } from "svelte/internal";
-
 	export let values;
 	export let displayName;
 	export let name;
