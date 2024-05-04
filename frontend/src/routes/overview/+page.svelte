@@ -49,38 +49,41 @@
 	});
 
 	function selectBot(name: string) {
+		console.log('tried to select bot ', name);
 		currentBot.set(name);
 	}
+
+	console.log('hi', bots);
 </script>
 
 <div class="p-4 space-y-4">
 	<div class="flex gap-4 flex-wrap">
 		{#if bots}
 			{#each bots as bot}
-				<Card
-					class="flex gap-2 p-4 rounded-md hover:bg-accent transition-all hover:border-foreground/20 cursor-pointer"
-					on:click={() => selectBot(bot.id)}
-				>
-					<div class="w-20 aspect-square">
-						<PlayerHead name={bot.name} />
-					</div>
-					<div class="flex">
-						<div class="flex flex-col max-h-[6rem] items-start min-w-[10rem] gap-1">
-							<h1 class="font-bold text-3xl text-foreground">{bot.name}</h1>
-							{#if bot.health}
-								<Statbar img={heart} bgimg={bgheart} stat={bot.health} />
-							{/if}
-							{#if bot.food}
-								<!-- content here -->
-								<Statbar img={food} bgimg={bgfood} stat={bot.food} />
-							{/if}
-
-							{#if !bot.food && !bot.health}
-								Not connected to server
-							{/if}
+				<button on:click={() => selectBot(bot.name)}>
+					<Card
+						class="flex gap-2 p-4 rounded-md hover:bg-accent transition-all hover:border-foreground/20 cursor-pointer"
+					>
+						<div class="w-20 aspect-square">
+							<PlayerHead name={bot.name} />
 						</div>
-					</div>
-				</Card>
+						<div class="flex">
+							<div class="flex flex-col max-h-[6rem] items-start min-w-[10rem] gap-1">
+								<h1 class="font-bold text-3xl text-foreground">{bot.name}</h1>
+								{#if bot.health}
+									<Statbar img={heart} bgimg={bgheart} stat={bot.health} />
+								{/if}
+								{#if bot.food}
+									<!-- content here -->
+									<Statbar img={food} bgimg={bgfood} stat={bot.food} />
+								{/if}
+								{#if !bot.food && !bot.health}
+									Not connected to server
+								{/if}
+							</div>
+						</div>
+					</Card>
+				</button>
 			{/each}
 		{/if}
 	</div>

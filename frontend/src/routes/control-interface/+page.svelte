@@ -1,14 +1,17 @@
 <script>
-	import Fishing from "./units/fishing.svelte";
+	import Fishing from './units/fishing.svelte';
 
-	import Unit from "./Unit.svelte";
-	import RotCircel from "./units/rotcircel.svelte";
-	import Movementcontrol from "./movementcontrol.svelte";
-	import Playerinfo from "./playerinfo.svelte";
-	import UnitContent from "./Unit-content.svelte";
+	import Unit from './Unit.svelte';
+	import RotCircel from './units/rotcircel.svelte';
+	import Movementcontrol from './movementcontrol.svelte';
+	import Playerinfo from './playerinfo.svelte';
+	import UnitContent from './Unit-content.svelte';
 
-	import Chat from "./units/chat.svelte";
-	import QuickModules from "./modules/quickModules/quickModules.svelte";
+	import Chat from './units/chat.svelte';
+	import QuickModules from './modules/quickModules/quickModules.svelte';
+	import { socket } from '../store';
+
+	$: $socket.emit('selectBot', 'testBot');
 </script>
 
 <!-- <h1>Welcome to SvelteKit</h1> -->

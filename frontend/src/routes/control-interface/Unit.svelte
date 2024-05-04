@@ -3,13 +3,13 @@
 	export let icon;
 </script>
 
-<div class={"unit " + ($$props.class || "")}>
+<div class={'unit ' + ($$props.class || '')}>
 	<slot />
 </div>
 
 <style>
 	.unit {
-		background-color: var(--face-color);
+		background-color: var(--card);
 
 		border-radius: 15px;
 
