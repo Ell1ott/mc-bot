@@ -1,12 +1,9 @@
 <script>
   import SOption from "./sOption.svelte";
   import SCollapsible from "./sCollapsible.svelte";
-  import CustomCollapsibleCard from "./CustomCollapsibleCard.svelte";
 
   // import { CollapsibleCard } from "svelte-collapsible";
-  import Switch from "./switch.svelte";
   import Settings from "./settings.svelte";
-  import { Entities } from "prismarine-viewer/viewer/lib/entities";
 
   export let name;
   export let displayName;
