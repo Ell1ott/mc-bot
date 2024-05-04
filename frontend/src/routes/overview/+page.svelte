@@ -60,7 +60,7 @@
 	<div class="flex gap-4 flex-wrap">
 		{#if bots}
 			{#each bots as bot}
-				<button on:click={() => selectBot(bot.name)}>
+				<button on:click={() => selectBot(bot.id)}>
 					<Card
 						class="flex gap-2 p-4 rounded-md hover:bg-accent transition-all hover:border-foreground/20 cursor-pointer"
 					>

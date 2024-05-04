@@ -95,7 +95,7 @@ class BotInstance {
 			}) as ExtendedBot;
 		};
 		this.bot = this.rejoin();
-		this.username = this.bot.username || "Bot";
+		this.username = this.bot.username || username;
 	}
 
 	joinServer(
