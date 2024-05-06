@@ -74,7 +74,6 @@ io.on("connection", (socket: Socket) => {
 		selectBot(name);
 	});
 	function selectBot(name) {
-		console.log("socket id", socket.id);
 		currentBot?.io.offAny();
 		currentBot?.clientDisconnect(socket);
 		socket.offAny(anyListener);

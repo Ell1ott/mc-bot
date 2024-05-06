@@ -87,10 +87,7 @@ class BotInstance {
 			mineflayer.createBot({
 				...options,
 				version: "1.20.4",
-				onMsaCode: (resp) => {
-					msaCallback(resp);
-					this.log("msa code: ", resp);
-				},
+				onMsaCode: msaCallback,
 			}) as ExtendedBot;
 		this.bot = this.rejoin();
 	}
@@ -157,8 +154,7 @@ class BotInstance {
 		this.loadModules();
 		this.initClientBinds();
 		this.bot.on("kicked", (reason) => {
-			this.log("kicked: " + reason);
-			this.alert("kicked from server");
+			this.alert("kicked from server by " + reason);
 		});
 		this.bot.on("end", (reason) => {
 			this.log("ended: " + reason);
@@ -371,7 +367,6 @@ class BotInstance {
 
 	clientDisconnect(socket: Socket) {
 		if (!this.bot) return;
-		this.log(socket.id, this.clientBotBinds);
 		this.clientBotBinds[socket.id].forEach((bind) => {
 			this.bot?.off(bind.event, bind.func);
 		});
