@@ -164,10 +164,10 @@
     }
   },
   "autoeat": {
-    "enabled": false
+    "enabled": true
   },
   "autoattack": {
-    "enabled": false,
+    "enabled": true,
     "rotation": {
       "val": true,
       "t": "bool",

@@ -46,11 +46,13 @@
 		}
 		$socket.emit('createBot', options);
 
-		$socket.once('msa', (resp) => {
-			console.log(resp);
+		if (auth == 'microsoft') {
+			$socket.once('msa', (resp) => {
+				console.log(resp);
 
-			window.location.href = 'http://microsoft.com/link?otc=' + resp.user_code;
-		});
+				window.location.href = 'http://microsoft.com/link?otc=' + resp.user_code;
+			});
+		}
 	}
 </script>
 

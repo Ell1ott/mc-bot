@@ -11,7 +11,11 @@
 	import QuickModules from './modules/quickModules/quickModules.svelte';
 	import { currentBot, socket } from '../store';
 	import { onMount } from 'svelte';
-
+	import { goto } from '$app/navigation';
+	console.log($currentBot);
+	if (!$currentBot) {
+		goto('overview');
+	}
 	onMount(() => {
 		$socket?.emit('selectBot', $currentBot);
 	});
