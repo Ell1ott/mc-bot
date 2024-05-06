@@ -3,7 +3,7 @@
 	import Statbar from './../control-interface/statbar.svelte';
 	import PlayerHead from './../../lib/components/playerHead.svelte';
 	import { Plus } from 'lucide-svelte';
-	import { currentBot, socket } from './../store.js';
+	import { currentBot, socket } from '../store.js';
 
 	import heart from '$lib/heart/red-heart.png';
 	import bgheart from '$lib/heart/black-heart.png';
