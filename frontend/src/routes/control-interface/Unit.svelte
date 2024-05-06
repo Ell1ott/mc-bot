@@ -1,21 +1,13 @@
 <script lang="ts">
+	import Card from '$lib/components/ui/card/card.svelte';
+
 	export let name = false;
-	export let icon;
+	export let icon = false;
 </script>
 
-<div class={'unit ' + ($$props.class || '')}>
+<Card class={'rounded-lg ' + ($$props.class || '')}>
 	<slot />
-</div>
+</Card>
 
 <style>
-	.unit {
-		background-color: var(--card);
-
-		border-radius: 15px;
-
-		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-		overflow: hidden;
-		min-height: 50px;
-		min-width: 50px;
-	}
 </style>

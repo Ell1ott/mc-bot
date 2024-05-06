@@ -1,4 +1,6 @@
 <script>
+	import { buttonVariants } from '$lib/components/ui/button';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import { socket } from '../store';
 
 	export let dir;
@@ -32,7 +34,9 @@
 
 <button
 	id={dir}
-	class="movement-button {locked ? 'locked' : ''}"
+	class="{buttonVariants({
+		variant: 'secondary'
+	})} movement-button p-2 transition-all size-full {locked ? 'locked' : ''}"
 	on:mousedown={handeClickDown}
 	on:mouseleave={handeClickUp}
 	on:mouseup={handeClickUp}
@@ -41,24 +45,8 @@
 </button>
 
 <style>
-	button {
-		border: none;
-		background-color: var(--accent);
-		color: white;
-		padding: 2px;
-		border-radius: 5px;
-		aspect-ratio: 1;
-
-		/* width: 60px; */
-		transition: all 100ms;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin: 3px;
-	}
-
 	button:active {
-		background-color: var(--accent-color);
+		background-color: var(--accent);
 	}
 
 	img {

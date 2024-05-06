@@ -20,7 +20,7 @@
 <!-- <h1>Welcome to SvelteKit</h1> -->
 <!-- <img src={idk} alt="idk" /> -->
 
-<div class="units theme gap-3" style="">
+<div class="units theme gap-3 p-3">
 	<!-- control header -->
 	<div id="header">
 		<Unit class="flex">
