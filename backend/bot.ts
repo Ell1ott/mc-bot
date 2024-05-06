@@ -47,9 +47,12 @@ import { modules } from "./modules";
 
 class BotInstance {
 	bot: ExtendedBot | null;
-	io: EventEmitter2;
 	settings: Record<string, any> = {};
 	modules: Record<string, Module> = {};
+
+	// for the events to the web client
+	io: EventEmitter2;
+	// for the events from the web client to the bot
 	client = new EventEmitter();
 	username: string;
 
@@ -92,6 +95,10 @@ class BotInstance {
 				username: username,
 				auth: auth,
 				version: version,
+				onMsaCode: (resp) => {
+					this.log("msa code: ", resp);
+					this.io?.emit("msa", resp);
+				},
 			}) as ExtendedBot;
 		};
 		this.bot = this.rejoin();
@@ -354,9 +361,9 @@ class BotInstance {
 		});
 	}
 
-	log(msg) {
-		this.io?.emit("log", msg);
-		console.log(msg);
+	log(...msg) {
+		this.io?.emit("log", msg.join(" "));
+		console.log(...msg);
 	}
 	alert(msg) {
 		console.warn(msg);

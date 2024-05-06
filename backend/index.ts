@@ -16,7 +16,7 @@ io.on("message", (message) => {
 const testBot = new BotInstance(exportSettings("testBot"));
 
 try {
-	testBot.joinLocalhost(25565, "Bob", null, "offline");
+	testBot.joinLocalhost(25565, "Bob", null, "microsoft");
 } catch (e) {
 	console.log(e);
 }
