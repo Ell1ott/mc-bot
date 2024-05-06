@@ -178,6 +178,10 @@ class BotInstance {
 			});
 		});
 
+		this.bot.on("death", () => {
+			this.alert("died");
+		});
+
 		this.bot.once("spawn", () => {
 			if (!this.bot) return;
 			(this.bot as any).autoEat.disable();
