@@ -1,4 +1,14 @@
 <script lang="ts">
+	import { socket } from '../store';
+	import Statbar from './statbar.svelte';
+
+	import heart from '$lib/heart/red-heart.png';
+	import bgheart from '$lib/heart/black-heart.png';
+
+	import food from '$lib/food/food.png';
+	import bgfood from '$lib/food/Untitled.png';
+	import PlayerHead from '$lib/components/playerHead.svelte';
+
 	let name = 'bot';
 
 	interface Position {
@@ -19,15 +29,6 @@
 	$socket?.on('xp.level', (_level: number) => {
 		level = _level;
 	});
-	import Statbar from './statbar.svelte';
-
-	import heart from '$lib/heart/red-heart.png';
-	import bgheart from '$lib/heart/black-heart.png';
-
-	import food from '$lib/food/food.png';
-	import bgfood from '$lib/food/Untitled.png';
-	import PlayerHead from '$lib/components/playerHead.svelte';
-	import { socket } from '../store';
 
 	function formatNumber(num: number) {
 		return num.toLocaleString(undefined, {

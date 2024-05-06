@@ -2,7 +2,7 @@
 	import { socket } from '../store';
 
 	export let dir;
-	export let rotation;
+	export let rotation = '0deg';
 	export let img;
 	let locked = false;
 

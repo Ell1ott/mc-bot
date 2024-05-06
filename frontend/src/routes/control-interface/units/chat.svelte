@@ -1,39 +1,39 @@
-<script>
-	import { TriangleAlert, Info, RefreshCcw } from "lucide-svelte";
-	import { onMount } from "svelte";
-	import { socket } from "../../store";
-	import sendicon from "$lib/send-icon.svg";
+<script lang="ts">
+	import { TriangleAlert, Info, RefreshCcw } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { socket } from '../../store';
+	import sendicon from '$lib/send-icon.svg';
 	let chats = [];
 
-	console.log("mounted chat");
-	$socket?.on("chatHistory", (chatHistory) => {
+	console.log('mounted chat');
+	$socket?.on('chatHistory', (chatHistory) => {
 		chats = [...chats, ...chatHistory];
 	});
-	$socket?.on("alert", (message) => {
+	$socket?.on('alert', (message) => {
 		console.log(message);
-		chats = [...chats, { type: "alert", msg: message }];
+		chats = [...chats, { type: 'alert', msg: message }];
 	});
-	$socket?.on("message", (message) => {
+	$socket?.on('message', (message) => {
 		console.log(message);
-		chats = [...chats, { type: "message", msg: message }];
+		chats = [...chats, { type: 'message', msg: message }];
 	});
-	$socket?.on("info", (message) => {
+	$socket?.on('info', (message) => {
 		console.log(message);
-		chats = [...chats, { type: "info", msg: message }];
+		chats = [...chats, { type: 'info', msg: message }];
 	});
 
 	function copy(string) {
 		navigator.clipboard.writeText(string);
-		console.log("copied " + string + " to clipboard");
+		console.log('copied ' + string + ' to clipboard');
 	}
 
 	let userMessage;
 
 	function sendMessage() {
-		if (userMessage == "") return;
-		$socket?.emit("sendchat", userMessage);
-		console.log("send " + userMessage + " in chat");
-		userMessage = "";
+		if (userMessage == '') return;
+		$socket?.emit('sendchat', userMessage);
+		console.log('send ' + userMessage + ' in chat');
+		userMessage = '';
 	}
 </script>
 
@@ -41,40 +41,24 @@
 	<!-- <div class="flex column m5 flex1"> -->
 	<div class="chat m5">
 		{#each chats as chat}
-			{#if chat.type == "chat"}
-				<div class="message">
-					<p
-						class="username"
-						on:click={copy(chat.username)}
-						on:keydown={copy(chat.username)}
+			<!-- content here -->
+			<div class={'flex items-center ' + chat.type}>
+				{#if chat.type == 'alert'}
+					<TriangleAlert size="16" />
+				{:else if chat.type == 'info'}
+					<Info size="16" />
+				{/if}
+				<p>{@html chat.msg}</p>
+				{#if chat.msg.includes('isconnected from server')}
+					<button
+						class="flex items-center gap-2 ml-auto px-2 py-1 m-0.5 text-sm bg-sky-900 rounded-md"
+						on:click={() => $socket.emit('rejoin')}
 					>
-						{chat.username}
-					</p>
-					<p class="no-mag">:</p>
-					<p class="no-mag" />
-
-					<p>{@html chat.msg}</p>
-				</div>
-			{:else}
-				<!-- content here -->
-				<div class={"flex items-center " + chat.type}>
-					{#if chat.type == "alert"}
-						<TriangleAlert size="16" />
-					{:else if chat.type == "info"}
-						<Info size="16" />
-					{/if}
-					<p>{@html chat.msg}</p>
-					{#if chat.msg.includes("isconnected from server")}
-						<button
-							class="flex items-center gap-2 ml-auto px-2 py-1 m-0.5 text-sm bg-sky-900 rounded-md"
-							on:click={() => $socket.emit("rejoin")}
-						>
-							<RefreshCcw size="16" />
-							Rejoin</button
-						>
-					{/if}
-				</div>
-			{/if}
+						<RefreshCcw size="16" />
+						Rejoin</button
+					>
+				{/if}
+			</div>
 		{/each}
 	</div>
 	<div class="chat-input m5">
