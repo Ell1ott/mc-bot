@@ -104,7 +104,7 @@
 		</div>
 		<AlertDialogFooter>
 			<AlertDialogCancel>Cancel</AlertDialogCancel>
+			<Button on:click={createNewBot}>Create</Button>
 		</AlertDialogFooter>
-		<Button on:click={createNewBot}>Create</Button>
 	</AlertDialogContent>
 </AlertDialog>
