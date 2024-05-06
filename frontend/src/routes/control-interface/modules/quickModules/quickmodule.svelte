@@ -97,7 +97,7 @@
 	}
 
 	input:checked + div {
-		background-color: var(--accent-color);
+		background-color: hsl(var(--accent));
 		box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.252);
 	}
 </style>

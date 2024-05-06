@@ -69,5 +69,6 @@
 
 	.locked {
 		background-color: rgb(150, 0, 32);
+		scale: 0.95 !important;
 	}
 </style>

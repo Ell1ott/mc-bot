@@ -63,6 +63,8 @@
 	<div class="chat-input m5">
 		<input
 			type="text"
+			class="px-4 py-2.5"
+			placeholder="Type a message..."
 			on:keypress={(e) => {
 				if (e.charCode === 13) sendMessage();
 			}}
@@ -141,7 +143,6 @@
 		padding-top: 2px;
 
 		margin: 0;
-		font-size: 14px;
 	}
 
 	.no-mag {
@@ -182,12 +183,8 @@
 	}
 
 	input {
-		border: none;
-		background-color: transparent;
 		font-size: 16px;
 		flex: 1;
-		padding: 10px;
-		color: var(--font);
 		/* margin-bottom: 1px; */
 	}
 
