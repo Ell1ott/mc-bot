@@ -14,6 +14,15 @@
 
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { socket } from '../store.js';
+
+	function createNewBot() {
+		console.log('Creating new bot');
+
+		$socket.once('newBot', (data) => {
+			console.log('New bot created', data);
+		});
+	}
 </script>
 
 <AlertDialog>
