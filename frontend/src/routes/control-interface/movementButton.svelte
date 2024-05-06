@@ -36,7 +36,7 @@
 	id={dir}
 	class="{buttonVariants({
 		variant: 'secondary'
-	})} movement-button p-2 transition-all size-full {locked ? 'locked' : ''}"
+	})} p-2 transition-all h-full size-full {locked ? 'locked' : ''}"
 	on:mousedown={handeClickDown}
 	on:mouseleave={handeClickUp}
 	on:mouseup={handeClickUp}
@@ -45,10 +45,6 @@
 </button>
 
 <style>
-	button:active {
-		background-color: var(--accent);
-	}
-
 	img {
 		aspect-ratio: 1;
 		height: 20px;
@@ -56,6 +52,19 @@
 		-moz-user-select: none;
 		-khtml-user-select: none;
 		user-select: none;
+	}
+
+	button {
+		transition: all 300ms;
+	}
+
+	button:hover {
+		scale: 1.05;
+	}
+
+	button:active {
+		scale: 0.95;
+		transition: all 100ms;
 	}
 
 	.locked {

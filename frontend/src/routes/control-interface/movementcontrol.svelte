@@ -4,7 +4,7 @@
 	import jump from '$lib/jump.png';
 </script>
 
-<div id="buttons">
+<div id="buttons" class="gap-3">
 	<span />
 	<MovementButton img={arrow} rotation="270deg" dir="forward" />
 	<span />
@@ -24,7 +24,6 @@
 		grid-template-rows: 1fr 1fr 1fr;
 		aspect-ratio: 1;
 		height: 100%;
-		gap: 5px;
 		/* aspect-ratio: 1;
    */
 	}

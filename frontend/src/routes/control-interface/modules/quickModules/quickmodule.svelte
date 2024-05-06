@@ -3,20 +3,16 @@
 	export let img;
 	export let tooltip;
 	export let enabled = false;
-	export let type = "module";
+	export let type = 'module';
 	export let settingsOpen;
 	export let isOpen;
 	export let smooth;
 	export let displayName = tooltip;
-	import Overlaysettings from "../../settings/overlaysettings.svelte";
-	import { socket } from "../../../store";
+	import Overlaysettings from '../../settings/overlaysettings.svelte';
+	import { socket } from '../../../store';
 
 	function emit() {
-		$socket?.emit(
-			type === "module" ? "toggleModule" : "setting.set",
-			name,
-			enabled
-		);
+		$socket?.emit(type === 'module' ? 'toggleModule' : 'setting.set', name, enabled);
 	}
 	//   $: console.log(areSettingsOpen);
 </script>
@@ -26,11 +22,13 @@
 		<input type="checkbox" bind:checked={enabled} on:click={emit} />
 		<div
 			class="checkbox-div"
+			role="button"
+			tabindex="0"
 			on:mousedown={(e) => {
 				if (e.which == 3) {
 					e.preventDefault();
 					settingsOpen.open();
-					console.log("hehe");
+					console.log('hehe');
 				}
 			}}
 			on:contextmenu={(e) => {
