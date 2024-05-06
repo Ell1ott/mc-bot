@@ -62,6 +62,7 @@ io.on("connection", (socket: Socket) => {
 		newBot.join(options, (resp) => socket.emit("msa", resp));
 
 		newBot.start();
+		emitBots(socket);
 	});
 
 	socket.on("getBots", () => {
