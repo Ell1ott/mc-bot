@@ -13,7 +13,6 @@ class Module<T = typeof Module.deafultSettings> {
 		if (!botInstance.bot) return;
 		this.settingName = settingName;
 		this.botInstance = botInstance;
-		console.log("module setting name", this.settings);
 
 		this.bot = botInstance.bot;
 		this;

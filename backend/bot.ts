@@ -88,6 +88,7 @@ class BotInstance {
 				...options,
 				version: "1.20.4",
 				onMsaCode: msaCallback,
+				viewDistance: "tiny",
 			}) as ExtendedBot;
 		this.bot = this.rejoin();
 	}
