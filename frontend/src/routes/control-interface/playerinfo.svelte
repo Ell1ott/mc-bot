@@ -1,34 +1,32 @@
 <script>
-	// your script goes here
-	import { on } from "../socketHandler.js";
-	import { socket } from "../store.js";
-	let name = "bot";
+	import { socket } from '../store.js';
+	let name = 'bot';
 	let position = { x: -168.1426791971257, y: 70, z: -265.73267017388997 };
 
-	$socket.on("username", (username) => {
+	$socket.on('username', (username) => {
 		name = username;
-		console.log("players username is " + username);
+		console.log('players username is ' + username);
 	});
-	$socket?.on("pos", (pos) => {
+	$socket?.on('pos', (pos) => {
 		position = pos;
 	});
 	let level = 0;
-	$socket?.on("xp.level", (_level) => {
+	$socket?.on('xp.level', (_level) => {
 		level = _level;
 	});
-	import Statbar from "./statbar.svelte";
+	import Statbar from './statbar.svelte';
 
-	import heart from "$lib/heart/red-heart.png";
-	import bgheart from "$lib/heart/black-heart.png";
+	import heart from '$lib/heart/red-heart.png';
+	import bgheart from '$lib/heart/black-heart.png';
 
-	import food from "$lib/food/food.png";
-	import bgfood from "$lib/food/Untitled.png";
-	import PlayerHead from "$lib/components/playerHead.svelte";
+	import food from '$lib/food/food.png';
+	import bgfood from '$lib/food/Untitled.png';
+	import PlayerHead from '$lib/components/playerHead.svelte';
 
 	function formatNumber(num) {
 		return num.toLocaleString(undefined, {
 			minimumFractionDigits: 0,
-			maximumFractionDigits: 1,
+			maximumFractionDigits: 1
 		});
 	}
 </script>
@@ -38,9 +36,7 @@
 		<div id="headstats">
 			<h1>{name}</h1>
 			<p>
-				x: {formatNumber(position.z)} y: {formatNumber(position.y)} z: {formatNumber(
-					position.z
-				)}
+				x: {formatNumber(position.z)} y: {formatNumber(position.y)} z: {formatNumber(position.z)}
 			</p>
 		</div>
 		<PlayerHead {name} />

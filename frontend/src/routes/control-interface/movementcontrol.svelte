@@ -1,8 +1,7 @@
 <script>
-	import { emit } from "../socketHandler.js";
-	import MovementButton from "./movementButton.svelte";
-	import arrow from "$lib/play.png";
-	import jump from "$lib/jump.png";
+	import MovementButton from './movementButton.svelte';
+	import arrow from '$lib/play.png';
+	import jump from '$lib/jump.png';
 </script>
 
 <div id="buttons">
