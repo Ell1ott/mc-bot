@@ -1,17 +1,22 @@
-<script>
-	import { socket } from '../store.js';
+<script lang="ts">
 	let name = 'bot';
-	let position = { x: -168.1426791971257, y: 70, z: -265.73267017388997 };
 
-	$socket.on('username', (username) => {
+	interface Position {
+		x: number;
+		y: number;
+		z: number;
+	}
+	let position: Position = { x: -168.1426791971257, y: 70, z: -265.73267017388997 };
+
+	$socket.on('username', (username: string) => {
 		name = username;
 		console.log('players username is ' + username);
 	});
-	$socket?.on('pos', (pos) => {
+	$socket?.on('pos', (pos: Position) => {
 		position = pos;
 	});
-	let level = 0;
-	$socket?.on('xp.level', (_level) => {
+	let level: number = 0;
+	$socket?.on('xp.level', (_level: number) => {
 		level = _level;
 	});
 	import Statbar from './statbar.svelte';
@@ -22,8 +27,9 @@
 	import food from '$lib/food/food.png';
 	import bgfood from '$lib/food/Untitled.png';
 	import PlayerHead from '$lib/components/playerHead.svelte';
+	import { socket } from '../store';
 
-	function formatNumber(num) {
+	function formatNumber(num: number) {
 		return num.toLocaleString(undefined, {
 			minimumFractionDigits: 0,
 			maximumFractionDigits: 1

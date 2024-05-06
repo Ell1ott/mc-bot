@@ -1,9 +1,14 @@
 <script>
-	import { setControlState } from "../socketHandler.js";
+	import { socket } from '../store';
+
 	export let dir;
 	export let rotation;
 	export let img;
 	let locked = false;
+
+	function setControlState(control, state) {
+		$socket.emit('setControlState', control, state);
+	}
 
 	function handeClickDown(e) {
 		console.log(e.which);
@@ -32,11 +37,7 @@
 	on:mouseleave={handeClickUp}
 	on:mouseup={handeClickUp}
 >
-	<img
-		src={img}
-		style="transform:rotate({rotation})"
-		alt="movement-button-img"
-	/>
+	<img src={img} style="transform:rotate({rotation})" alt="movement-button-img" />
 </button>
 
 <style>

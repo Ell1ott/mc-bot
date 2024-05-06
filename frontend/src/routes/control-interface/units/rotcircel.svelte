@@ -1,15 +1,15 @@
 <script>
-	import { onMount } from "svelte";
-	import { MousePointer2 } from "lucide-svelte";
-	import creeper from "$lib/creeper.png";
-	import headtop from "$lib/head-top.png";
-	import { emit } from "../../socketHandler.js";
+	import { onMount } from 'svelte';
+	import { MousePointer2 } from 'lucide-svelte';
+	import creeper from '$lib/creeper.png';
+	import headtop from '$lib/head-top.png';
+	import { socket } from '../../store';
 	// socket.emit;
 	let rotdeg = 0;
 	function rotate(deg) {
-		console.log("rotating to " + deg + " degree");
+		console.log('rotating to ' + deg + ' degree');
 		rotdeg = deg;
-		emit("rot", deg);
+		$socket.emit('rot', deg);
 	}
 	const smallButton = 20;
 	const bigButton = 30;
@@ -20,17 +20,12 @@
 	//   const angle = -(i / numItems) * 2 * Math.PI - Math.PI / 2;
 	let circel;
 	let checked;
-	$: emit("lookAtEntity", checked);
+	$: emit('lookAtEntity', checked);
 </script>
 
 <label class="switch" id="lookAtEntityButton">
 	<input type="checkbox" id="lookAtEntityToggle" bind:checked />
-	<img
-		src={creeper}
-		alt="creeper"
-		id="creeper-img"
-		class="size-full img-button slider"
-	/>
+	<img src={creeper} alt="creeper" id="creeper-img" class="size-full img-button slider" />
 </label>
 <div id="circle" bind:this={circel}>
 	{#each Array(8) as _, index (index)}
