@@ -100,8 +100,4 @@
 
 		padding: 15px;
 	}
-
-	#player-head {
-		height: 90px;
-	}
 </style>

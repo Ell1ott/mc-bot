@@ -16,11 +16,30 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { socket } from '../store.js';
 
+	let auth = 'offline';
+	let name = '';
+	let email = '';
+
+	let serverType = 'server';
+	let serverIP = '';
+	let serverPort = '';
+
 	function createNewBot() {
 		console.log('Creating new bot');
+		const options: any = { auth };
 
-		$socket.once('newBot', (data) => {
-			console.log('New bot created', data);
+		options.username = auth == 'offline' ? name : email;
+
+		options.host = serverType === 'server' ? serverIP : 'localhost';
+		if (serverType === 'localhost') {
+			options.port = serverPort;
+		}
+		console.log(options);
+
+		$socket.once('msa', (resp) => {
+			console.log(resp);
+
+			window.location.href = 'http://microsoft.com/link?otc=' + resp.user_code;
 		});
 	}
 </script>
@@ -36,7 +55,7 @@
 	<AlertDialogContent class="bg-card">
 		<AlertDialogHeader>New bot</AlertDialogHeader>
 		<div class="flex gap-4 flex-col justify-stretch items-stretch">
-			<Tabs class="flex gap-2">
+			<Tabs class="flex gap-2" bind:value={auth}>
 				<div>
 					<Label>Login method</Label>
 					<TabsList class="grid w-full grid-cols-2">
@@ -46,14 +65,14 @@
 				</div>
 				<TabsContent value="offline" class="mt-0 flex-1">
 					<Label>Bot name</Label>
-					<Input placeholder="Bot"></Input>
+					<Input placeholder="Bot" bind:value={name}></Input>
 				</TabsContent>
 				<TabsContent value="microsoft" class="mt-0 flex-1">
 					<Label>Email</Label>
-					<Input type="mail" placeholder="example@mail.com"></Input>
+					<Input type="mail" placeholder="example@mail.com" bind:value={email}></Input>
 				</TabsContent>
 			</Tabs>
-			<Tabs class="flex gap-2">
+			<Tabs class="flex gap-2" bind:value={serverType}>
 				<div>
 					<Label>Server type</Label>
 					<TabsList class="grid w-full grid-cols-2">
@@ -63,17 +82,17 @@
 				</div>
 				<TabsContent value="localhost" class="mt-0 flex-1">
 					<Label>Port</Label>
-					<Input placeholder="25565"></Input>
+					<Input placeholder="25565" bind:value={serverPort}></Input>
 				</TabsContent>
 				<TabsContent value="server" class="mt-0 flex-1">
 					<Label>Server IP</Label>
-					<Input placeholder="hypixel.net"></Input>
+					<Input placeholder="hypixel.net" bind:value={serverIP}></Input>
 				</TabsContent>
 			</Tabs>
 		</div>
 		<AlertDialogFooter>
 			<AlertDialogCancel>Cancel</AlertDialogCancel>
-			<Button>Create</Button>
+			<Button on:click={createNewBot}>Create</Button>
 		</AlertDialogFooter>
 	</AlertDialogContent>
 </AlertDialog>
