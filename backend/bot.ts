@@ -82,6 +82,19 @@ class BotInstance {
 
 	rejoin: () => ExtendedBot;
 
+	join(options, msaCallback) {
+		this.rejoin = () =>
+			mineflayer.createBot({
+				...options,
+				version: "1.20.4",
+				onMsaCode: (resp) => {
+					msaCallback(resp);
+					this.log("msa code: ", resp);
+				},
+			}) as ExtendedBot;
+		this.bot = this.rejoin();
+	}
+
 	joinLocalhost(
 		port: number,
 		username = "Bot",
@@ -95,10 +108,6 @@ class BotInstance {
 				username: username,
 				auth: auth,
 				version: version,
-				onMsaCode: (resp) => {
-					this.log("msa code: ", resp);
-					this.io?.emit("msa", resp);
-				},
 			}) as ExtendedBot;
 		};
 		this.bot = this.rejoin();
@@ -312,13 +321,15 @@ class BotInstance {
 	clientConnect(socket: Socket) {
 		if (!this.bot) return;
 		this.loopsForClient[socket.id] = [];
+		this.log("client connected");
+		this.clientBotBinds[socket.id] = [];
 
 		socket.emit("username", this.bot.username);
 
 		socket.emit("pos", this.bot.entity?.position);
 		socket.emit("health", this.bot.health);
 		socket.emit("food", this.bot.food);
-		socket.emit("xp.level", this.bot.experience.level);
+		if (this.bot.experience) socket.emit("xp.level", this.bot.experience.level);
 
 		socket.emit("settings", this.settings);
 		socket.emit("chatHistory", this.chatHistory);
@@ -356,6 +367,7 @@ class BotInstance {
 
 	clientDisconnect(socket: Socket) {
 		if (!this.bot) return;
+		this.log(socket.id, this.clientBotBinds);
 		this.clientBotBinds[socket.id].forEach((bind) => {
 			this.bot?.off(bind.event, bind.func);
 		});

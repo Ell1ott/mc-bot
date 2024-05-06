@@ -20,7 +20,7 @@
 	//   const angle = -(i / numItems) * 2 * Math.PI - Math.PI / 2;
 	let circel;
 	let checked;
-	$: emit('lookAtEntity', checked);
+	$: $socket.emit('lookAtEntity', checked);
 </script>
 
 <label class="switch" id="lookAtEntityButton">

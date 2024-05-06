@@ -1,3 +1,4 @@
+import { Socket } from "socket.io";
 import { BotInstance } from "./bot";
 import { exportSettings } from "./settings/settingExport";
 
@@ -13,53 +14,68 @@ io.on("message", (message) => {
 	console.log(message);
 });
 
-const testBot = new BotInstance(exportSettings("testBot"));
+// const testBot = new BotInstance(exportSettings("testBot"));
 
-try {
-	testBot.joinLocalhost(25565, "Bob", null, "microsoft");
-} catch (e) {
-	console.log(e);
+// try {
+// testBot.joinLocalhost(45486, "Bob", null, "offline");
+// } catch (e) {
+// 	console.log(e);
+// }
+
+// testBot.start();
+
+let currentBot: null | BotInstance = null;
+
+const bots: Record<string, BotInstance> = {};
+
+function emitBots(socket: Socket) {
+	socket.emit(
+		"bots",
+		Object.entries(bots).map(([name, bot]) => ({
+			id: name,
+			name: bot.bot?.username,
+			health: bot.bot?.health,
+			food: bot.bot?.food,
+		}))
+	);
 }
 
-testBot.start();
-
-let currentBot: BotInstance = testBot;
-
-const bots = { testBot: testBot };
-
-io.on("connection", (socket) => {
+io.on("connection", (socket: Socket) => {
 	console.log("a user connected");
 
-	testBot.clientConnect(socket);
+	emitBots(socket);
+
+	// testBot.clientConnect(socket);
 
 	socket.conn.on("close", (reason) => {
 		socket.removeAllListeners();
-		testBot.clientDisconnect(socket);
+		// testBot.clientDisconnect(socket);
+		currentBot?.clientDisconnect(socket);
 		console.log("a user disconnected");
 	});
 
-	socket.on("newBot", (name) => {
-		const newBot = new BotInstance(exportSettings(name));
-		bots[name] = newBot;
+	socket.on("createBot", (options) => {
+		console.log("creating bot", options);
+		const newBot = new BotInstance(exportSettings(options.username));
+		bots[options.username] = newBot;
+
+		newBot.join(options, (resp) => socket.emit("msa", resp));
+
+		newBot.start();
 	});
 
 	socket.on("getBots", () => {
-		socket.emit(
-			"bots",
-			Object.entries(bots).map(([name, bot]) => ({
-				id: name,
-				name: bot.username,
-				health: bot.bot?.health,
-				food: bot.bot?.food,
-			}))
-		);
+		emitBots(socket);
 	});
 
-	let anyListener = (event, ...args) => {
-		testBot.client.emit(event, ...args);
-	};
+	let anyListener = (event, ...args) => {};
 	socket.on("selectBot", (name) => {
-		currentBot.io.offAny();
+		selectBot(name);
+	});
+	function selectBot(name) {
+		console.log("socket id", socket.id);
+		currentBot?.io.offAny();
+		currentBot?.clientDisconnect(socket);
 		socket.offAny(anyListener);
 
 		currentBot = bots[name];
@@ -72,5 +88,5 @@ io.on("connection", (socket) => {
 			socket.emit(event, ...args);
 		});
 		currentBot.clientConnect(socket);
-	});
+	}
 });

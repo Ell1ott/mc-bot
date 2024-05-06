@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { server_loads } from './../../../.svelte-kit/generated/client/app.js';
 	import AlertDialogCancel from './../../lib/components/ui/alert-dialog/alert-dialog-cancel.svelte';
 	import AlertDialogFooter from './../../lib/components/ui/alert-dialog/alert-dialog-footer.svelte';
 	import { AlertDialog, AlertDialogTrigger } from '$lib/components/ui/alert-dialog';
@@ -15,6 +14,9 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { socket } from '../store.js';
+	import { server } from 'typescript';
+
+	console.log('newbot');
 
 	let auth = 'offline';
 	let name = '';
@@ -24,17 +26,25 @@
 	let serverIP = '';
 	let serverPort = '';
 
-	function createNewBot() {
+	function createNewBot(e) {
+		e.preventDefault();
 		console.log('Creating new bot');
 		const options: any = { auth };
 
-		options.username = auth == 'offline' ? name : email;
+		options.username = auth == 'offline' ? name || 'Bot' : email;
+
+		console.log(serverType);
+
+		console.log(+serverPort);
+
+		options.port = +serverPort;
+		console.log(options.port);
 
 		options.host = serverType === 'server' ? serverIP : 'localhost';
 		if (serverType === 'localhost') {
-			options.port = serverPort;
+			options.port = +serverPort;
 		}
-		console.log(options);
+		$socket.emit('createBot', options);
 
 		$socket.once('msa', (resp) => {
 			console.log(resp);
@@ -92,7 +102,7 @@
 		</div>
 		<AlertDialogFooter>
 			<AlertDialogCancel>Cancel</AlertDialogCancel>
-			<Button on:click={createNewBot}>Create</Button>
 		</AlertDialogFooter>
+		<Button on:click={createNewBot}>Create</Button>
 	</AlertDialogContent>
 </AlertDialog>

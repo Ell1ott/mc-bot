@@ -27,14 +27,13 @@ export function exportSettings(name) {
 	fs.writeFileSync(filePath, json);
 
 	// check if__dirname/../../frontend/lib exists
+	return filePath;
 
 	const frontendPath = path.join(__dirname, "../../frontend/src/lib");
 	if (fs.existsSync(frontendPath)) {
 		const filePath = path.join(frontendPath, "bot-settings.json");
 		fs.writeFileSync(filePath, json);
 	}
-
-	return filePath;
 }
 
 export function exportNewSettings(name, settings) {

@@ -3,7 +3,7 @@
     "enabled": false
   },
   "fishing": {
-    "enabled": true,
+    "enabled": false,
     "swing": {
       "val": true,
       "t": "bool",
@@ -55,7 +55,7 @@
     }
   },
   "automine": {
-    "enabled": true,
+    "enabled": false,
     "mode": {
       "val": "strip_mining",
       "t": "mode",
@@ -99,7 +99,7 @@
     "enabled": false,
     "health": {
       "val": [
-        "4"
+        5
       ],
       "enabled": true,
       "range": [
@@ -111,7 +111,7 @@
     },
     "food": {
       "val": [
-        "5"
+        5
       ],
       "enabled": false,
       "range": [
@@ -129,7 +129,7 @@
       "d": "when player joins:"
     },
     "player_too_close": {
-      "enabled": false,
+      "enabled": true,
       "players": {
         "val": [
           "playername"
@@ -139,7 +139,7 @@
       },
       "specifiedplayerdistance": {
         "val": [
-          "20"
+          20
         ],
         "enabled": true,
         "range": [
@@ -151,7 +151,7 @@
       },
       "otherplayerdistance": {
         "val": [
-          "20"
+          20
         ],
         "enabled": true,
         "range": [
@@ -164,7 +164,7 @@
     }
   },
   "autoeat": {
-    "enabled": false
+    "enabled": true
   },
   "autoattack": {
     "enabled": false,
@@ -180,7 +180,7 @@
     }
   },
   "antiafk": {
-    "enabled": false,
+    "enabled": true,
     "sneaking": {
       "enabled": true,
       "timebetweensneaks": {
