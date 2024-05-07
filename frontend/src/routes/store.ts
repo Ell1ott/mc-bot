@@ -10,7 +10,5 @@ export const currentBot = writable();
 currentBot.subscribe((name) => {
 	if (!name) return;
 	console.log(name);
-	get(socket).emit('selectBot', name);
-
 	goto('/control-interface');
 });

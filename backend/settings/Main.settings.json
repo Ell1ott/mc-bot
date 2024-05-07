@@ -177,6 +177,28 @@
       "val": true,
       "t": "bool",
       "d": "only attack if looking"
+    },
+    "searchRadius": {
+      "val": [
+        10
+      ],
+      "range": [
+        1,
+        50
+      ],
+      "t": "range",
+      "d": "search radius"
+    },
+    "attackRadius": {
+      "val": [
+        3.5
+      ],
+      "range": [
+        1,
+        10
+      ],
+      "t": "range",
+      "d": "attack radius"
     }
   },
   "antiafk": {

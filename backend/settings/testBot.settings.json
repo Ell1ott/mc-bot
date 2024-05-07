@@ -167,7 +167,7 @@
     "enabled": false
   },
   "autoattack": {
-    "enabled": true,
+    "enabled": false,
     "rotation": {
       "val": true,
       "t": "bool",
@@ -177,6 +177,28 @@
       "val": true,
       "t": "bool",
       "d": "only attack if looking"
+    },
+    "searchRadius": {
+      "val": [
+        "10"
+      ],
+      "range": [
+        1,
+        50
+      ],
+      "t": "range",
+      "d": "search radius"
+    },
+    "attackRadius": {
+      "val": [
+        "4"
+      ],
+      "range": [
+        1,
+        10
+      ],
+      "t": "range",
+      "d": "attack radius"
     }
   },
   "antiafk": {
@@ -185,8 +207,8 @@
       "enabled": true,
       "timebetweensneaks": {
         "val": [
-          2,
-          3.6
+          "2",
+          "3.6"
         ],
         "range": [
           0.2,
@@ -198,8 +220,8 @@
       },
       "sneakinglength": {
         "val": [
-          1,
-          10
+          "1",
+          "10"
         ],
         "range": [
           0.2,

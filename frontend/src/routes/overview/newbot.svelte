@@ -15,6 +15,9 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { socket } from '../store.js';
 	import { server } from 'typescript';
+	import { Dialog, DialogClose, DialogFooter, DialogTrigger } from '$lib/components/ui/dialog';
+	import DialogContent from '$lib/components/ui/dialog/dialog-content.svelte';
+	import DialogHeader from '$lib/components/ui/dialog/dialog-header.svelte';
 
 	console.log('newbot');
 
@@ -56,16 +59,16 @@
 	}
 </script>
 
-<AlertDialog closeOnOutsideClick>
-	<AlertDialogTrigger>
+<Dialog>
+	<DialogTrigger>
 		<Button class="gap-1" variant="secondary">
 			<Plus></Plus>
 			New Bot
 		</Button>
-	</AlertDialogTrigger>
+	</DialogTrigger>
 
-	<AlertDialogContent class="bg-card">
-		<AlertDialogHeader>New bot</AlertDialogHeader>
+	<DialogContent class="bg-card">
+		<DialogHeader>New bot</DialogHeader>
 		<div class="flex gap-4 flex-col justify-stretch items-stretch">
 			<Tabs class="flex gap-2" bind:value={auth}>
 				<div>
@@ -102,9 +105,11 @@
 				</TabsContent>
 			</Tabs>
 		</div>
-		<AlertDialogFooter>
-			<AlertDialogCancel>Cancel</AlertDialogCancel>
+		<DialogFooter>
+			<DialogClose>
+				<Button variant="secondary">Cancel</Button>
+			</DialogClose>
 			<Button on:click={createNewBot}>Create</Button>
-		</AlertDialogFooter>
-	</AlertDialogContent>
-</AlertDialog>
+		</DialogFooter>
+	</DialogContent>
+</Dialog>
