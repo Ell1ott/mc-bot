@@ -24,7 +24,7 @@
 <!-- <h1>Welcome to SvelteKit</h1> -->
 <!-- <img src={idk} alt="idk" /> -->
 
-<div class="units theme gap-3 p-3 min-h-screen">
+<div class="units theme gap-3 p-3 h-screen">
 	<!-- control header -->
 	<div id="header">
 		<Unit class="flex">
@@ -35,7 +35,7 @@
 			<Playerinfo />
 		</Unit>
 	</div>
-	<div class="flex flex-1 gap-3">
+	<div class="flex flex-1 min-h-0 gap-3">
 		<div class="consoles flex flex-1">
 			<Unit class="flex-1">
 				<Chat />
@@ -68,7 +68,6 @@
 	.units {
 		display: flex;
 		flex-direction: column;
-		height: 100%;
 	}
 
 	:global(.flex) {

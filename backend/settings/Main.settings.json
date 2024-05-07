@@ -164,7 +164,7 @@
     }
   },
   "autoeat": {
-    "enabled": true
+    "enabled": false
   },
   "autoattack": {
     "enabled": false,
