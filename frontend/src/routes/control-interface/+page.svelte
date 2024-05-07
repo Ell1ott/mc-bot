@@ -24,7 +24,7 @@
 <!-- <h1>Welcome to SvelteKit</h1> -->
 <!-- <img src={idk} alt="idk" /> -->
 
-<div class="units theme gap-3 p-3">
+<div class="units theme gap-3 p-3 min-h-screen">
 	<!-- control header -->
 	<div id="header">
 		<Unit class="flex">
@@ -106,7 +106,6 @@
 
 	.consoles {
 		max-width: 800px;
-		height: calc(100vh - 300px);
 	}
 
 	#header {

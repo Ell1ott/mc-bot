@@ -36,6 +36,6 @@
 	let currenttheme = 'dark';
 </script>
 
-<div class={currenttheme}>
+<div class="{currenttheme} min-h-screen">
 	<slot />
 </div>

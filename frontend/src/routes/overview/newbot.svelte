@@ -56,7 +56,7 @@
 	}
 </script>
 
-<AlertDialog>
+<AlertDialog closeOnOutsideClick={true}>
 	<AlertDialogTrigger>
 		<Button class="gap-1" variant="secondary">
 			<Plus></Plus>
