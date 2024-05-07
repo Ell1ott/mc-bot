@@ -180,7 +180,7 @@
     },
     "searchRadius": {
       "val": [
-        "10"
+        10
       ],
       "range": [
         1,
@@ -191,7 +191,7 @@
     },
     "attackRadius": {
       "val": [
-        "4"
+        3.5
       ],
       "range": [
         1,
@@ -207,8 +207,8 @@
       "enabled": true,
       "timebetweensneaks": {
         "val": [
-          "2",
-          "3.6"
+          2,
+          3.6
         ],
         "range": [
           0.2,
@@ -220,8 +220,8 @@
       },
       "sneakinglength": {
         "val": [
-          "1",
-          "10"
+          1,
+          10
         ],
         "range": [
           0.2,
