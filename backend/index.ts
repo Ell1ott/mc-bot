@@ -24,8 +24,6 @@ io.on("message", (message) => {
 
 // testBot.start();
 
-let currentBot: null | BotInstance = null;
-
 const bots: Record<string, BotInstance> = {};
 
 function emitBots(socket: Socket) {
@@ -41,6 +39,7 @@ function emitBots(socket: Socket) {
 }
 
 io.on("connection", (socket: Socket) => {
+	let currentBot: null | BotInstance = null;
 	console.log("a user connected");
 
 	emitBots(socket);

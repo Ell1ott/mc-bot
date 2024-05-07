@@ -301,6 +301,11 @@ class BotInstance {
 			this.bot = this.rejoin();
 			this.info("Rejoined server");
 			this.start();
+			Object.values(this.clientBotBinds).forEach((binds) => {
+				binds.forEach((bind) => {
+					this.bot?.on(bind.event, bind.func);
+				});
+			});
 		});
 	}
 
@@ -371,6 +376,7 @@ class BotInstance {
 		this.clientBotBinds[socket.id].forEach((bind) => {
 			this.bot?.off(bind.event, bind.func);
 		});
+		this.clientBotBinds[socket.id] = [];
 	}
 
 	log(...msg) {
