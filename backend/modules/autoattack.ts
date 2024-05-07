@@ -16,7 +16,19 @@ const moduleSettings = {
 	onlywhenlooking: {
 		val: true,
 		t: "bool",
-		d: "only attack if looking",
+		d: "only if looking",
+	},
+	searchRadius: {
+		val: [10],
+		range: [1, 50],
+		t: "range",
+		d: "search radius",
+	},
+	attackRadius: {
+		val: [3.5],
+		range: [1, 10],
+		t: "range",
+		d: "attack radius",
 	},
 };
 
@@ -36,6 +48,7 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 	// let attackLoop = null;
 
 	async attack() {
+		if (!this.attacking) return;
 		let target = this.bot.nearestEntity(
 			(e) => e.type === "mob" || e.type === "player"
 		);
@@ -47,9 +60,10 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 		let pos = target.position.offset(0, target.height, 0);
 
 		if (
-			pos.distanceTo(
+			pos.distanceSquared(
 				this.bot.entity.position.offset(0, this.bot.entity.height, 0)
-			) > 3
+			) >
+			this.settings.searchRadius.val[0] ** 2
 		) {
 			setTimeout(this.attack.bind(this), 100);
 			return;
@@ -70,8 +84,6 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 		// await this.bot.waitForTicks(30);
 		await this.bot.waitForTicks(getCooldown(heldItem?.name));
 		// console.log(heldItem?.name);
-
-		if (!this.attacking) return;
 		setTimeout(this.attack.bind(this), 100);
 		// setTimeout(attack, 1000);
 	}
