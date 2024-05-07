@@ -1,6 +1,8 @@
 import { moduleSettings } from "../modules";
 import fs from "fs";
 
+const SETTINGSPATH = "/saved-settings/";
+
 function deepMerge(obj1, obj2) {
 	for (let key in obj2) {
 		if (obj2.hasOwnProperty(key) && obj1.hasOwnProperty(key)) {

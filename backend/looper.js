@@ -64,7 +64,6 @@ function flipflopWithRandomDelay(func1, func2, delayRange1, delayRange2) {
 			Math.random() * (delayRange1[1] * 1000 - delayRange1[0] * 1000 + 1) +
 			delayRange1[0] * 1000;
 
-		console.log(delay);
 		timeoutId = setTimeout(() => {
 			loop(func2, func1, delayRange2, delayRange1);
 		}, delay);
