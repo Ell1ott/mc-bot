@@ -39,14 +39,14 @@
 </script>
 
 <div id="player-info">
-	<div id="headandstats">
+	<div class="flex gap-3">
 		<div id="headstats">
-			<h1>{name}</h1>
-			<p>
+			<h1 class="text-xl">{name}</h1>
+			<p class="text-sm">
 				x: {formatNumber(position.z)} y: {formatNumber(position.y)} z: {formatNumber(position.z)}
 			</p>
 		</div>
-		<PlayerHead {name} />
+		<PlayerHead {name} class="w-[100px] h-[100px]" />
 	</div>
 
 	<Statbar img={heart} bgimg={bgheart} statName="health" />
@@ -63,12 +63,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-
-		margin-right: 10px;
-
-		/* height: px; */
-
-		margin-bottom: 20px;
 	}
 
 	p {

@@ -64,9 +64,8 @@
 					<Card
 						class="flex gap-2 p-4 rounded-md hover:bg-accent transition-all hover:border-foreground/20 cursor-pointer"
 					>
-						<div class="w-20 aspect-square">
-							<PlayerHead name={bot.name} />
-						</div>
+						<PlayerHead name={bot.name} class="w-20 aspect-square" />
+
 						<div class="flex">
 							<div class="flex flex-col max-h-[6rem] items-start min-w-[10rem] gap-1">
 								<h1 class="font-bold text-3xl text-foreground">{bot.name}</h1>

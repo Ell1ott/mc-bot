@@ -73,7 +73,8 @@ class AutoAttack extends Module<typeof AutoAttack.deafultSettings> {
 		}
 
 		if (
-			this.bot.entityAtCursor(3.5, true) === target ||
+			this.bot.entityAtCursor(getSetting(this.settings.attackRadius), true) ===
+				target ||
 			!getSetting(this.settings.onlywhenlooking)
 		) {
 			this.bot.attack(target);
