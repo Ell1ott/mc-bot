@@ -4,8 +4,8 @@
 	import collapse from 'svelte-collapse';
 
 	export let open = true;
-	export let duration = 0.2;
-	export let easing = 'ease';
+	export let duration = 0.4;
+	export let easing = 'cubic-bezier(0.31, 0.84, 0.25, 0.98)';
 
 	const dispatch = createEventDispatcher();
 
