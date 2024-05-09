@@ -1,10 +1,12 @@
 <script>
+	import Input from '$lib/components/ui/input/input.svelte';
+
 	export let values;
 	export let displayName;
 	export let name;
 
 	function addElement() {
-		values = [...values, ""];
+		values = [...values, ''];
 	}
 
 	function removeElement(i) {
@@ -12,39 +14,35 @@
 		values = values;
 	}
 	function handleKeyDown(event) {
-		if (event.key === "Enter") {
+		if (event.key === 'Enter') {
 			event.preventDefault(); // prevent default form submission behavior
 			// event.target.blur(); // exit the input field
-			if (values) if (values[values.length - 1] !== "") addElement();
+			if (values) if (values[values.length - 1] !== '') addElement();
 
 			setTimeout(() => {
-				const nextInput =
-					document.getElementsByClassName("listinput")[values.length - 1];
+				const nextInput = document.getElementsByClassName('listinput')[values.length - 1];
 				if (nextInput) nextInput.focus();
 			});
 		}
 	}
 </script>
 
-<div class="container">
+<div class="cont">
 	<p class="">{displayName}</p>
 	<div id="fields">
 		{#each values as val, index}
 			<div class="field">
-				<input
+				<Input
 					type="text"
 					class="listinput"
 					bind:value={val}
-					name={name + "." + index}
+					name={name + '.' + index}
 					on:keydown={handleKeyDown}
-				/>
-				<button
-					class="removebutton"
-					type="button"
-					on:click={() => removeElement(index)}
 				>
-					<img src="/images/closebutton.png" alt="" />
-				</button>
+					<button class="removebutton" type="button" on:click={() => removeElement(index)}>
+						<img src="/images/closebutton.png" alt="" />
+					</button>
+				</Input>
 			</div>
 		{/each}
 		<button id="addbutton" type="button" on:click={addElement}>
@@ -54,7 +52,7 @@
 </div>
 
 <style>
-	.container {
+	.cont {
 		display: flex;
 		gap: 10px;
 	}
@@ -70,25 +68,6 @@
 
 	input {
 		padding-right: 0px;
-	}
-
-	.field {
-		background-color: rgb(39 37 37);
-		border-radius: 15px;
-		display: inline-flex;
-
-		background-color: rgb(48, 48, 48);
-		/* padding: 5px; */
-		/* margin: 0; */
-		/* border-radius: 5px; */
-		border: black 2px solid;
-		/* margin-right: auto; */
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		/* width: 25px; */
-		/* height: 16px; */
 	}
 
 	#fields {
@@ -115,14 +94,12 @@
 		/* background-color: var(--accent); */
 	}
 	.removebutton img {
-		filter: invert(18%) sepia(95%) saturate(0) hue-rotate(350deg)
-			brightness(86%) contrast(139%);
+		filter: invert(18%) sepia(95%) saturate(0) hue-rotate(350deg) brightness(86%) contrast(139%);
 		transition: all 0.2s;
 	}
 
 	.removebutton:hover img {
-		filter: invert(20%) sepia(95%) saturate(2000%) hue-rotate(350deg)
-			brightness(90%) contrast(139%);
+		filter: invert(20%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(90%) contrast(139%);
 	}
 
 	#addbutton {
