@@ -29,6 +29,8 @@
 	let serverIP = '';
 	let serverPort = '';
 
+	let open = false;
+
 	function createNewBot(e) {
 		e.preventDefault();
 		console.log('Creating new bot');
@@ -56,10 +58,12 @@
 				window.location.href = 'http://microsoft.com/link?otc=' + resp.user_code;
 			});
 		}
+
+		open = false;
 	}
 </script>
 
-<Dialog>
+<Dialog bind:open>
 	<DialogTrigger>
 		<Button class="gap-1" variant="secondary">
 			<Plus></Plus>

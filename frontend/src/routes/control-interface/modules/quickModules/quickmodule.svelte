@@ -24,27 +24,9 @@
 			class="checkbox-div"
 			role="button"
 			tabindex="0"
-			on:mousedown={(e) => {
-				e.cancelBubble = true;
-				if (e.which == 3) {
-					e.preventDefault();
-					settingsOpen.open();
-					console.log('hehe');
-
-					const el = (e) => {
-						e.preventDefault();
-					};
-
-					document.addEventListener('contextmenu', el);
-
-					setTimeout(() => {
-						document.removeEventListener('contextmenu', el);
-					}, 100);
-				}
-			}}
-			on:contextmenu|preventDefault
 			on:contextmenu={(e) => {
 				e.preventDefault();
+				settingsOpen.open();
 			}}
 		>
 			<img src={img} alt="" class:pixel={!smooth} />
