@@ -4,6 +4,7 @@
 
 	// import { CollapsibleCard } from "svelte-collapsible";
 	import Switch from './switch.svelte';
+	import NoSettings from '$lib/components/NoSettings.svelte';
 
 	export let name;
 	export let displayName;
@@ -34,7 +35,7 @@
 		></ChevronDown>
 	</button>
 	<div slot="body" id="body">
-		<slot><p>no settings available</p></slot>
+		<slot><NoSettings></NoSettings></slot>
 	</div>
 </CustomCollapsibleCard>
 
@@ -53,18 +54,11 @@
 	}
 
 	.header {
-		background-color: rgb(39 39 39);
+		background-color: hsl(212, 12%, 17%);
 		display: flex;
 	}
 
 	#body {
 		padding: 10px;
-	}
-
-	p {
-		padding: 0;
-		margin: 0;
-
-		color: rgb(123, 123, 123);
 	}
 </style>

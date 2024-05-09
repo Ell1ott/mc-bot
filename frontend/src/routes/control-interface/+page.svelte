@@ -17,7 +17,7 @@
 		goto('overview');
 	}
 	onMount(() => {
-		$socket?.emit('selectBot', $currentBot);
+		if ($currentBot !== null) $socket?.emit('selectBot', $currentBot);
 	});
 </script>
 

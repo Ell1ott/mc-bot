@@ -1,6 +1,6 @@
 {
   "treechopper": {
-    "enabled": false
+    "enabled": true
   },
   "fishing": {
     "enabled": false,

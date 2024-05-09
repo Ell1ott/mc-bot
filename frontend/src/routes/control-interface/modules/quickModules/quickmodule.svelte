@@ -68,7 +68,7 @@
 		margin-top: 5px;
 		margin-bottom: -5px;
 		transform: translate(0, 28px);
-		z-index: 100;
+		z-index: 10;
 		font-size: 10px;
 		opacity: 0;
 		transition: all 200ms;
