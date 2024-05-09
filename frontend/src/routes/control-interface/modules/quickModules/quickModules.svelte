@@ -1,7 +1,7 @@
 <script>
-	import Quickmodule from "./quickmodule.svelte";
-	import { settings } from "../../../store";
-	import Settings from "../../settings/settings.svelte";
+	import Quickmodule from './quickmodule.svelte';
+	import { settings } from '../../../store';
+	import Settings from '../../settings/settings.svelte';
 </script>
 
 <div class="quickmodules">
@@ -17,10 +17,7 @@
 		enabled={$settings.automine.enabled}
 		tooltip="Auto mine"
 	>
-		<Settings
-			nameprefix="automine"
-			settings={Object.entries($settings.automine).slice(1)}
-		/>
+		<Settings nameprefix="automine" settings={Object.entries($settings.automine).slice(1)} />
 	</Quickmodule>
 	<Quickmodule
 		img="/images/items/diamond_sword.png"
@@ -40,10 +37,7 @@
 		tooltip="Anti afk"
 		img="/images/items/clock_10.png"
 	>
-		<Settings
-			nameprefix="antiafk"
-			settings={Object.entries($settings.antiafk).slice(1)}
-		/>
+		<Settings nameprefix="antiafk" settings={Object.entries($settings.antiafk).slice(1)} />
 	</Quickmodule>
 	<Quickmodule
 		name="autoleave"
@@ -51,10 +45,7 @@
 		tooltip="Auto leave"
 		img="/images/items/barrier.png"
 	>
-		<Settings
-			nameprefix="autoleave"
-			settings={Object.entries($settings.autoleave).slice(1)}
-		/>
+		<Settings nameprefix="autoleave" settings={Object.entries($settings.autoleave).slice(1)} />
 	</Quickmodule>
 	<Quickmodule
 		name="treechopper"
@@ -62,10 +53,7 @@
 		tooltip="tree Chopper"
 		img="https://mc.nerothe.com/img/1.19.2/spruce_log.png"
 	>
-		<Settings
-			nameprefix="treechopper"
-			settings={Object.entries($settings.treechopper).slice(1)}
-		/>
+		<Settings nameprefix="treechopper" settings={Object.entries($settings.treechopper).slice(1)} />
 	</Quickmodule>
 </div>
 

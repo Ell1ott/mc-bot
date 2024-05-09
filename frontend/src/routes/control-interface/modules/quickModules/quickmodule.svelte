@@ -10,6 +10,7 @@
 	export let displayName = tooltip;
 	import Overlaysettings from '../../settings/overlaysettings.svelte';
 	import { socket } from '../../../store';
+	import NoSettings from '$lib/components/NoSettings.svelte';
 
 	function emit() {
 		$socket?.emit(type === 'module' ? 'toggleModule' : 'setting.set', name, enabled);
@@ -33,7 +34,7 @@
 		</div>
 	</label>
 	<Overlaysettings bind:this={settingsOpen} {isOpen} {name} {img} {displayName}>
-		<slot />
+		<slot><NoSettings></NoSettings></slot>
 	</Overlaysettings>
 	{#if displayName}
 		<p class="tooltip">{displayName}</p>

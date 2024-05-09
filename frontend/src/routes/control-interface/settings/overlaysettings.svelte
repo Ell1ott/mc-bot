@@ -1,4 +1,5 @@
 <script>
+	import NoSettings from '$lib/components/NoSettings.svelte';
 	import {
 		Dialog,
 		DialogContent,
@@ -47,7 +48,7 @@
 			</DialogTitle>
 			<DialogDescription></DialogDescription>
 		</DialogHeader>
-		<slot></slot>
+		<slot><NoSettings></NoSettings></slot>
 	</DialogContent>
 </Dialog>
 
