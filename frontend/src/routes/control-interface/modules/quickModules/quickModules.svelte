@@ -50,7 +50,7 @@
 	<Quickmodule
 		name="treechopper"
 		enabled={$settings.treechopper.enabled}
-		tooltip="tree Chopper"
+		tooltip="Tree chopper"
 		img="https://mc.nerothe.com/img/1.19.2/spruce_log.png"
 	>
 		<Settings nameprefix="treechopper" settings={Object.entries($settings.treechopper).slice(1)} />

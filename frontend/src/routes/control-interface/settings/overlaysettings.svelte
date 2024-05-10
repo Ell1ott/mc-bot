@@ -9,15 +9,11 @@
 	} from '$lib/components/ui/dialog';
 
 	import { socket } from '../../store';
-	export let isOpen = false;
+	export let open = false;
 	export let name = 'unknownName';
 	export let displayName = 'settings';
 	export let img;
 	export let desciption = null;
-
-	export const open = () => {
-		isOpen = true;
-	};
 
 	let displayNone = true;
 
@@ -39,12 +35,14 @@
 	};
 </script>
 
-<Dialog bind:open={isOpen}>
+<Dialog bind:open>
 	<DialogContent class="min-w-[40rem] bg-card/50 backdrop-blur-sm rounded-none">
 		<DialogHeader>
 			<DialogTitle class="flex items-center gap-2 text-2xl">
 				<img src={img} class="icon pixel" alt="" />
-				{displayName}
+				<h1 class="capitalize-first">
+					{displayName}
+				</h1>
 			</DialogTitle>
 			<DialogDescription></DialogDescription>
 		</DialogHeader>

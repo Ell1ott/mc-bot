@@ -1,16 +1,16 @@
-<script>
-	export let name;
-	export let img;
-	export let tooltip;
-	export let enabled = false;
-	export let type = 'module';
-	export let settingsOpen;
-	export let isOpen;
-	export let smooth;
-	export let displayName = tooltip;
+<script lang="ts">
 	import Overlaysettings from '../../settings/overlaysettings.svelte';
 	import { socket } from '../../../store';
 	import NoSettings from '$lib/components/NoSettings.svelte';
+
+	export let name;
+	export let img;
+	export let tooltip = null;
+	export let enabled = false;
+	export let type = 'module';
+	export let open = false;
+	export let smooth = false;
+	export let displayName = tooltip;
 
 	function emit() {
 		$socket?.emit(type === 'module' ? 'toggleModule' : 'setting.set', name, enabled);
@@ -27,13 +27,13 @@
 			tabindex="0"
 			on:contextmenu={(e) => {
 				e.preventDefault();
-				settingsOpen.open();
+				open = true;
 			}}
 		>
 			<img src={img} alt="" class:pixel={!smooth} />
 		</div>
 	</label>
-	<Overlaysettings bind:this={settingsOpen} {isOpen} {name} {img} {displayName}>
+	<Overlaysettings bind:open {name} {img} {displayName}>
 		<slot><NoSettings></NoSettings></slot>
 	</Overlaysettings>
 	{#if displayName}
