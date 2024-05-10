@@ -17,7 +17,7 @@
 
 <CustomCollapsibleCard bind:open>
 	<button
-		on:click={(e) => {
+		on:mousedown={(e) => {
 			open = !open;
 		}}
 		slot="header"
@@ -26,7 +26,7 @@
 		{#if togglable}
 			<Switch name={name + '.enabled'} bind:checked={enabled} stopPropagation />
 		{/if}
-		<h3 class="p-0 m-0 text-xl">
+		<h3 class="p-0 m-0 mr-4 text-xl">
 			{displayName.replaceAll('_', ' ')}
 		</h3>
 		<slot name="header"></slot>

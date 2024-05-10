@@ -1,7 +1,8 @@
 <script>
-	import Switch from "./switch.svelte";
-	import Slider from "@bulatdashiev/svelte-slider";
-	import RangeSlider from "svelte-range-slider-pips";
+	import Switch from './switch.svelte';
+	import Slider from '@bulatdashiev/svelte-slider';
+	import RangeSlider from 'svelte-range-slider-pips';
+	import SettingName from './SettingName.svelte';
 	export let value = [10, 20];
 	export let displayName;
 	export let name;
@@ -17,40 +18,28 @@
 
 <div class="hej" class:disabled={!enabled && toggleable}>
 	{#if toggleable}
-		<Switch name={name + ".enabled"} bind:checked={enabled} />
+		<Switch name={name + '.enabled'} bind:checked={enabled} />
 	{/if}
-	<p>{displayName}</p>
+	<SettingName name={displayName} />
 	<!-- <p class="value">
     {value[0].toPrecision(1)}-{value[1].toPrecision(1)}
   </p> -->
 	<div id="fields">
-		<input
-			type="number"
-			{step}
-			lang="en"
-			bind:value={value[0]}
-			name={name + ".0"}
-		/>
+		<input type="number" {step} lang="en" bind:value={value[0]} name={name + '.0'} />
 		{#if range}
 			<p>-</p>
-			<input
-				type="number"
-				{step}
-				lang="en"
-				bind:value={value[1]}
-				name={name + ".1"}
-			/>
+			<input type="number" {step} lang="en" bind:value={value[1]} name={name + '.1'} />
 		{/if}
 		<div class="slider-div">
 			<RangeSlider
 				id="color-pips"
-				range={range ? true : "min"}
+				range={range ? true : 'min'}
 				suffix=""
 				{min}
 				{max}
 				{step}
 				float
-				name={["input-1", "input-2"]}
+				name={['input-1', 'input-2']}
 				bind:values={value}
 				{pips}
 				{pipstep}
@@ -131,7 +120,7 @@
 	}
 
 	/* Firefox */
-	input[type="number"] {
+	input[type='number'] {
 		-moz-appearance: textfield;
 		appearance: textfield;
 	}

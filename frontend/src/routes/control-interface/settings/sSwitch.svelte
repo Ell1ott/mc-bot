@@ -1,23 +1,19 @@
 <script>
-  import Switch from "./switch.svelte";
-  export let displayName;
-  export let name;
-  export let checked;
+	import SettingName from './SettingName.svelte';
+	import Switch from './switch.svelte';
+	export let name;
+	export let displayName = name;
+	export let checked;
 </script>
 
 <div id="parent">
-  <Switch bind:checked {name} />
-  <p>{displayName}</p>
+	<Switch bind:checked {name} />
+	<SettingName name={displayName} />
 </div>
 
 <style>
-  #parent {
-    display: flex;
-    align-items: center;
-  }
-
-  p {
-    margin: 5px;
-    font-size: 17px;
-  }
+	#parent {
+		display: flex;
+		align-items: center;
+	}
 </style>

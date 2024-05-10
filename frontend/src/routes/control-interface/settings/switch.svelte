@@ -1,12 +1,11 @@
 <script>
 	export let checked;
 	export let name;
-	export let stopPropagation = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<label on:click|stopPropagation>
+<label on:click|stopPropagation on:mousedown|stopPropagation>
 	<input
 		type="checkbox"
 		id="lookAtEntityToggle"
