@@ -22,6 +22,17 @@
 </label>
 
 <style>
+	label:active .box .bg .ball {
+		width: 20px;
+		transition:
+			all 0.3s,
+			width 0.1s;
+	}
+
+	label:active .box.checked .ball {
+		margin-left: 17.5px;
+	}
+
 	.box {
 		/* background-color: black; */
 		height: 20px;
@@ -39,23 +50,27 @@
 		position: relative;
 
 		transition: all 0.3s;
+
+		display: flex;
+		align-items: center;
 	}
 
 	.ball {
 		height: 15px;
 		width: 15px;
-		border-radius: 50%;
+		margin: 2.5px;
+		border-radius: 100px;
 		background-color: #eeeeee;
-		top: 50%;
+
 		position: relative;
-		transform: translate(-50%, -50%);
-		left: 27%;
-		transition: all 0.3s;
+		transition:
+			all 0.3s,
+			width 0.3s 0.2s;
 		/* transform: t; */
 	}
 
 	.checked .ball {
-		left: 73%;
+		margin-left: 22.5px;
 	}
 
 	.checked .bg {
